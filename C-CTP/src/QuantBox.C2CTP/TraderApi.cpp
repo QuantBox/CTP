@@ -15,6 +15,7 @@ CTraderApi::CTraderApi(void)
 
 	InitializeCriticalSection(&m_csList);
 	InitializeCriticalSection(&m_csMap);
+	InitializeCriticalSection(&m_csOrderRef);
 }
 
 
@@ -24,6 +25,7 @@ CTraderApi::~CTraderApi(void)
 
 	DeleteCriticalSection(&m_csList);
 	DeleteCriticalSection(&m_csMap);
+	DeleteCriticalSection(&m_csOrderRef);
 }
 
 void CTraderApi::StopThread()
@@ -507,13 +509,19 @@ int CTraderApi::ReqOrderInsert(
 	body.ContingentCondition = ContingentCondition;
 	body.StopPrice = StopPrice;
 
-	int nRet = m_nMaxOrderRef;
-	sprintf(body.OrderRef,"%d",nRet);
-	++m_nMaxOrderRef;
-	
-	//不保存到队列，而是直接发送
-	long lRequest = InterlockedIncrement(&m_lRequestID);
-	int n = m_pApi->ReqOrderInsert(&pRequest->InputOrderField,lRequest);
+	int nRet = 0;
+	{
+		//可能报单太快，m_nMaxOrderRef还没有改变就提交了
+		CLock cl(&m_csOrderRef);
+
+		nRet = m_nMaxOrderRef;
+		sprintf(body.OrderRef,"%d",nRet);
+		++m_nMaxOrderRef;
+
+		//不保存到队列，而是直接发送
+		long lRequest = InterlockedIncrement(&m_lRequestID);
+		int n = m_pApi->ReqOrderInsert(&pRequest->InputOrderField,lRequest);
+	}
 	delete pRequest;//用完后直接删除
 
 	//如何定位报单，用报单引用实际上并不靠谱

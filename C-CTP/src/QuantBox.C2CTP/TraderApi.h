@@ -151,6 +151,8 @@ private:
 	volatile LONG				m_lRequestID;			//请求ID,得保持自增
 	
 	CThostFtdcRspUserLoginField m_RspUserLogin;			//返回的登录成功响应，目前利用此内成员进行报单所属区分
+
+	CRITICAL_SECTION			m_csOrderRef;
 	int							m_nMaxOrderRef;			//报单引用，用于区分报单，保持自增
 
 	CThostFtdcTraderApi*		m_pApi;					//交易API
