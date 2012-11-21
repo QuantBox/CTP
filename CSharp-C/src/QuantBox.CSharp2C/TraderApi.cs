@@ -20,6 +20,12 @@ namespace QuantBox.CSharp2C
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryInstrument")]
         public static extern void CTP_RegOnRspQryInstrument(IntPtr pMsgQueue, fnOnRspQryInstrument pCallback);
 
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryInstrumentCommissionRate")]
+        public static extern void CTP_RegOnRspQryInstrumentCommissionRate(IntPtr pMsgQueue, fnOnRspQryInstrumentCommissionRate pCallback);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryInstrumentMarginRate")]
+        public static extern void CTP_RegOnRspQryInstrumentMarginRate(IntPtr pMsgQueue, fnOnRspQryInstrumentMarginRate pCallback);
+
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryInvestorPosition")]
         public static extern void CTP_RegOnRspQryInvestorPosition(IntPtr pMsgQueue, fnOnRspQryInvestorPosition pCallback);
 
@@ -72,5 +78,11 @@ namespace QuantBox.CSharp2C
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryInstrument")]
         public static extern void TD_ReqQryInstrument(IntPtr pTraderApi, string szInstrument);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryInstrumentCommissionRate")]
+        public static extern void TD_ReqQryInstrumentCommissionRate(IntPtr pTraderApi, string szInstrument);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryInstrumentMarginRate")]
+        public static extern void TD_ReqQryInstrumentMarginRate(IntPtr pTraderApi, string szInstrument);
     }
 }
