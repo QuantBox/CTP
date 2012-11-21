@@ -25,7 +25,9 @@ class CTraderApi :
 		E_InputOrderField,
 		E_InputOrderActionField,
 		E_QryTradingAccountField,
-		E_QryInvestorPositionField
+		E_QryInvestorPositionField,
+		E_QryInstrumentCommissionRateField,
+		E_QryInstrumentMarginRateField,
 	};
 
 	//请求数据包结构体
@@ -33,14 +35,16 @@ class CTraderApi :
 	{
 		RequestType type;
 		union{
-			CThostFtdcReqAuthenticateField			ReqAuthenticateField;
-			CThostFtdcReqUserLoginField				ReqUserLoginField;
-			CThostFtdcSettlementInfoConfirmField	SettlementInfoConfirmField;
-			CThostFtdcQryInstrumentField			QryInstrumentField;
-			CThostFtdcInputOrderField				InputOrderField;
-			CThostFtdcInputOrderActionField			InputOrderActionField;
-			CThostFtdcQryTradingAccountField		QryTradingAccountField;
-			CThostFtdcQryInvestorPositionField		QryInvestorPositionField;
+			CThostFtdcReqAuthenticateField				ReqAuthenticateField;
+			CThostFtdcReqUserLoginField					ReqUserLoginField;
+			CThostFtdcSettlementInfoConfirmField		SettlementInfoConfirmField;
+			CThostFtdcQryInstrumentField				QryInstrumentField;
+			CThostFtdcQryInstrumentCommissionRateField	QryInstrumentCommissionRateField;
+			CThostFtdcQryInstrumentMarginRateField		QryInstrumentMarginRateField;
+			CThostFtdcQryInvestorPositionField			QryInvestorPositionField;
+			CThostFtdcQryTradingAccountField			QryTradingAccountField;
+			CThostFtdcInputOrderField					InputOrderField;
+			CThostFtdcInputOrderActionField				InputOrderActionField;
 		};
 	};
 
@@ -76,6 +80,8 @@ public:
 	void ReqQryTradingAccount();
 	void ReqQryInvestorPosition(const string& szInstrumentId);
 	void ReqQryInstrument(const string& szInstrumentId);
+	void ReqQryInstrumentCommissionRate(const string& szInstrumentId);
+	void ReqQryInstrumentMarginRate(const string& szInstrumentId);
 
 private:
 	//数据包发送线程
@@ -139,8 +145,8 @@ private:
 	
 	//合约、手续费
 	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRspQryInstrumentMarginRate(CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
-	virtual void OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+	virtual void OnRspQryInstrumentMarginRate(CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	
 	//其它
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);

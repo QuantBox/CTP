@@ -265,6 +265,12 @@ void CTraderApi::RunInThread()
 		case E_QryInvestorPositionField:
 			iRet = m_pApi->ReqQryInvestorPosition(&pRequest->QryInvestorPositionField,lRequest);
 			break;
+		case E_QryInstrumentCommissionRateField:
+			iRet = m_pApi->ReqQryInstrumentCommissionRate(&pRequest->QryInstrumentCommissionRateField,lRequest);
+			break;
+		case E_QryInstrumentMarginRateField:
+			iRet = m_pApi->ReqQryInstrumentMarginRate(&pRequest->QryInstrumentMarginRateField,lRequest);
+			break;
 		default:
 			_ASSERT(FALSE);
 			break;
@@ -673,6 +679,60 @@ void CTraderApi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 {
 	if(m_msgQueue)
 		m_msgQueue->Input_OnRspQryInstrument(this,pInstrument,pRspInfo,nRequestID,bIsLast);
+
+	if (bIsLast)
+		ReleaseRequestMapBuf(nRequestID);
+}
+
+void CTraderApi::ReqQryInstrumentCommissionRate(const string& szInstrumentId)
+{
+	if (NULL == m_pApi)
+		return;
+
+	SRequest* pRequest = MakeRequestBuf(E_QryInstrumentCommissionRateField);
+	if (NULL == pRequest)
+		return;
+
+	CThostFtdcQryInstrumentCommissionRateField& body = pRequest->QryInstrumentCommissionRateField;
+
+	strncpy(body.BrokerID, m_RspUserLogin.BrokerID,sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_RspUserLogin.UserID,sizeof(TThostFtdcInvestorIDType));
+	strncpy(body.InstrumentID,szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
+
+	AddToSendQueue(pRequest);
+}
+
+void CTraderApi::OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if(m_msgQueue)
+		m_msgQueue->Input_OnRspQryInstrumentCommissionRate(this,pInstrumentCommissionRate,pRspInfo,nRequestID,bIsLast);
+
+	if (bIsLast)
+		ReleaseRequestMapBuf(nRequestID);
+}
+
+void CTraderApi::ReqQryInstrumentMarginRate(const string& szInstrumentId)
+{
+	if (NULL == m_pApi)
+		return;
+
+	SRequest* pRequest = MakeRequestBuf(E_QryInstrumentMarginRateField);
+	if (NULL == pRequest)
+		return;
+
+	CThostFtdcQryInstrumentMarginRateField& body = pRequest->QryInstrumentMarginRateField;
+
+	strncpy(body.BrokerID, m_RspUserLogin.BrokerID,sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_RspUserLogin.UserID,sizeof(TThostFtdcInvestorIDType));
+	strncpy(body.InstrumentID,szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
+
+	AddToSendQueue(pRequest);
+}
+
+void CTraderApi::OnRspQryInstrumentMarginRate(CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if(m_msgQueue)
+		m_msgQueue->Input_OnRspQryInstrumentMarginRate(this,pInstrumentMarginRate,pRspInfo,nRequestID,bIsLast);
 
 	if (bIsLast)
 		ReleaseRequestMapBuf(nRequestID);

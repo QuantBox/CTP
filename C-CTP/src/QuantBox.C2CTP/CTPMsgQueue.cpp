@@ -110,6 +110,12 @@ void CCTPMsgQueue::_Output(SMsgItem* pMsgItem)
 	case E_fnOnRspQryInstrument:
 		Output_OnRspQryInstrument(pMsgItem);
 		break;
+	case E_fnOnRspQryInstrumentCommissionRate:
+		Output_OnRspQryInstrumentCommissionRate(pMsgItem);
+		break;
+	case E_fnOnRspQryInstrumentMarginRate:
+		Output_OnRspQryInstrumentMarginRate(pMsgItem);
+		break;
 	case E_fnOnRspQryInvestorPosition:
 		Output_OnRspQryInvestorPosition(pMsgItem);
 		break;
@@ -278,6 +284,54 @@ void CCTPMsgQueue::Input_OnRspQryInstrument(void* pTraderApi,CThostFtdcInstrumen
 
 		if(pInstrument)
 			pItem->Instrument = *pInstrument;
+		if(pRspInfo)
+			pItem->RspInfo = *pRspInfo;
+
+		_Input(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnRspQryInstrumentMarginRate(void* pTraderApi,CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if(NULL == pInstrumentMarginRate
+		&&NULL == pRspInfo)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if(pItem)
+	{
+		memset(pItem,0,sizeof(SMsgItem));
+		pItem->type = E_fnOnRspQryInstrumentMarginRate;
+		pItem->pApi = pTraderApi;
+		pItem->nRequestID = nRequestID;
+		pItem->bIsLast = bIsLast;
+
+		if(pInstrumentMarginRate)
+			pItem->InstrumentMarginRate = *pInstrumentMarginRate;
+		if(pRspInfo)
+			pItem->RspInfo = *pRspInfo;
+
+		_Input(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnRspQryInstrumentCommissionRate(void* pTraderApi,CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if(NULL == pInstrumentCommissionRate
+		&&NULL == pRspInfo)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if(pItem)
+	{
+		memset(pItem,0,sizeof(SMsgItem));
+		pItem->type = E_fnOnRspQryInstrumentCommissionRate;
+		pItem->pApi = pTraderApi;
+		pItem->nRequestID = nRequestID;
+		pItem->bIsLast = bIsLast;
+
+		if(pInstrumentCommissionRate)
+			pItem->InstrumentCommissionRate = *pInstrumentCommissionRate;
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 

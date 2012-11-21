@@ -101,6 +101,22 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrument(void* pMsgQueue,fnOnR
 	}
 }
 
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentCommissionRate(void* pMsgQueue,fnOnRspQryInstrumentCommissionRate pCallback)
+{
+	if(pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentMarginRate(void* pMsgQueue,fnOnRspQryInstrumentMarginRate pCallback)
+{
+	if(pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPosition(void* pMsgQueue,fnOnRspQryInvestorPosition pCallback)
 {
 	if(pMsgQueue)
@@ -370,5 +386,21 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrument(void* pTraderApi,const char
 	if(pTraderApi)
 	{
 		TD_GetApi(pTraderApi)->ReqQryInstrument(NULL==szInstrumentId?"":szInstrumentId);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentCommissionRate(void* pTraderApi,const char* szInstrumentId)
+{
+	if(pTraderApi)
+	{
+		TD_GetApi(pTraderApi)->ReqQryInstrumentCommissionRate(szInstrumentId);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId)
+{
+	if(pTraderApi)
+	{
+		TD_GetApi(pTraderApi)->ReqQryInstrumentMarginRate(szInstrumentId);
 	}
 }
