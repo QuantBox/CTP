@@ -271,6 +271,9 @@ void CTraderApi::RunInThread()
 		case E_QryInstrumentMarginRateField:
 			iRet = m_pApi->ReqQryInstrumentMarginRate(&pRequest->QryInstrumentMarginRateField,lRequest);
 			break;
+		case E_QryDepthMarketDataField:
+			iRet = m_pApi->ReqQryDepthMarketData(&pRequest->QryDepthMarketDataField,lRequest);
+			break;
 		default:
 			_ASSERT(FALSE);
 			break;
@@ -733,6 +736,31 @@ void CTraderApi::OnRspQryInstrumentMarginRate(CThostFtdcInstrumentMarginRateFiel
 {
 	if(m_msgQueue)
 		m_msgQueue->Input_OnRspQryInstrumentMarginRate(this,pInstrumentMarginRate,pRspInfo,nRequestID,bIsLast);
+
+	if (bIsLast)
+		ReleaseRequestMapBuf(nRequestID);
+}
+
+void CTraderApi::ReqQryDepthMarketData(const string& szInstrumentId)
+{
+	if (NULL == m_pApi)
+		return;
+
+	SRequest* pRequest = MakeRequestBuf(E_QryDepthMarketDataField);
+	if (NULL == pRequest)
+		return;
+
+	CThostFtdcQryDepthMarketDataField& body = pRequest->QryDepthMarketDataField;
+
+	strncpy(body.InstrumentID,szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
+
+	AddToSendQueue(pRequest);
+}
+
+void CTraderApi::OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if(m_msgQueue)
+		m_msgQueue->Input_OnRspQryDepthMarketData(this,pDepthMarketData,pRspInfo,nRequestID,bIsLast);
 
 	if (bIsLast)
 		ReleaseRequestMapBuf(nRequestID);

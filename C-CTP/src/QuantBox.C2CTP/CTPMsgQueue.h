@@ -15,6 +15,7 @@ class CCTPMsgQueue
 		E_fnOnRspError,
 		E_fnOnRspOrderAction,
 		E_fnOnRspOrderInsert,
+		E_fnOnRspQryDepthMarketData,
 		E_fnOnRspQryInstrument,
 		E_fnOnRspQryInstrumentCommissionRate,
 		E_fnOnRspQryInstrumentMarginRate,
@@ -38,7 +39,7 @@ class CCTPMsgQueue
 			ConnectionStatus				Status;
 		};		
 		union{
-			CThostFtdcDepthMarketDataField			DepthMarketData;
+			CThostFtdcDepthMarketDataField			DepthMarketData;	//E_fnOnRspQryDepthMarketData与E_fnOnRtnDepthMarketData返回的数据格式相同
 			CThostFtdcInputOrderField				InputOrder;
 			CThostFtdcInputOrderActionField			InputOrderAction;
 			CThostFtdcInstrumentField				Instrument;
@@ -68,6 +69,7 @@ public:
 		m_fnOnRspError = NULL;
 		m_fnOnRspOrderAction = NULL;
 		m_fnOnRspOrderInsert = NULL;
+		m_fnOnRspQryDepthMarketData = NULL;
 		m_fnOnRspQryInstrument = NULL;
 		m_fnOnRspQryInstrumentCommissionRate = NULL;
 		m_fnOnRspQryInstrumentMarginRate = NULL;
@@ -104,6 +106,7 @@ public:
 	void RegisterCallback(fnOnRspError pCallback){m_fnOnRspError = pCallback;}
 	void RegisterCallback(fnOnRspOrderAction pCallback){m_fnOnRspOrderAction = pCallback;}
 	void RegisterCallback(fnOnRspOrderInsert pCallback){m_fnOnRspOrderInsert = pCallback;}
+	void RegisterCallback(fnOnRspQryDepthMarketData pCallback){m_fnOnRspQryDepthMarketData = pCallback;}
 	void RegisterCallback(fnOnRspQryInstrument pCallback){m_fnOnRspQryInstrument = pCallback;}
 	void RegisterCallback(fnOnRspQryInstrumentCommissionRate pCallback){m_fnOnRspQryInstrumentCommissionRate = pCallback;}
 	void RegisterCallback(fnOnRspQryInstrumentMarginRate pCallback){m_fnOnRspQryInstrumentMarginRate = pCallback;}
@@ -123,6 +126,7 @@ public:
 	void Input_OnRspError(void* pApi,CThostFtdcRspInfoField* pRspInfo,int nRequestID,bool bIsLast);
 	void Input_OnRspOrderAction(void* pTraderApi,CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspOrderInsert(void* pTraderApi,CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	void Input_OnRspQryDepthMarketData(void* pTraderApi,CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQryInvestorPosition(void* pTraderApi,CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQryInstrument(void* pTraderApi,CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQryInstrumentCommissionRate(void* pTraderApi,CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -182,6 +186,11 @@ private:
 	{
 		if(m_fnOnRspQryInvestorPosition)
 			(*m_fnOnRspQryInvestorPosition)(pItem->pApi,&pItem->InvestorPosition,&pItem->RspInfo,pItem->nRequestID,pItem->bIsLast);
+	}
+	void Output_OnRspQryDepthMarketData(SMsgItem* pItem)
+	{
+		if(m_fnOnRspQryDepthMarketData)
+			(*m_fnOnRspQryDepthMarketData)(pItem->pApi,&pItem->DepthMarketData,&pItem->RspInfo,pItem->nRequestID,pItem->bIsLast);
 	}
 	void Output_OnRspQryInstrument(SMsgItem* pItem)
 	{
@@ -244,6 +253,7 @@ private:
 	fnOnRspError						m_fnOnRspError;
 	fnOnRspOrderAction					m_fnOnRspOrderAction;
 	fnOnRspOrderInsert					m_fnOnRspOrderInsert;
+	fnOnRspQryDepthMarketData			m_fnOnRspQryDepthMarketData;
 	fnOnRspQryInstrument				m_fnOnRspQryInstrument;
 	fnOnRspQryInstrumentCommissionRate	m_fnOnRspQryInstrumentCommissionRate;
 	fnOnRspQryInstrumentMarginRate		m_fnOnRspQryInstrumentMarginRate;

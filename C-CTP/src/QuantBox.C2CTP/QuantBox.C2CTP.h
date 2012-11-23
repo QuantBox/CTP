@@ -47,6 +47,7 @@ typedef void (__stdcall *fnOnErrRtnOrderInsert)(void* pTraderApi,CThostFtdcInput
 typedef void (__stdcall *fnOnRspError)(void* pApi,CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspOrderAction)(void* pTraderApi,CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspOrderInsert)(void* pTraderApi,CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (__stdcall *fnOnRspQryDepthMarketData)(void* pTraderApi,CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryInstrument)(void* pTraderApi,CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryInstrumentCommissionRate)(void* pTraderApi,CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryInstrumentMarginRate)(void* pTraderApi,CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -69,6 +70,7 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnOrderInsert(void* pMsgQueue,fnOn
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspError(void* pMsgQueue,fnOnRspError pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderAction(void* pMsgQueue,fnOnRspOrderAction pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderInsert(void* pMsgQueue,fnOnRspOrderInsert pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryDepthMarketData(void* pMsgQueue,fnOnRspQryDepthMarketData pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrument(void* pMsgQueue,fnOnRspQryInstrument pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentCommissionRate(void* pMsgQueue,fnOnRspQryInstrumentCommissionRate pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentMarginRate(void* pMsgQueue,fnOnRspQryInstrumentMarginRate pCallback);
@@ -163,7 +165,8 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrument(void* pTraderApi,const char
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentCommissionRate(void* pTraderApi,const char* szInstrumentId);
 //查保证金
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId);
-
+//查深度行情
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryDepthMarketData(void* pTraderApi,const char* szInstrumentId);
 
 #ifdef __cplusplus
 }

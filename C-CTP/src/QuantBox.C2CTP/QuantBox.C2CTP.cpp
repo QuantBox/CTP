@@ -93,6 +93,14 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderInsert(void* pMsgQueue,fnOnRsp
 	}
 }
 
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryDepthMarketData(void* pMsgQueue,fnOnRspQryDepthMarketData pCallback)
+{
+	if(pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrument(void* pMsgQueue,fnOnRspQryInstrument pCallback)
 {
 	if(pMsgQueue)
@@ -402,5 +410,13 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,
 	if(pTraderApi)
 	{
 		TD_GetApi(pTraderApi)->ReqQryInstrumentMarginRate(szInstrumentId);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryDepthMarketData(void* pTraderApi,const char* szInstrumentId)
+{
+	if(pTraderApi)
+	{
+		TD_GetApi(pTraderApi)->ReqQryDepthMarketData(szInstrumentId);
 	}
 }
