@@ -1,5 +1,5 @@
 ﻿
-namespace QuantBox.CSharp2C
+namespace QuantBox.CSharp2CTP
 {
     /// <summary>
     /// TFtdcExchangePropertyType是一个交易所属性类型

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("QuantBox.CSharp2C")]
+[assembly: AssemblyTitle("QuantBox.CSharp2CTP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("QuantBox.CSharp2C")]
+[assembly: AssemblyProduct("QuantBox.CSharp2CTP")]
 [assembly: AssemblyCopyright("Copyright © QuantBox.cn 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

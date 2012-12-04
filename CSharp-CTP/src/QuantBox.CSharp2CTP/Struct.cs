@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace QuantBox.CSharp2C
+namespace QuantBox.CSharp2CTP
 {
     /// <summary>
     /// 信息分发

@@ -9,8 +9,8 @@
 
 ## 如何使用它进行开发
 1. 复制C接口下的thosttraderapi.dll、thostmduserapi.dll、QuantBox.C2CTP.dll三个文件到目标目录
-2. 复制C#接口的QuantBox.CSharp2C.dll到相同
-3. 引用QuantBox.CSharp2C
+2. 复制C#接口的QuantBox.CSharp2CTP.dll到相同
+3. 引用QuantBox.CSharp2CTP
 4. 创建消息队列
 <pre>
 IntPtr pMsgQueue = CommApi.CTP_CreateMsgQueue();
@@ -47,6 +47,6 @@ while (true)
 9. 再细节的内容请查看C接口的说明与源码
 
 ## 如何开发此接口
-1. 打开QuantBox.CSharp2C.sln
+1. 打开QuantBox.CSharp2CTP.sln
 2. TraderApi、MdApi、CommApi是对应接口的调用
 3. Callbacks.cs是回调函数声明

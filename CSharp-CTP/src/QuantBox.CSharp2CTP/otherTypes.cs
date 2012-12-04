@@ -1,5 +1,5 @@
 ﻿
-namespace QuantBox.CSharp2C
+namespace QuantBox.CSharp2CTP
 {
     //自己定义的
     public enum ConnectionStatus
