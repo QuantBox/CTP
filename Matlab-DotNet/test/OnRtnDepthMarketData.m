@@ -1,5 +1,4 @@
-function pDepthMarketData = OnRtnDepthMarketData(varargin)
-pDepthMarketData = varargin{2};
-disp(pDepthMarketData.InstrumentID);
-disp(pDepthMarketData.LastPrice);
+function OnRtnDepthMarketData(sender,arg)
+disp(arg.pDepthMarketData.InstrumentID)
+disp(arg.pDepthMarketData.LastPrice)
 end
