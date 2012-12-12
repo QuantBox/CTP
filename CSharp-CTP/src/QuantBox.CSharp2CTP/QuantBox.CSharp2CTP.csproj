@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>E:\Program Files\SmartQuant Ltd\OpenQuant\Bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\Visual Studio 2010\Projects\ConsoleApplication1\ConsoleApplication1\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -38,11 +38,15 @@
     <Compile Include="Callbacks.cs" />
     <Compile Include="CommApi.cs" />
     <Compile Include="Enum.cs" />
+    <Compile Include="EventArgs.cs" />
     <Compile Include="MdApi.cs" />
+    <Compile Include="MdApiWrapper.cs" />
     <Compile Include="otherTypes.cs" />
     <Compile Include="Struct.cs" />
     <Compile Include="TraderApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Delegates.cs" />
+    <Compile Include="TraderApiWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
