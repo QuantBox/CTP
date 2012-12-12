@@ -1,6 +1,6 @@
 %% 导入C#库，请按自己目录进行调整
 cd 'C:\Users\wukan\Documents\GitHub\CTP\Matlab-DotNet\test'
-NET.addAssembly('C:\Users\wukan\Documents\GitHub\CTP\Matlab-DotNet\test\QuantBox.CSharp2CTP.dll');
+NET.addAssembly(fullfile(cd,'QuantBox.CSharp2CTP.dll'));
 import QuantBox.CSharp2CTP.*;
 
 %% 行情
