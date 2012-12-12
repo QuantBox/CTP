@@ -170,32 +170,17 @@ void CMdUserApi::Subscribe(const set<string>& instrumentIDs)
 	if(NULL == m_pApi)
 		return;
 
-	vector<char*> vct;
+	string szInstrumentIDs;
 	for(set<string>::iterator i=instrumentIDs.begin();i!=instrumentIDs.end();++i)
 	{
-		string str = *i;
-		
-		m_setInstrumentIDs.insert(str);
-
-		char* sz = new char[str.length()+1];
-		strcpy(sz,str.c_str());
-		vct.push_back(sz);
+		szInstrumentIDs.append(*i);
+		szInstrumentIDs.append(";");
 	}
 
-	if(0 == vct.size())
-		return;
-	
-	char** pArray = new char*[vct.size()];
-	for (size_t j = 0; j<vct.size(); ++j)
+	if (szInstrumentIDs.length()>1)
 	{
-		pArray[j] = vct[j];
+		Subscribe(szInstrumentIDs);
 	}
-
-	m_pApi->SubscribeMarketData(pArray,(int)vct.size());
-
-	for (size_t k=0; k<vct.size(); ++k)
-		delete[] pArray[k];
-	delete[] pArray;
 }
 
 void CMdUserApi::Unsubscribe(const string& szInstrumentIDs)

@@ -265,6 +265,9 @@ void CTraderApi::RunInThread()
 		case E_QryInvestorPositionField:
 			iRet = m_pApi->ReqQryInvestorPosition(&pRequest->QryInvestorPositionField,lRequest);
 			break;
+		case E_QryInvestorPositionDetailField:
+			iRet=m_pApi->ReqQryInvestorPositionDetail(&pRequest->QryInvestorPositionDetailField,lRequest);
+			break;
 		case E_QryInstrumentCommissionRateField:
 			iRet = m_pApi->ReqQryInstrumentCommissionRate(&pRequest->QryInstrumentCommissionRateField,lRequest);
 			break;
@@ -657,6 +660,33 @@ void CTraderApi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 {
 	if(m_msgQueue)
 		m_msgQueue->Input_OnRspQryInvestorPosition(this,pInvestorPosition,pRspInfo,nRequestID,bIsLast);
+
+	if (bIsLast)
+		ReleaseRequestMapBuf(nRequestID);
+}
+
+void CTraderApi::ReqQryInvestorPositionDetail(const string& szInstrumentId)
+{
+	if (NULL == m_pApi)
+		return;
+
+	SRequest* pRequest = MakeRequestBuf(E_QryInvestorPositionDetailField);
+	if (NULL == pRequest)
+		return;
+
+	CThostFtdcQryInvestorPositionDetailField& body = pRequest->QryInvestorPositionDetailField;
+
+	strncpy(body.BrokerID, m_RspUserLogin.BrokerID,sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_RspUserLogin.UserID,sizeof(TThostFtdcInvestorIDType));
+	strncpy(body.InstrumentID,szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
+
+	AddToSendQueue(pRequest);
+}
+
+void CTraderApi::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if(m_msgQueue)
+		m_msgQueue->Input_OnRspQryInvestorPositionDetail(this,pInvestorPositionDetail,pRspInfo,nRequestID,bIsLast);
 
 	if (bIsLast)
 		ReleaseRequestMapBuf(nRequestID);

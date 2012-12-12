@@ -26,6 +26,7 @@ class CTraderApi :
 		E_InputOrderActionField,
 		E_QryTradingAccountField,
 		E_QryInvestorPositionField,
+		E_QryInvestorPositionDetailField,
 		E_QryInstrumentCommissionRateField,
 		E_QryInstrumentMarginRateField,
 		E_QryDepthMarketDataField,
@@ -44,6 +45,7 @@ class CTraderApi :
 			CThostFtdcQryInstrumentCommissionRateField	QryInstrumentCommissionRateField;
 			CThostFtdcQryInstrumentMarginRateField		QryInstrumentMarginRateField;
 			CThostFtdcQryInvestorPositionField			QryInvestorPositionField;
+			CThostFtdcQryInvestorPositionDetailField    QryInvestorPositionDetailField;
 			CThostFtdcQryTradingAccountField			QryTradingAccountField;
 			CThostFtdcInputOrderField					InputOrderField;
 			CThostFtdcInputOrderActionField				InputOrderActionField;
@@ -81,6 +83,7 @@ public:
 
 	void ReqQryTradingAccount();
 	void ReqQryInvestorPosition(const string& szInstrumentId);
+	void ReqQryInvestorPositionDetail(const string& szInstrumentId);
 	void ReqQryInstrument(const string& szInstrumentId);
 	void ReqQryInstrumentCommissionRate(const string& szInstrumentId);
 	void ReqQryInstrumentMarginRate(const string& szInstrumentId);
@@ -140,7 +143,7 @@ private:
 
 	//²ÖÎ»
 	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+	virtual void OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspQryInvestorPositionCombineDetail(CThostFtdcInvestorPositionCombineDetailField *pInvestorPositionCombineDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
 	//×Ê½ð

@@ -64,7 +64,7 @@ void CCTPMsgQueue::RunInThread()
 		{
 			//失败表示队列为空，等待一会再来取为好
 			m_nSleep *= 2;
-			m_nSleep %= 256;//不超过N毫秒
+			m_nSleep %= 128;//不超过N毫秒
 			Sleep(m_nSleep);
 		}
 	}
@@ -121,6 +121,9 @@ void CCTPMsgQueue::_Output(SMsgItem* pMsgItem)
 		break;
 	case E_fnOnRspQryInvestorPosition:
 		Output_OnRspQryInvestorPosition(pMsgItem);
+		break;
+	case E_fnOnRspQryInvestorPositionDetail:
+		Output_OnRspQryInvestorPositionDetail(pMsgItem);
 		break;
 	case E_fnOnRspQryOrder:
 		Output_OnRspQryOrder(pMsgItem);
@@ -359,6 +362,30 @@ void CCTPMsgQueue::Input_OnRspQryInvestorPosition(void* pTraderApi,CThostFtdcInv
 
 		if(pInvestorPosition)
 			pItem->InvestorPosition = *pInvestorPosition;
+		if(pRspInfo)
+			pItem->RspInfo = *pRspInfo;
+
+		_Input(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnRspQryInvestorPositionDetail(void* pTraderApi,CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if(NULL == pInvestorPositionDetail
+		&&NULL == pRspInfo)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if(pItem)
+	{
+		memset(pItem,0,sizeof(SMsgItem));
+		pItem->type = E_fnOnRspQryInvestorPositionDetail;
+		pItem->pApi = pTraderApi;
+		pItem->nRequestID = nRequestID;
+		pItem->bIsLast = bIsLast;
+
+		if(pInvestorPositionDetail)
+			pItem->InvestorPositionDetail = *pInvestorPositionDetail;
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
