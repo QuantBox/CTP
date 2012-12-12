@@ -64,7 +64,7 @@ void CCTPMsgQueue::RunInThread()
 		{
 			//失败表示队列为空，等待一会再来取为好
 			m_nSleep *= 2;
-			m_nSleep %= 128;//不超过N毫秒
+			m_nSleep %= 255;//不超过N毫秒,不能用2的N次方，会导致Sleep(0)占用CPU
 			Sleep(m_nSleep);
 		}
 	}

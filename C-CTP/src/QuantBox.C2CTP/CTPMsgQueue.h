@@ -250,7 +250,7 @@ private:
 
 private:
 	int							m_nSleep;
-	bool						m_bRunning;
+	volatile bool				m_bRunning;
 	HANDLE						m_hThread;
 
 	MSQueue<SMsgItem*>			m_queue;			//œÏ”¶∂”¡–

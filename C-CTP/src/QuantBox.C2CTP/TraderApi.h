@@ -182,7 +182,7 @@ private:
 	string						m_szAuthCode;			//хож╓бК
 
 	int							m_nSleep;
-	bool						m_bRunning;
+	volatile bool				m_bRunning;
 	HANDLE						m_hThread;
 
 	CRITICAL_SECTION			m_csList;
