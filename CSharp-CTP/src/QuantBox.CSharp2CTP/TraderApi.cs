@@ -98,7 +98,7 @@ namespace QuantBox.CSharp2CTP
         public static extern void TD_ReqQryInstrumentCommissionRate(IntPtr pTraderApi, string szInstrument);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryInstrumentMarginRate")]
-        public static extern void TD_ReqQryInstrumentMarginRate(IntPtr pTraderApi, string szInstrument);
+        public static extern void TD_ReqQryInstrumentMarginRate(IntPtr pTraderApi, string szInstrument, TThostFtdcHedgeFlagType HedgeFlag);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryDepthMarketData")]
         public static extern void TD_ReqQryDepthMarketData(IntPtr pTraderApi, string szInstrument);

@@ -724,6 +724,10 @@ namespace QuantBox.CSharp2CTP
         /// 持仓日期类型
         /// </summary>
         public TThostFtdcPositionDateTypeType PositionDateType;
+        /// <summary>
+        /// 平仓处理类型
+        /// </summary>
+        public TThostFtdcCloseDealTypeType CloseDealType;
     }
 
     /// <summary>
@@ -972,6 +976,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string CommModelID;
+        /// <summary>
+        /// 保证金率模板代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string MarginModelID;
     }
 
     /// <summary>
@@ -2436,6 +2445,10 @@ namespace QuantBox.CSharp2CTP
         /// 用户强评标志
         /// </summary>
         public int UserForceClose;
+        /// <summary>
+        /// 互换单标志
+        /// </summary>
+        public int IsSwapOrder;
     }
 
     /// <summary>
@@ -2693,6 +2706,14 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
         public string RelativeOrderSysID;
+        /// <summary>
+        /// 郑商所成交数量
+        /// </summary>
+        public int ZCETotalTradedVolume;
+        /// <summary>
+        /// 互换单标志
+        /// </summary>
+        public int IsSwapOrder;
     }
 
     /// <summary>
@@ -3746,6 +3767,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string CommModelID;
+        /// <summary>
+        /// 保证金率模板代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string MarginModelID;
     }
 
     /// <summary>
@@ -5277,7 +5303,8 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 交易所代码
         /// </summary>
-        public double ExchangeID;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
     }
 
     /// <summary>
@@ -6459,6 +6486,10 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
         public string ErrorMsg;
+        /// <summary>
+        /// 互换单标志
+        /// </summary>
+        public int IsSwapOrder;
     }
 
     /// <summary>
@@ -7002,6 +7033,10 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
         public string ErrorMsg;
+        /// <summary>
+        /// 互换单标志
+        /// </summary>
+        public int IsSwapOrder;
     }
 
     /// <summary>
@@ -7260,6 +7295,10 @@ namespace QuantBox.CSharp2CTP
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
         public string RelativeOrderSysID;
         /// <summary>
+        /// 郑商所成交数量
+        /// </summary>
+        public int ZCETotalTradedVolume;
+        /// <summary>
         /// 错误代码
         /// </summary>
         public int ErrorID;
@@ -7268,6 +7307,10 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
         public string ErrorMsg;
+        /// <summary>
+        /// 互换单标志
+        /// </summary>
+        public int IsSwapOrder;
     }
 
     /// <summary>
@@ -7909,6 +7952,47 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// 投资者保证金率模板
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcMarginModelField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 保证金率模板代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string MarginModelID;
+        /// <summary>
+        /// 模板名称
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+        public string MarginModelName;
+    }
+
+    /// <summary>
+    /// 请求查询投资者保证金率模板
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryMarginModelField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 保证金率模板代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string MarginModelID;
+    }
+
+    /// <summary>
     /// 仓单折抵信息
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
@@ -8187,6 +8271,11 @@ namespace QuantBox.CSharp2CTP
         /// 交易ID
         /// </summary>
         public int TID;
+        /// <summary>
+        /// 用户标识
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
     }
 
     /// <summary>
@@ -8395,6 +8484,11 @@ namespace QuantBox.CSharp2CTP
         /// 交易ID
         /// </summary>
         public int TID;
+        /// <summary>
+        /// 用户标识
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
     }
 
     /// <summary>
@@ -12076,6 +12170,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         public int TID;
         /// <summary>
+        /// 用户标识
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
         /// 错误代码
         /// </summary>
         public int ErrorID;
@@ -12292,6 +12391,11 @@ namespace QuantBox.CSharp2CTP
         /// 交易ID
         /// </summary>
         public int TID;
+        /// <summary>
+        /// 用户标识
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
         /// <summary>
         /// 错误代码
         /// </summary>
