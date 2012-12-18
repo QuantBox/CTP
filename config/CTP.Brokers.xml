@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Brokers>
+	<Broker Label="上期技术">
+		<Server Label="上期技术商品期货模拟" BrokerID="2030" UserProductInfo="OpenQuant" AuthCode="" Trading="tcp://asp-sim2-front1.financial-trading-platform.com:26205" MarketData="tcp://asp-sim2-md1.financial-trading-platform.com:26213" />
+	</Broker>
+	<Broker Label="银河期货">
+		<Server Label="银河期货商品模拟" BrokerID="2030" UserProductInfo="OpenQuant" AuthCode="" Trading="tcp://asp-sim2-front1.financial-trading-platform.com:26205" MarketData="tcp://asp-sim2-md1.financial-trading-platform.com:26213" />
+		<Server Label="银河期货实盘(电信)" BrokerID="4040" UserProductInfo="OpenQuant" AuthCode="" Trading="tcp://yhqh-front1.financial-trading-platform.com:41205;tcp://yhqh-front3.financial-trading-platform.com:41205;tcp://yhqh-front5.financial-trading-platform.com:41205" MarketData="tcp://yhqh-front1.financial-trading-platform.com:41213;tcp://yhqh-front3.financial-trading-platform.com:41213;tcp://yhqh-front5.financial-trading-platform.com:41213" />
+		<Server Label="银河期货实盘(网通)" BrokerID="4040" UserProductInfo="OpenQuant" AuthCode="" Trading="tcp://yhqh-front2.financial-trading-platform.com:41219;tcp://yhqh-front4.financial-trading-platform.com:41205;tcp://yhqh-front6.financial-trading-platform.com:41205" MarketData="tcp://yhqh-front2.financial-trading-platform.com:41207;tcp://yhqh-front4.financial-trading-platform.com:41213;tcp://yhqh-front6.financial-trading-platform.com:41213" />
+	</Broker>
+</Brokers>
