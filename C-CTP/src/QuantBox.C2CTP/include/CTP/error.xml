@@ -67,6 +67,7 @@
 	<error id="NO_CONDITIONAL_ORDER_RIGHT" value="62" prompt="综合交易平台：没有条件单交易权限"/>
 	<error id="AUTH_FAILED" value="63" prompt="综合交易平台：客户端认证失败"/>
 	<error id="NOT_AUTHENT" value="64" prompt="综合交易平台：客户端未认证"/>
+	<error id="SWAPORDER_UNSUPPORTED" value="65" prompt="综合交易平台：该合约不支持互换类型报单"/>
 	<!--灾备系统错误代码 -->		
 	<error id="NO_TRADING_RIGHT_IN_SEPC_DR" value="101" prompt="综合交易平台：用户在本系统没有报单权限"/>
 	<error id="NO_DR_NO" value="102" prompt="综合交易平台：系统缺少灾备标示号"/>

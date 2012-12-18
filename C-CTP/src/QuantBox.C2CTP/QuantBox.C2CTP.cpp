@@ -421,11 +421,11 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentCommissionRate(void* pTrader
 	}
 }
 
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId)
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag)
 {
 	if(pTraderApi)
 	{
-		TD_GetApi(pTraderApi)->ReqQryInstrumentMarginRate(szInstrumentId);
+		TD_GetApi(pTraderApi)->ReqQryInstrumentMarginRate(szInstrumentId,HedgeFlag);
 	}
 }
 

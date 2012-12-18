@@ -498,6 +498,7 @@ int CTraderApi::ReqOrderInsert(
 	body.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
 	body.IsAutoSuspend = 0;
 	body.UserForceClose = 0;
+	body.IsSwapOrder = 0;
 
 	//∫œ‘º
 	strncpy(body.InstrumentID, szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
@@ -744,7 +745,7 @@ void CTraderApi::OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommission
 		ReleaseRequestMapBuf(nRequestID);
 }
 
-void CTraderApi::ReqQryInstrumentMarginRate(const string& szInstrumentId)
+void CTraderApi::ReqQryInstrumentMarginRate(const string& szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag)
 {
 	if (NULL == m_pApi)
 		return;
@@ -758,6 +759,7 @@ void CTraderApi::ReqQryInstrumentMarginRate(const string& szInstrumentId)
 	strncpy(body.BrokerID, m_RspUserLogin.BrokerID,sizeof(TThostFtdcBrokerIDType));
 	strncpy(body.InvestorID, m_RspUserLogin.UserID,sizeof(TThostFtdcInvestorIDType));
 	strncpy(body.InstrumentID,szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
+	body.HedgeFlag = HedgeFlag;
 
 	AddToSendQueue(pRequest);
 }

@@ -97,6 +97,13 @@ public:
 	///@remark “tcp”代表传输协议，“127.0.0.1”代表服务器地址。”17001”代表服务器端口号。
 	virtual void RegisterFront(char *pszFrontAddress) = 0;
 	
+	///注册名字服务器网络地址
+	///@param pszNsAddress：名字服务器网络地址。
+	///@remark 网络地址的格式为：“protocol://ipaddress:port”，如：”tcp://127.0.0.1:12001”。 
+	///@remark “tcp”代表传输协议，“127.0.0.1”代表服务器地址。”12001”代表服务器端口号。
+	///@remark RegisterNameServer优先于RegisterFront
+	virtual void RegisterNameServer(char *pszNsAddress) = 0;
+	
 	///注册回调接口
 	///@param pSpi 派生自回调接口类的实例
 	virtual void RegisterSpi(CThostFtdcMdSpi *pSpi) = 0;

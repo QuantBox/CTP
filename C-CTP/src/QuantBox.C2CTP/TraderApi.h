@@ -86,7 +86,7 @@ public:
 	void ReqQryInvestorPositionDetail(const string& szInstrumentId);
 	void ReqQryInstrument(const string& szInstrumentId);
 	void ReqQryInstrumentCommissionRate(const string& szInstrumentId);
-	void ReqQryInstrumentMarginRate(const string& szInstrumentId);
+	void ReqQryInstrumentMarginRate(const string& szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag = THOST_FTDC_HF_Speculation);
 	void ReqQryDepthMarketData(const string& szInstrumentId);
 
 private:
