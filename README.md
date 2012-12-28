@@ -10,6 +10,3 @@
 
 ## Matlab-DotNet
 Matlab对接.Net版CTP接口
-
-## config
-各大期货公司CTP服务器地址
