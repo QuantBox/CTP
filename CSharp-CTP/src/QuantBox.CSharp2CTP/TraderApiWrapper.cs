@@ -22,6 +22,7 @@ namespace QuantBox.CSharp2CTP
         public event OnRspQryOrderHander OnRspQryOrder;
         public event OnRspQryTradeHander OnRspQryTrade;
         public event OnRspQryTradingAccountHander OnRspQryTradingAccount;
+        public event OnRtnInstrumentStatusHander OnRtnInstrumentStatus;
         public event OnRtnOrderHander OnRtnOrder;
         public event OnRtnTradeHander OnRtnTrade;
 
@@ -41,6 +42,7 @@ namespace QuantBox.CSharp2CTP
         private readonly fnOnRspQryOrder _fnOnRspQryOrder_Holder;
         private readonly fnOnRspQryTrade _fnOnRspQryTrade_Holder;
         private readonly fnOnRspQryTradingAccount _fnOnRspQryTradingAccount_Holder;
+        private readonly fnOnRtnInstrumentStatus _fnOnRtnInstrumentStatus_Holder;
         private readonly fnOnRtnOrder _fnOnRtnOrder_Holder;
         private readonly fnOnRtnTrade _fnOnRtnTrade_Holder;
 
@@ -80,6 +82,7 @@ namespace QuantBox.CSharp2CTP
             _fnOnRspQryOrder_Holder = OnRspQryOrder_callback;
             _fnOnRspQryTrade_Holder = OnRspQryTrade_callback;
             _fnOnRspQryTradingAccount_Holder = OnRspQryTradingAccount_callback;
+            _fnOnRtnInstrumentStatus_Holder = OnRtnInstrumentStatus_callback;
             _fnOnRtnOrder_Holder = OnRtnOrder_callback;
             _fnOnRtnTrade_Holder = OnRtnTrade_callback;
         }
@@ -159,6 +162,7 @@ namespace QuantBox.CSharp2CTP
                     TraderApi.CTP_RegOnRspQryOrder(m_pMsgQueue, _fnOnRspQryOrder_Holder);
                     TraderApi.CTP_RegOnRspQryTrade(m_pMsgQueue, _fnOnRspQryTrade_Holder);
                     TraderApi.CTP_RegOnRspQryTradingAccount(m_pMsgQueue, _fnOnRspQryTradingAccount_Holder);
+                    TraderApi.CTP_RegOnRtnInstrumentStatus(m_pMsgQueue, _fnOnRtnInstrumentStatus_Holder);
                     TraderApi.CTP_RegOnRtnOrder(m_pMsgQueue, _fnOnRtnOrder_Holder);
                     TraderApi.CTP_RegOnRtnTrade(m_pMsgQueue, _fnOnRtnTrade_Holder);
                     TraderApi.TD_RegMsgQueue2TdApi(m_pTdApi, m_pMsgQueue);
@@ -385,6 +389,14 @@ namespace QuantBox.CSharp2CTP
             if (null != OnRspQryTradingAccount)
             {
                 OnRspQryTradingAccount(this, new OnRspQryTradingAccountArgs(pTraderApi, ref pTradingAccount, ref pRspInfo, nRequestID, bIsLast));
+            }
+        }
+
+        private void OnRtnInstrumentStatus_callback(IntPtr pTraderApi, ref CThostFtdcInstrumentStatusField pInstrumentStatus)
+        {
+            if (null != OnRtnInstrumentStatus)
+            {
+                OnRtnInstrumentStatus(this, new OnRtnInstrumentStatusArgs(pTraderApi, ref pInstrumentStatus));
             }
         }
 

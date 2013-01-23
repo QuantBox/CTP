@@ -19,6 +19,7 @@ namespace QuantBox.CSharp2CTP
     public delegate void fnOnRspQryTrade(IntPtr pTraderApi, ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
     public delegate void fnOnRspQryTradingAccount(IntPtr pTraderApi, ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
     public delegate void fnOnRtnDepthMarketData(IntPtr pMdUserApi, ref CThostFtdcDepthMarketDataField pDepthMarketData);
+    public delegate void fnOnRtnInstrumentStatus(IntPtr pTraderApi, ref CThostFtdcInstrumentStatusField pInstrumentStatus);
     public delegate void fnOnRtnOrder(IntPtr pTraderApi, ref CThostFtdcOrderField pOrder);
     public delegate void fnOnRtnTrade(IntPtr pTraderApi, ref CThostFtdcTradeField pTrade);
 }

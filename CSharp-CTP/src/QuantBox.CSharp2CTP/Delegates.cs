@@ -22,6 +22,7 @@ namespace QuantBox.CSharp2CTP
     public delegate void OnRspQryTradeHander(object sender, OnRspQryTradeArgs e);
     public delegate void OnRspQryTradingAccountHander(object sender, OnRspQryTradingAccountArgs e);
     public delegate void OnRtnDepthMarketDataHander(object sender, OnRtnDepthMarketDataArgs e);
+    public delegate void OnRtnInstrumentStatusHander(object sender, OnRtnInstrumentStatusArgs e);
     public delegate void OnRtnOrderHander(object sender, OnRtnOrderArgs e);
     public delegate void OnRtnTradeHander(object sender, OnRtnTradeArgs e);
 }

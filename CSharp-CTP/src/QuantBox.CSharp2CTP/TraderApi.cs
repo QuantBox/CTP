@@ -44,6 +44,9 @@ namespace QuantBox.CSharp2CTP
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryTradingAccount")]
         public static extern void CTP_RegOnRspQryTradingAccount(IntPtr pMsgQueue, fnOnRspQryTradingAccount pCallback);
 
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnInstrumentStatus")]
+        public static extern void CTP_RegOnRtnInstrumentStatus(IntPtr pMsgQueue, fnOnRtnInstrumentStatus pCallback);
+
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnOrder")]
         public static extern void CTP_RegOnRtnOrder(IntPtr pMsgQueue, fnOnRtnOrder pCallback);
 
