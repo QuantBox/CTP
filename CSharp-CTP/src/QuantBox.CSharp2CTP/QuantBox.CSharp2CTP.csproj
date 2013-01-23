@@ -40,6 +40,7 @@
     <Compile Include="Callbacks.cs" />
     <Compile Include="CommApi.cs" />
     <Compile Include="Enum.cs" />
+    <Compile Include="Error.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="MdApi.cs" />
     <Compile Include="MdApiWrapper.cs" />
