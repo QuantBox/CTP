@@ -57,6 +57,7 @@ typedef void (__stdcall *fnOnRspQryOrder)(void* pTraderApi,CThostFtdcOrderField 
 typedef void (__stdcall *fnOnRspQryTrade)(void* pTraderApi,CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryTradingAccount)(void* pTraderApi,CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRtnDepthMarketData)(void* pMdUserApi,CThostFtdcDepthMarketDataField *pDepthMarketData);
+typedef void (__stdcall *fnOnRtnInstrumentStatus)(void* pTraderApi,CThostFtdcInstrumentStatusField *pInstrumentStatus);
 typedef void (__stdcall *fnOnRtnOrder)(void* pTraderApi,CThostFtdcOrderField *pOrder);
 typedef void (__stdcall *fnOnRtnTrade)(void* pTraderApi,CThostFtdcTradeField *pTrade);
 
@@ -81,6 +82,7 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryOrder(void* pMsgQueue,fnOnRspQry
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTrade(void* pMsgQueue,fnOnRspQryTrade pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTradingAccount(void* pMsgQueue,fnOnRspQryTradingAccount pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnDepthMarketData(void* pMsgQueue,fnOnRtnDepthMarketData pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnInstrumentStatus(void* pMsgQueue,fnOnRtnInstrumentStatus pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnOrder(void* pMsgQueue,fnOnRtnOrder pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnTrade(void* pMsgQueue,fnOnRtnTrade pCallback);
 

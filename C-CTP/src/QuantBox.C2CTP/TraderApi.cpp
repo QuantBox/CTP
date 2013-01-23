@@ -293,9 +293,9 @@ void CTraderApi::RunInThread()
 		}
 		else
 		{
-			//失败，按2的幂进行延时，但不超过1s
-			m_nSleep *= 2;
-			m_nSleep %= 1000;
+			//失败，按4的幂进行延时，但不超过1s
+			m_nSleep *= 4;
+			m_nSleep %= 1023;
 		}
 		Sleep(m_nSleep);
 	}
@@ -824,4 +824,10 @@ void CTraderApi::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoFi
 
 	if (bIsLast)
 		ReleaseRequestMapBuf(nRequestID);
+}
+
+void CTraderApi::OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField *pInstrumentStatus)
+{
+	if(m_msgQueue)
+		m_msgQueue->Input_OnRtnInstrumentStatus(this,pInstrumentStatus);
 }

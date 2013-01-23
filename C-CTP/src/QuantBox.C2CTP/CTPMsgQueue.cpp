@@ -137,6 +137,9 @@ void CCTPMsgQueue::_Output(SMsgItem* pMsgItem)
 	case E_fnOnRtnDepthMarketData:
 		Output_OnRtnDepthMarketData(pMsgItem);
 		break;
+	case E_fnOnRtnInstrumentStatus:
+		Output_OnRtnInstrumentStatus(pMsgItem);
+		break;
 	case E_fnOnRtnOrder:
 		Output_OnRtnOrder(pMsgItem);
 		break;
@@ -212,6 +215,22 @@ void CCTPMsgQueue::Input_OnRtnDepthMarketData(void* pMdApi,CThostFtdcDepthMarket
 		pItem->type = E_fnOnRtnDepthMarketData;
 		pItem->pApi = pMdApi;
 		pItem->DepthMarketData = *pDepthMarketData;
+
+		_Input(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnRtnInstrumentStatus(void* pTraderApi,CThostFtdcInstrumentStatusField *pInstrumentStatus)
+{
+	if(NULL == pInstrumentStatus)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if(pItem)
+	{
+		pItem->type = E_fnOnRtnInstrumentStatus;
+		pItem->pApi = pTraderApi;
+		pItem->InstrumentStatus = *pInstrumentStatus;
 
 		_Input(pItem);
 	}
@@ -478,7 +497,6 @@ void CCTPMsgQueue::Input_OnRspQryOrder(void* pTraderApi,CThostFtdcOrderField *pO
 			pItem->Order = *pOrder;
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
-
 
 		_Input(pItem);
 	}
