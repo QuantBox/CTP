@@ -11,5 +11,5 @@
 ## Matlab-DotNet
 Matlab对接.Net版CTP接口
 
-## C-Java
+## Java-CTP
 通过Java来对接C-CTP项目生成的C版dll
