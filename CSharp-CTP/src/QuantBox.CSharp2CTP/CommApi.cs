@@ -33,5 +33,8 @@ namespace QuantBox.CSharp2CTP
 
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_StopMsgQueue")]
         public static extern void CTP_StopMsgQueue(IntPtr pMsgQueue);
+
+        //[DllImport(CommApi.DllFileName, EntryPoint = "CTP_EmitDirectly")]
+        //public static extern void CTP_EmitDirectly(IntPtr pMsgQueue, bool bDirect);
     }
 }

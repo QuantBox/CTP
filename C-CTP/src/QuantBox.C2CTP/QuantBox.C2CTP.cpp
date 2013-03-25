@@ -230,6 +230,14 @@ QUANTBOXC2CTP_API void __stdcall CTP_StopMsgQueue(void* pMsgQueue)
 	}
 }
 
+//QUANTBOXC2CTP_API void __stdcall CTP_EmitDirectly(void* pMsgQueue,bool bDirect)
+//{
+//	if(pMsgQueue)
+//	{
+//		return CTP_GetQueue(pMsgQueue)->EmitDirectly(bDirect);
+//	}
+//}
+
 QUANTBOXC2CTP_API void* __stdcall MD_CreateMdApi()
 {
 	return new CMdUserApi();

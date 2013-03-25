@@ -64,6 +64,7 @@ public:
 		m_nSleep = 1;
 		m_hThread = NULL;
 		m_bRunning = false;
+		//m_bDirect = false;
 
 		//回调函数地址指针
 		m_fnOnConnect = NULL;
@@ -86,14 +87,21 @@ public:
 		m_fnOnRtnInstrumentStatus = NULL;
 		m_fnOnRtnOrder = NULL;
 		m_fnOnRtnTrade = NULL;
+
+		m_hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
 	}
 	virtual ~CCTPMsgQueue(void)
 	{
 		StopThread();
 		Clear();
+
+		CloseHandle(m_hEvent);
 	}
 
 public:
+	// 是否直接提交请求
+	//void EmitDirectly(bool bDirect){m_bDirect = bDirect;}
+
 	//清空队列
 	void Clear();
 
@@ -259,9 +267,11 @@ private:
 	}
 
 private:
+	//volatile bool				m_bDirect;
 	int							m_nSleep;
 	volatile bool				m_bRunning;
 	HANDLE						m_hThread;
+	HANDLE						m_hEvent;
 
 	MSQueue<SMsgItem*>			m_queue;			//响应队列
 

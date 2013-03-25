@@ -43,7 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>D:\Program Files (x86)\SmartQuant Ltd\OpenQuant\Bin</OutDir>
+    <OutDir>..\..\..\..\..\..\..\Program Files %28x86%29\SmartQuant Ltd\OpenQuant\Bin</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

@@ -97,6 +97,8 @@ QUANTBOXC2CTP_API bool __stdcall CTP_ProcessMsgQueue(void* pMsgQueue);
 QUANTBOXC2CTP_API void __stdcall CTP_StartMsgQueue(void* pMsgQueue);
 //停止队列回调主动推送线程
 QUANTBOXC2CTP_API void __stdcall CTP_StopMsgQueue(void* pMsgQueue);
+//设置是否直接触发回调
+//QUANTBOXC2CTP_API void __stdcall CTP_EmitDirectly(void* pMsgQueue,bool bDirect);
 
 //行情接口=======================================
 
