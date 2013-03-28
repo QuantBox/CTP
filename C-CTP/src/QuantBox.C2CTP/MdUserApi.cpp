@@ -76,6 +76,7 @@ void CMdUserApi::Connect(const string& szPath,
 		{
 			if (strlen(token)>0)
 			{
+				memcpy(token,"tcp://",6);
 				m_pApi->RegisterFront(token);
 			}
 			token = strtok( NULL, _QUANTBOXC2CTP_SEPS_);

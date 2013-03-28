@@ -29,7 +29,9 @@ void CCTPMsgQueue::StartThread()
 	if (NULL == m_hThread)
 	{
 		m_bRunning = true;
-		m_hThread = CreateThread(NULL,0,ProcessThread,this,0,NULL); 
+		m_hThread = CreateThread(NULL,0,ProcessThread,this,CREATE_SUSPENDED,NULL);
+		SetThreadPriority(m_hThread,THREAD_PRIORITY_HIGHEST);
+		ResumeThread(m_hThread);
 	}
 }
 
@@ -73,7 +75,6 @@ void CCTPMsgQueue::RunInThread()
 			//m_nSleep *= 2;
 			//m_nSleep %= 255;//不超过N毫秒,不能用2的N次方，会导致Sleep(0)占用CPU
 			//Sleep(m_nSleep);
-			//Sleep(1);
 		}
 	}
 
