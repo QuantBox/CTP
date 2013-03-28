@@ -54,14 +54,14 @@ void CMdUserApi::Connect(const string& szPath,
 	char *pszPath = new char[szPath.length()+20];
 	sprintf(pszPath,"%s\\Md\\",szPath.c_str());
 	makedirs(pszPath);
-
-	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(pszPath);
+	
+	m_pApi = CThostFtdcMdApi::CreateFtdcMdApi(pszPath,(szAddresses.find("udp://") != szAddresses.npos));
 	delete[] pszPath;
 
 	m_status = E_inited;
 	if(m_msgQueue)
 		m_msgQueue->Input_OnConnect(this,NULL,m_status);
-	
+
 	if (m_pApi)
 	{
 		m_pApi->RegisterSpi(this);
