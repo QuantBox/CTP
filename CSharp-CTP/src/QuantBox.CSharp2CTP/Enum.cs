@@ -1601,7 +1601,12 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 郑商所结算方式
         /// </summary>
-        CZCESettlementType = (byte)'7'
+        CZCESettlementType = (byte)'7',
+
+        /// <summary>
+        /// 中金所实物交割手续费收取方式
+        /// </summary>
+        CFFEXDelivFee = (byte)'8'
     }
 
     /// <summary>
@@ -1707,7 +1712,17 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 手续费相关操作实时上场开关
         /// </summary>
-        IsSync = (byte)'A'
+        IsSync = (byte)'A',
+
+        /// <summary>
+        /// 解除开仓权限限制
+        /// </summary>
+        RelieveOpenLimit = (byte)'O',
+
+        /// <summary>
+        /// 是否规范用户才能休眠
+        /// </summary>
+        IsStandardFreeze = (byte)'X'
     }
 
     /// <summary>
@@ -1728,7 +1743,32 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 系统风险算法是否全局 0-否 1-是
         /// </summary>
-        RiskModeGlobal = (byte)'G'
+        RiskModeGlobal = (byte)'G',
+
+        /// <summary>
+        /// 密码加密算法
+        /// </summary>
+        modeEncode = (byte)'P',
+
+        /// <summary>
+        /// 价格小数位数参数
+        /// </summary>
+        tickMode = (byte)'T',
+
+        /// <summary>
+        /// 用户最大会话数
+        /// </summary>
+        SingleUserSessionMaxNum = (byte)'S',
+
+        /// <summary>
+        /// 最大连续登录失败数
+        /// </summary>
+        LoginFailMaxNum = (byte)'L',
+
+        /// <summary>
+        /// 是否强制认证
+        /// </summary>
+        IsAuthForce = (byte)'A'
     }
 
     /// <summary>
@@ -2288,7 +2328,12 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 受可提比例限制
         /// </summary>
-        Disable = (byte)'2'
+        Disable = (byte)'2',
+
+        /// <summary>
+        /// 无仓不受可提比例限制
+        /// </summary>
+        NoHoldEnable = (byte)'3'
     }
 
     /// <summary>
@@ -2975,8 +3020,6 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         Repeal = (byte)'2'
     }
-
-
 
     /// <summary>
     /// TFtdcAMLGenStatusType是一个Aml生成方式类型
@@ -4343,57 +4386,6 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
-    /// TFtdcProcessTypeType是一个流程功能类型类型
-    /// </summary>
-    public enum TThostFtdcProcessTypeType : byte
-    {
-        /// <summary>
-        /// 申请交易编码
-        /// </summary>
-        ApplyTradingCode = (byte)'1',
-
-        /// <summary>
-        /// 撤销交易编码
-        /// </summary>
-        CancelTradingCode = (byte)'2',
-
-        /// <summary>
-        /// 修改身份信息
-        /// </summary>
-        ModifyIDCard = (byte)'3',
-
-        /// <summary>
-        /// 修改一般信息
-        /// </summary>
-        ModifyNoIDCard = (byte)'4',
-
-        /// <summary>
-        /// 交易所开户报备
-        /// </summary>
-        ExchOpenBak = (byte)'5',
-
-        /// <summary>
-        /// 交易所销户报备
-        /// </summary>
-        ExchCancelBak = (byte)'6',
-
-        /// <summary>
-        /// 补报规范资料
-        /// </summary>
-        StandardAccount = (byte)'7',
-
-        /// <summary>
-        /// 账户休眠
-        /// </summary>
-        FreezeAccount = (byte)'8',
-
-        /// <summary>
-        /// 激活休眠账户
-        /// </summary>
-        ActiveFreezeAccount = (byte)'9'
-    }
-
-    /// <summary>
     /// TFtdcBusinessTypeType是一个业务类型类型
     /// </summary>
     public enum TThostFtdcBusinessTypeType : byte
@@ -5402,7 +5394,17 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 激活休眠户
         /// </summary>
-        FreezeActive = (byte)'2'
+        FreezeActive = (byte)'2',
+
+        /// <summary>
+        /// 开仓权限限制
+        /// </summary>
+        OpenLimit = (byte)'3',
+
+        /// <summary>
+        /// 解除开仓权限限制
+        /// </summary>
+        RelieveOpenLimit = (byte)'4'
     }
 
     /// <summary>
@@ -5849,5 +5851,21 @@ namespace QuantBox.CSharp2CTP
         /// 恢复
         /// </summary>
         Restore = (byte)'3'
+    }
+
+    /// <summary>
+    /// TFtdcLoginModeType是一个登录模式类型
+    /// </summary>
+    public enum TThostFtdcLoginModeType : byte
+    {
+        /// <summary>
+        /// 交易
+        /// </summary>
+        Trade = (byte)'0',
+
+        /// <summary>
+        /// 转账
+        /// </summary>
+        Transfer = (byte)'1'
     }
 }

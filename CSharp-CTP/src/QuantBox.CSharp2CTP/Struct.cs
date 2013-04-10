@@ -1701,6 +1701,11 @@ namespace QuantBox.CSharp2CTP
         /// 当日均价
         /// </summary>
         public double AveragePrice;
+        /// <summary>
+        /// 业务日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDay;
     }
 
     /// <summary>
@@ -2147,6 +2152,11 @@ namespace QuantBox.CSharp2CTP
         /// 当前时间（毫秒）
         /// </summary>
         public int CurrMillisec;
+        /// <summary>
+        /// 业务日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDay;
     }
 
     /// <summary>
@@ -2164,6 +2174,11 @@ namespace QuantBox.CSharp2CTP
         /// 通讯时段编号
         /// </summary>
         public short CommPhaseNo;
+        /// <summary>
+        /// 系统编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string SystemID;
     }
 
     /// <summary>
@@ -5057,6 +5072,11 @@ namespace QuantBox.CSharp2CTP
         /// 最后修改毫秒
         /// </summary>
         public int UpdateMillisec;
+        /// <summary>
+        /// 业务日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDay;
     }
 
     /// <summary>
@@ -5292,6 +5312,11 @@ namespace QuantBox.CSharp2CTP
         /// 最后修改毫秒
         /// </summary>
         public int UpdateMillisec;
+        /// <summary>
+        /// 业务日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDay;
     }
 
     /// <summary>
@@ -12678,5 +12703,97 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
         public string DestBrokerID;
+    }
+
+    /// <summary>
+    /// Fens用户信息
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcFensUserInfoField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 登录模式
+        /// </summary>
+        public TThostFtdcLoginModeType LoginMode;
+    }
+
+    /// <summary>
+    /// 当前银期所属交易中心
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcCurrTransferIdentityField
+    {
+        /// <summary>
+        /// 交易中心代码
+        /// </summary>
+        public int IdentityID;
+    }
+
+    /// <summary>
+    /// 禁止登录用户
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcLoginForbiddenUserField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+    }
+
+    /// <summary>
+    /// 查询禁止登录用户
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryLoginForbiddenUserField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+    }
+
+    /// <summary>
+    /// UDP组播组信息
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcMulticastGroupInfoField
+    {
+        /// <summary>
+        /// 组播组IP地址
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string GroupIP;
+        /// <summary>
+        /// 组播组IP端口
+        /// </summary>
+        public int GroupPort;
+        /// <summary>
+        /// 源地址
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string SourceIP;
     }
 }

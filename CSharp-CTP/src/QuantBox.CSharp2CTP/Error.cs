@@ -337,6 +337,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         SWAPORDER_UNSUPPORTED = 65,
 
+        /// <summary>
+        /// 综合交易平台：连续登录失败次数超限，登录被禁止
+        /// </summary>
+        LOGIN_FORBIDDEN = 66,
+
         // <!--灾备系统错误代码 -->
         
         /// <summary>
@@ -525,6 +530,16 @@ namespace QuantBox.CSharp2CTP
         /// 银期转账：重复的银行流水,重发成功
         /// </summary>
         DUP_BANK_SERIAL_REDO_OK = 1034,
+
+        /// <summary>
+        /// 银期转账：该币种代码不支持
+        /// </summary>
+        CURRENCYID_NOT_SUPPORTED = 1035,
+
+        /// <summary>
+        /// 银期转账：MAC值验证失败
+        /// </summary>
+        INVALID_MAC = 1036,
   
         // <!-- add for transfer begin -->
 

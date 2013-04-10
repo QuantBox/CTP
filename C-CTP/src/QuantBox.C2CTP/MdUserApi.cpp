@@ -2,6 +2,7 @@
 #include "MdUserApi.h"
 #include "CTPMsgQueue.h"
 #include "include\toolkit.h"
+#include "include\Lock.h"
 
 #include <iostream>
 using namespace std;
@@ -11,11 +12,15 @@ CMdUserApi::CMdUserApi(void)
 	m_msgQueue = NULL;
 	m_status = E_uninit;
 	m_nRequestID = 0;
+
+	InitializeCriticalSection(&m_csMapInstrumentIDs);
 }
 
 CMdUserApi::~CMdUserApi(void)
 {
 	Disconnect();
+
+	DeleteCriticalSection(&m_csMapInstrumentIDs);
 }
 
 void CMdUserApi::RegisterMsgQueue(CCTPMsgQueue* pMsgQueue)
@@ -76,7 +81,11 @@ void CMdUserApi::Connect(const string& szPath,
 		{
 			if (strlen(token)>0)
 			{
-				memcpy(token,"tcp://",6);
+				char * pch = strstr(token,"udp://");
+				if(pch)
+				{
+					strncpy (pch,"tcp://",6);
+				}
 				m_pApi->RegisterFront(token);
 			}
 			token = strtok( NULL, _QUANTBOXC2CTP_SEPS_);
@@ -133,6 +142,8 @@ void CMdUserApi::Subscribe(const string& szInstrumentIDs)
 	size_t len = szInstrumentIDs.length()+1;
 	char* buf = new char[len];
 	strncpy(buf,szInstrumentIDs.c_str(),len);
+
+	CLock cl(&m_csMapInstrumentIDs);
 
 	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
 	while(token)
@@ -193,6 +204,8 @@ void CMdUserApi::Unsubscribe(const string& szInstrumentIDs)
 	size_t len = szInstrumentIDs.length()+1;
 	char* buf = new char[len];
 	strncpy(buf,szInstrumentIDs.c_str(),len);
+
+	CLock cl(&m_csMapInstrumentIDs);
 
 	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
 	while(token)
@@ -282,6 +295,8 @@ void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
 		&&pSpecificInstrument)
 	{
+		CLock cl(&m_csMapInstrumentIDs);
+
 		m_setInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
 	}
 }
@@ -292,6 +307,8 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
 		&&pSpecificInstrument)
 	{
+		CLock cl(&m_csMapInstrumentIDs);
+
 		m_setInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
 	}
 }
