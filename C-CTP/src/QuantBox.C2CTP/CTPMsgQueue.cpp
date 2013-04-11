@@ -5,9 +5,12 @@ void CCTPMsgQueue::Clear()
 {
 	SMsgItem* pItem = NULL;
 	//清空队列
-	while(m_queue.dequeue(pItem))
+	while(m_queue_TD.dequeue(pItem))
 	{
-		_Output(pItem);
+		delete pItem;
+	}
+	while(m_queue_MD.dequeue(pItem))
+	{
 		delete pItem;
 	}
 }
@@ -15,9 +18,15 @@ void CCTPMsgQueue::Clear()
 bool CCTPMsgQueue::Process()
 {
 	SMsgItem* pItem = NULL;
-	if(m_queue.dequeue(pItem))
+	if(m_queue_TD.dequeue(pItem))
 	{
-		_Output(pItem);
+		_Output_TD(pItem);
+		delete pItem;
+		return true;
+	}
+	else if(m_queue_MD.dequeue(pItem))
+	{
+		_Output_MD(pItem);
 		delete pItem;
 		return true;
 	}
@@ -58,23 +67,15 @@ DWORD WINAPI ProcessThread(LPVOID lpParam)
 
 void CCTPMsgQueue::RunInThread()
 {
-	//m_nSleep = 1;
 	while (m_bRunning)
 	{
 		if(Process())
 		{
-			//成功处理了一个
-			//m_nSleep = 1;
 		}
 		else
 		{
 			//挂起，等事件到来
 			WaitForSingleObject(m_hEvent,INFINITE);
-
-			//失败表示队列为空，等待一会再来取为好
-			//m_nSleep *= 2;
-			//m_nSleep %= 255;//不超过N毫秒,不能用2的N次方，会导致Sleep(0)占用CPU
-			//Sleep(m_nSleep);
 		}
 	}
 
@@ -84,15 +85,24 @@ void CCTPMsgQueue::RunInThread()
 	m_bRunning = false;
 }
 
-void CCTPMsgQueue::_Input(SMsgItem* pMsgItem)
+void CCTPMsgQueue::_Input_MD(SMsgItem* pMsgItem)
 {
-	//由于只内部调用，所以不再检查指针是否有效
-	//OutputDebugStringA("CTP,1");
-	m_queue.enqueue(pMsgItem);
+	m_queue_MD.enqueue(pMsgItem);
 	SetEvent(m_hEvent);
 }
 
-void CCTPMsgQueue::_Output(SMsgItem* pMsgItem)
+void CCTPMsgQueue::_Input_TD(SMsgItem* pMsgItem)
+{
+	m_queue_TD.enqueue(pMsgItem);
+	SetEvent(m_hEvent);
+}
+
+void CCTPMsgQueue::_Output_MD(SMsgItem* pMsgItem)
+{
+	Output_OnRtnDepthMarketData(pMsgItem);
+}
+
+void CCTPMsgQueue::_Output_TD(SMsgItem* pMsgItem)
 {
 	//OutputDebugStringA("CTP,2");
 	//内部调用，不判断指针是否有效
@@ -146,7 +156,7 @@ void CCTPMsgQueue::_Output(SMsgItem* pMsgItem)
 	case E_fnOnRspQryTradingAccount:
 		Output_OnRspQryTradingAccount(pMsgItem);
 		break;
-	case E_fnOnRtnDepthMarketData:
+	case E_fnOnRtnDepthMarketData: //这条不会运行
 		Output_OnRtnDepthMarketData(pMsgItem);
 		break;
 	case E_fnOnRtnInstrumentStatus:
@@ -164,14 +174,9 @@ void CCTPMsgQueue::_Output(SMsgItem* pMsgItem)
 	}
 }
 
+
 void CCTPMsgQueue::Input_OnConnect(void* pApi,CThostFtdcRspUserLoginField *pRspUserLogin,ConnectionStatus result)
 {
-	//if(m_bDirect&&m_fnOnConnect)
-	//{
-	//	(*m_fnOnConnect)(pApi,pRspUserLogin,result);
-	//	return;
-	//}
-
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
 	{
@@ -183,18 +188,12 @@ void CCTPMsgQueue::Input_OnConnect(void* pApi,CThostFtdcRspUserLoginField *pRspU
 		if(pRspUserLogin)
 			pItem->RspUserLogin = *pRspUserLogin;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
 void CCTPMsgQueue::Input_OnDisconnect(void* pApi,CThostFtdcRspInfoField *pRspInfo,ConnectionStatus step)
 {
-	//if(m_bDirect&&m_fnOnDisconnect)
-	//{
-	//	(*m_fnOnDisconnect)(pApi,pRspInfo,step);
-	//	return;
-	//}
-
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
 	{
@@ -206,7 +205,7 @@ void CCTPMsgQueue::Input_OnDisconnect(void* pApi,CThostFtdcRspInfoField *pRspInf
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -214,12 +213,6 @@ void CCTPMsgQueue::Input_OnRspError(void* pApi,CThostFtdcRspInfoField* pRspInfo,
 {
 	if(NULL==pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspError)
-	//{
-	//	(*m_fnOnRspError)(pApi,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -230,7 +223,7 @@ void CCTPMsgQueue::Input_OnRspError(void* pApi,CThostFtdcRspInfoField* pRspInfo,
 		pItem->bIsLast = bIsLast;
 		pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -239,12 +232,6 @@ void CCTPMsgQueue::Input_OnRtnDepthMarketData(void* pMdApi,CThostFtdcDepthMarket
 	if(NULL == pDepthMarketData)
 		return;
 
-	//if(m_bDirect&&m_fnOnRtnDepthMarketData)
-	//{
-	//	(*m_fnOnRtnDepthMarketData)(pMdApi,pDepthMarketData);
-	//	return;
-	//}
-
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
 	{
@@ -252,7 +239,7 @@ void CCTPMsgQueue::Input_OnRtnDepthMarketData(void* pMdApi,CThostFtdcDepthMarket
 		pItem->pApi = pMdApi;
 		pItem->DepthMarketData = *pDepthMarketData;
 
-		_Input(pItem);
+		_Input_MD(pItem);
 	}
 }
 
@@ -261,12 +248,6 @@ void CCTPMsgQueue::Input_OnRtnInstrumentStatus(void* pTraderApi,CThostFtdcInstru
 	if(NULL == pInstrumentStatus)
 		return;
 
-	//if(m_bDirect&&m_fnOnRtnInstrumentStatus)
-	//{
-	//	(*m_fnOnRtnInstrumentStatus)(pTraderApi,pInstrumentStatus);
-	//	return;
-	//}
-
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
 	{
@@ -274,7 +255,7 @@ void CCTPMsgQueue::Input_OnRtnInstrumentStatus(void* pTraderApi,CThostFtdcInstru
 		pItem->pApi = pTraderApi;
 		pItem->InstrumentStatus = *pInstrumentStatus;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -283,12 +264,6 @@ void CCTPMsgQueue::Input_OnRtnOrder(void* pTraderApi,CThostFtdcOrderField *pOrde
 	if(NULL == pOrder)
 		return;
 
-	//if(m_bDirect&&m_fnOnRtnOrder)
-	//{
-	//	(*m_fnOnRtnOrder)(pTraderApi,pOrder);
-	//	return;
-	//}
-
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
 	{
@@ -296,7 +271,7 @@ void CCTPMsgQueue::Input_OnRtnOrder(void* pTraderApi,CThostFtdcOrderField *pOrde
 		pItem->pApi = pTraderApi;
 		pItem->Order = *pOrder;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -305,12 +280,6 @@ void CCTPMsgQueue::Input_OnRtnTrade(void* pTraderApi,CThostFtdcTradeField *pTrad
 	if(NULL == pTrade)
 		return;
 
-	//if(m_bDirect&&m_fnOnRtnTrade)
-	//{
-	//	(*m_fnOnRtnTrade)(pTraderApi,pTrade);
-	//	return;
-	//}
-
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
 	{
@@ -318,7 +287,7 @@ void CCTPMsgQueue::Input_OnRtnTrade(void* pTraderApi,CThostFtdcTradeField *pTrad
 		pItem->pApi = pTraderApi;
 		pItem->Trade = *pTrade;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -327,12 +296,6 @@ void CCTPMsgQueue::Input_OnRspOrderInsert(void* pTraderApi,CThostFtdcInputOrderF
 	if(NULL == pInputOrder
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspOrderInsert)
-	//{
-	//	(*m_fnOnRspOrderInsert)(pTraderApi,pInputOrder,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -348,7 +311,7 @@ void CCTPMsgQueue::Input_OnRspOrderInsert(void* pTraderApi,CThostFtdcInputOrderF
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -357,12 +320,6 @@ void CCTPMsgQueue::Input_OnRspQryInstrument(void* pTraderApi,CThostFtdcInstrumen
 	if(NULL == pInstrument
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryInstrument)
-	//{
-	//	(*m_fnOnRspQryInstrument)(pTraderApi,pInstrument,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -378,7 +335,7 @@ void CCTPMsgQueue::Input_OnRspQryInstrument(void* pTraderApi,CThostFtdcInstrumen
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -387,12 +344,6 @@ void CCTPMsgQueue::Input_OnRspQryInstrumentMarginRate(void* pTraderApi,CThostFtd
 	if(NULL == pInstrumentMarginRate
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryInstrumentMarginRate)
-	//{
-	//	(*m_fnOnRspQryInstrumentMarginRate)(pTraderApi,pInstrumentMarginRate,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -408,7 +359,7 @@ void CCTPMsgQueue::Input_OnRspQryInstrumentMarginRate(void* pTraderApi,CThostFtd
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -417,12 +368,6 @@ void CCTPMsgQueue::Input_OnRspQryInstrumentCommissionRate(void* pTraderApi,CThos
 	if(NULL == pInstrumentCommissionRate
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryInstrumentCommissionRate)
-	//{
-	//	(*m_fnOnRspQryInstrumentCommissionRate)(pTraderApi,pInstrumentCommissionRate,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -438,7 +383,7 @@ void CCTPMsgQueue::Input_OnRspQryInstrumentCommissionRate(void* pTraderApi,CThos
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -447,12 +392,6 @@ void CCTPMsgQueue::Input_OnRspQryInvestorPosition(void* pTraderApi,CThostFtdcInv
 	if(NULL == pInvestorPosition
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryInvestorPosition)
-	//{
-	//	(*m_fnOnRspQryInvestorPosition)(pTraderApi,pInvestorPosition,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -468,7 +407,7 @@ void CCTPMsgQueue::Input_OnRspQryInvestorPosition(void* pTraderApi,CThostFtdcInv
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -477,12 +416,6 @@ void CCTPMsgQueue::Input_OnRspQryInvestorPositionDetail(void* pTraderApi,CThostF
 	if(NULL == pInvestorPositionDetail
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryInvestorPositionDetail)
-	//{
-	//	(*m_fnOnRspQryInvestorPositionDetail)(pTraderApi,pInvestorPositionDetail,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -498,7 +431,7 @@ void CCTPMsgQueue::Input_OnRspQryInvestorPositionDetail(void* pTraderApi,CThostF
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -507,12 +440,6 @@ void CCTPMsgQueue::Input_OnErrRtnOrderInsert(void* pTraderApi,CThostFtdcInputOrd
 	if(NULL == pInputOrder
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnErrRtnOrderInsert)
-	//{
-	//	(*m_fnOnErrRtnOrderInsert)(pTraderApi,pInputOrder,pRspInfo);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -525,7 +452,7 @@ void CCTPMsgQueue::Input_OnErrRtnOrderInsert(void* pTraderApi,CThostFtdcInputOrd
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -534,12 +461,6 @@ void CCTPMsgQueue::Input_OnRspOrderAction(void* pTraderApi,CThostFtdcInputOrderA
 	if(NULL == pInputOrderAction
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspOrderAction)
-	//{
-	//	(*m_fnOnRspOrderAction)(pTraderApi,pInputOrderAction,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -555,7 +476,7 @@ void CCTPMsgQueue::Input_OnRspOrderAction(void* pTraderApi,CThostFtdcInputOrderA
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -564,12 +485,6 @@ void CCTPMsgQueue::Input_OnErrRtnOrderAction(void* pTraderApi,CThostFtdcOrderAct
 	if(NULL == pOrderAction
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnErrRtnOrderAction)
-	//{
-	//	(*m_fnOnErrRtnOrderAction)(pTraderApi,pOrderAction,pRspInfo);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -582,7 +497,7 @@ void CCTPMsgQueue::Input_OnErrRtnOrderAction(void* pTraderApi,CThostFtdcOrderAct
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -591,12 +506,6 @@ void CCTPMsgQueue::Input_OnRspQryOrder(void* pTraderApi,CThostFtdcOrderField *pO
 	if(NULL == pOrder
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryOrder)
-	//{
-	//	(*m_fnOnRspQryOrder)(pTraderApi,pOrder,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -612,7 +521,7 @@ void CCTPMsgQueue::Input_OnRspQryOrder(void* pTraderApi,CThostFtdcOrderField *pO
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -621,12 +530,6 @@ void CCTPMsgQueue::Input_OnRspQryTrade(void* pTraderApi,CThostFtdcTradeField *pT
 	if(NULL == pTrade
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryTrade)
-	//{
-	//	(*m_fnOnRspQryTrade)(pTraderApi,pTrade,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -641,7 +544,7 @@ void CCTPMsgQueue::Input_OnRspQryTrade(void* pTraderApi,CThostFtdcTradeField *pT
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -650,12 +553,6 @@ void CCTPMsgQueue::Input_OnRspQryTradingAccount(void* pTraderApi,CThostFtdcTradi
 	if(NULL == pTradingAccount
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryTradingAccount)
-	//{
-	//	(*m_fnOnRspQryTradingAccount)(pTraderApi,pTradingAccount,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -670,7 +567,7 @@ void CCTPMsgQueue::Input_OnRspQryTradingAccount(void* pTraderApi,CThostFtdcTradi
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }
 
@@ -679,12 +576,6 @@ void CCTPMsgQueue::Input_OnRspQryDepthMarketData(void* pTraderApi,CThostFtdcDept
 	if(NULL == pDepthMarketData
 		&&NULL == pRspInfo)
 		return;
-
-	//if(m_bDirect&&m_fnOnRspQryDepthMarketData)
-	//{
-	//	(*m_fnOnRspQryDepthMarketData)(pTraderApi,pDepthMarketData,pRspInfo,nRequestID,bIsLast);
-	//	return;
-	//}
 
 	SMsgItem* pItem = new SMsgItem;
 	if(pItem)
@@ -699,6 +590,6 @@ void CCTPMsgQueue::Input_OnRspQryDepthMarketData(void* pTraderApi,CThostFtdcDept
 		if(pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
-		_Input(pItem);
+		_Input_TD(pItem);
 	}
 }

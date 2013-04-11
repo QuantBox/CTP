@@ -61,10 +61,8 @@ class CCTPMsgQueue
 public:
 	CCTPMsgQueue(void)
 	{
-		m_nSleep = 1;
 		m_hThread = NULL;
 		m_bRunning = false;
-		//m_bDirect = false;
 
 		//回调函数地址指针
 		m_fnOnConnect = NULL;
@@ -99,9 +97,6 @@ public:
 	}
 
 public:
-	// 是否直接提交请求
-	//void EmitDirectly(bool bDirect){m_bDirect = bDirect;}
-
 	//清空队列
 	void Clear();
 
@@ -160,9 +155,11 @@ private:
 	void RunInThread();
 
 	//响应结果直接入队列
-	void _Input(SMsgItem* pMsgItem);
+	void _Input_MD(SMsgItem* pMsgItem);
+	void _Input_TD(SMsgItem* pMsgItem);
 	//队列中的消息判断分发
-	void _Output(SMsgItem* pMsgItem);
+	void _Output_MD(SMsgItem* pMsgItem);
+	void _Output_TD(SMsgItem* pMsgItem);
 
 	//响应输出
 	void Output_OnConnect(SMsgItem* pItem)
@@ -267,13 +264,12 @@ private:
 	}
 
 private:
-	//volatile bool				m_bDirect;
-	int							m_nSleep;
 	volatile bool				m_bRunning;
-	HANDLE						m_hThread;
 	HANDLE						m_hEvent;
+	HANDLE						m_hThread;
 
-	MSQueue<SMsgItem*>			m_queue;			//响应队列
+	MSQueue<SMsgItem*>			m_queue_MD;			//响应队列
+	MSQueue<SMsgItem*>			m_queue_TD;			//响应队列
 
 	//回调函数指针（按字母排序）
 	fnOnConnect							m_fnOnConnect;
