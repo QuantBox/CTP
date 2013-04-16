@@ -1,5 +1,6 @@
-%% 委托回报
 function OnRtnOrder(sender,arg)
+% 委托回报
+
 % 打印内容
 disp(arg)
 
