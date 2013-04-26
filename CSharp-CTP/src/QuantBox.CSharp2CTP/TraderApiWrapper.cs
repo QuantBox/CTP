@@ -264,6 +264,42 @@ namespace QuantBox.CSharp2CTP
             TraderApi.TD_CancelOrder(m_pTdApi, ref pOrder);
         }
 
+        public void ReqQryTradingAccount()
+        {
+            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQryTradingAccount(m_pTdApi);
+        }
+
+        public void ReqQryInvestorPositionDetail(string szInstrument)
+        {
+            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQryInvestorPositionDetail(m_pTdApi, szInstrument);
+        }
+
+        public void ReqQryInstrumentCommissionRate(string szInstrument)
+        {
+            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQryInstrumentCommissionRate(m_pTdApi,szInstrument);
+        }
+
+        public void ReqQryInstrumentMarginRate(string szInstrument, TThostFtdcHedgeFlagType HedgeFlag)
+        {
+            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQryInstrumentMarginRate(m_pTdApi, szInstrument, HedgeFlag);
+        }
+        
         private void OnConnect_callback(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
             _bTdConnected = (ConnectionStatus.E_confirmed == result);
