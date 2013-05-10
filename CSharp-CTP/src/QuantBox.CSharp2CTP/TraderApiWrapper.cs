@@ -233,7 +233,8 @@ namespace QuantBox.CSharp2CTP
             TThostFtdcOrderPriceTypeType OrderPriceType,
             TThostFtdcTimeConditionType TimeCondition,
             TThostFtdcContingentConditionType ContingentCondition,
-            double StopPrice)
+            double StopPrice,
+            TThostFtdcVolumeConditionType VolumeCondition = TThostFtdcVolumeConditionType.AV)
         {
             if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
             {
@@ -251,7 +252,8 @@ namespace QuantBox.CSharp2CTP
                 OrderPriceType,
                 TimeCondition,
                 ContingentCondition,
-                StopPrice);
+                StopPrice,
+                VolumeCondition);
         }
 
         public void CancelOrder(ref CThostFtdcOrderField pOrder)

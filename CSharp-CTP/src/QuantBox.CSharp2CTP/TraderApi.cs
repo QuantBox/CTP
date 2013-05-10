@@ -77,7 +77,8 @@ namespace QuantBox.CSharp2CTP
             TThostFtdcOrderPriceTypeType OrderPriceType,
             TThostFtdcTimeConditionType TimeCondition,
             TThostFtdcContingentConditionType ContingentCondition,
-            double StopPrice);
+            double StopPrice,
+            TThostFtdcVolumeConditionType VolumeCondition);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_CancelOrder")]
         public static extern void TD_CancelOrder(IntPtr pTraderApi, ref CThostFtdcOrderField pOrder);

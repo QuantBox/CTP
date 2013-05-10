@@ -152,7 +152,8 @@ QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 	TThostFtdcOrderPriceTypeType OrderPriceType,
 	TThostFtdcTimeConditionType TimeCondition,
 	TThostFtdcContingentConditionType ContingentCondition,
-	double StopPrice);
+	double StopPrice,
+	TThostFtdcVolumeConditionType VolumeCondition);
 
 //³·µ¥
 QUANTBOXC2CTP_API void __stdcall TD_CancelOrder(void* pTraderApi,CThostFtdcOrderField *pOrder);

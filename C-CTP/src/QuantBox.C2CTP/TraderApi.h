@@ -78,7 +78,8 @@ public:
 		TThostFtdcOrderPriceTypeType OrderPriceType,
 		TThostFtdcTimeConditionType TimeCondition,
 		TThostFtdcContingentConditionType ContingentCondition,
-		TThostFtdcPriceType StopPrice);
+		TThostFtdcPriceType StopPrice,
+		TThostFtdcVolumeConditionType VolumeCondition);
 	void ReqOrderAction(CThostFtdcOrderField *pOrder);
 
 	void ReqQryTradingAccount();
