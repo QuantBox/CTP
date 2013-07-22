@@ -115,10 +115,10 @@ QUANTBOXC2CTP_API void __stdcall MD_Connect(
 	const char* szInvestorId,
 	const char* szPassword);
 
-//订阅合约，多个合约以“,”分隔
-QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs);
-//取消订阅，多个合约以“,”分隔
-QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs);
+//订阅合约，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
+QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID);
+//取消订阅，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
+QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID);
 //断开连接
 QUANTBOXC2CTP_API void __stdcall MD_Disconnect(void* pMdUserApi);
 //释放行情接口

@@ -156,7 +156,7 @@ namespace QuantBox.CSharp2CTP
             {
                 if (null != m_pMdApi && IntPtr.Zero != m_pMdApi)
                 {
-                    MdApi.MD_Subscribe(m_pMdApi, inst);
+                    MdApi.MD_Subscribe(m_pMdApi, inst,null);
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace QuantBox.CSharp2CTP
             {
                 if (null != m_pMdApi && IntPtr.Zero != m_pMdApi)
                 {
-                    MdApi.MD_Unsubscribe(m_pMdApi, inst);
+                    MdApi.MD_Unsubscribe(m_pMdApi, inst,null);
                 }
             }
         }

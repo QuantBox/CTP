@@ -277,7 +277,7 @@ QUANTBOXC2CTP_API void __stdcall MD_Disconnect(void* pMdUserApi)
 	}
 }
 
-QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs)
+QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID)
 {
 	if(pMdUserApi
 		&&szInstrumentIDs)
@@ -286,7 +286,7 @@ QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szIns
 	}
 }
 
-QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs)
+QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID)
 {
 	if(pMdUserApi
 		&&szInstrumentIDs)
