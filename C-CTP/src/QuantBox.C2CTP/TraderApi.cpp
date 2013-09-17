@@ -119,6 +119,9 @@ void CTraderApi::Connect(const string& szPath,
 
 void CTraderApi::Disconnect()
 {
+	// 如果队列中有请求包，在后面又进行了Release,又回过头来发送，可能导致当了
+	StopThread();
+
 	m_status = E_unconnected;
 	if(m_pApi)
 	{
@@ -129,8 +132,6 @@ void CTraderApi::Disconnect()
 		if(m_msgQueue)
 			m_msgQueue->Input_OnDisconnect(this,NULL,m_status);
 	}
-
-	StopThread();
 
 	m_lRequestID = 0;//由于线程已经停止，没有必要用原子操作了
 
