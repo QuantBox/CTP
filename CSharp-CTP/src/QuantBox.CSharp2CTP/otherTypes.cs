@@ -73,4 +73,30 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         BrokerLaunchBrokerToBank = (byte)'3'//'202002'
     }
+
+    /// <summary>
+    /// TFtdcVirementTradeCodeType是一个交易代码类型
+    /// </summary>
+    public enum TThostFtdcVirementTradeCodeType : byte
+    {
+        /// <summary>
+        /// 银行发起银行资金转期货
+        /// </summary>
+        BankBankToFuture = (byte)'0',//'102001',
+
+        /// <summary>
+        /// 银行发起期货资金转银行
+        /// </summary>
+        BankFutureToBank = (byte)'1',//'102002',
+
+        /// <summary>
+        /// 期货发起银行资金转期货
+        /// </summary>
+        FutureBankToFuture = (byte)'2',//'202001',
+
+        /// <summary>
+        /// 期货发起期货资金转银行
+        /// </summary>
+        FutureFutureToBank = (byte)'3'//'202002'
+    }
 }

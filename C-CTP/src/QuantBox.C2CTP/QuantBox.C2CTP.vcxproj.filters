@@ -60,13 +60,13 @@
     <ClInclude Include="include\CTP\ThostFtdcUserApiStruct.h">
       <Filter>CTP</Filter>
     </ClInclude>
-    <ClInclude Include="CTPMsgQueue.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="MdUserApi.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TraderApi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPMsgQueue.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,9 +80,6 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CTPMsgQueue.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="MdUserApi.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -91,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="include\toolkit.cpp">
       <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPMsgQueue.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

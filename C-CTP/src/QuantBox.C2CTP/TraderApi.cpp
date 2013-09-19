@@ -119,6 +119,9 @@ void CTraderApi::Connect(const string& szPath,
 
 void CTraderApi::Disconnect()
 {
+	// 如果队列中有请求包，在后面又进行了Release,又回过头来发送，可能导致当了
+	StopThread();
+
 	m_status = E_unconnected;
 	if(m_pApi)
 	{
@@ -129,8 +132,6 @@ void CTraderApi::Disconnect()
 		if(m_msgQueue)
 			m_msgQueue->Input_OnDisconnect(this,NULL,m_status);
 	}
-
-	StopThread();
 
 	m_lRequestID = 0;//由于线程已经停止，没有必要用原子操作了
 
@@ -265,6 +266,9 @@ void CTraderApi::RunInThread()
 		case E_QryInvestorPositionField:
 			iRet = m_pApi->ReqQryInvestorPosition(&pRequest->QryInvestorPositionField,lRequest);
 			break;
+		case E_QryInvestorPositionDetailField:
+			iRet=m_pApi->ReqQryInvestorPositionDetail(&pRequest->QryInvestorPositionDetailField,lRequest);
+			break;
 		case E_QryInstrumentCommissionRateField:
 			iRet = m_pApi->ReqQryInstrumentCommissionRate(&pRequest->QryInstrumentCommissionRateField,lRequest);
 			break;
@@ -290,9 +294,9 @@ void CTraderApi::RunInThread()
 		}
 		else
 		{
-			//失败，按2的幂进行延时，但不超过1s
-			m_nSleep *= 2;
-			m_nSleep %= 1000;
+			//失败，按4的幂进行延时，但不超过1s
+			m_nSleep *= 4;
+			m_nSleep %= 1023;
 		}
 		Sleep(m_nSleep);
 	}
@@ -477,7 +481,8 @@ int CTraderApi::ReqOrderInsert(
 	TThostFtdcOrderPriceTypeType OrderPriceType,
 	TThostFtdcTimeConditionType TimeCondition,
 	TThostFtdcContingentConditionType ContingentCondition,
-	TThostFtdcPriceType StopPrice)
+	TThostFtdcPriceType StopPrice,
+	TThostFtdcVolumeConditionType VolumeCondition)
 {
 	if (NULL == m_pApi)
 		return 0;
@@ -495,6 +500,7 @@ int CTraderApi::ReqOrderInsert(
 	body.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
 	body.IsAutoSuspend = 0;
 	body.UserForceClose = 0;
+	body.IsSwapOrder = 0;
 
 	//合约
 	strncpy(body.InstrumentID, szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
@@ -513,7 +519,7 @@ int CTraderApi::ReqOrderInsert(
 	memcpy(body.CombHedgeFlag,CombHedgeFlag,sizeof(TThostFtdcCombHedgeFlagType));
 	
 	//各条件
-	body.VolumeCondition = THOST_FTDC_VC_AV;
+	body.VolumeCondition = VolumeCondition;
 	body.TimeCondition = TimeCondition;
 	body.ContingentCondition = ContingentCondition;
 	body.StopPrice = StopPrice;
@@ -662,6 +668,33 @@ void CTraderApi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 		ReleaseRequestMapBuf(nRequestID);
 }
 
+void CTraderApi::ReqQryInvestorPositionDetail(const string& szInstrumentId)
+{
+	if (NULL == m_pApi)
+		return;
+
+	SRequest* pRequest = MakeRequestBuf(E_QryInvestorPositionDetailField);
+	if (NULL == pRequest)
+		return;
+
+	CThostFtdcQryInvestorPositionDetailField& body = pRequest->QryInvestorPositionDetailField;
+
+	strncpy(body.BrokerID, m_RspUserLogin.BrokerID,sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_RspUserLogin.UserID,sizeof(TThostFtdcInvestorIDType));
+	strncpy(body.InstrumentID,szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
+
+	AddToSendQueue(pRequest);
+}
+
+void CTraderApi::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if(m_msgQueue)
+		m_msgQueue->Input_OnRspQryInvestorPositionDetail(this,pInvestorPositionDetail,pRspInfo,nRequestID,bIsLast);
+
+	if (bIsLast)
+		ReleaseRequestMapBuf(nRequestID);
+}
+
 void CTraderApi::ReqQryInstrument(const string& szInstrumentId)
 {
 	if (NULL == m_pApi)
@@ -714,7 +747,7 @@ void CTraderApi::OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommission
 		ReleaseRequestMapBuf(nRequestID);
 }
 
-void CTraderApi::ReqQryInstrumentMarginRate(const string& szInstrumentId)
+void CTraderApi::ReqQryInstrumentMarginRate(const string& szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag)
 {
 	if (NULL == m_pApi)
 		return;
@@ -728,6 +761,7 @@ void CTraderApi::ReqQryInstrumentMarginRate(const string& szInstrumentId)
 	strncpy(body.BrokerID, m_RspUserLogin.BrokerID,sizeof(TThostFtdcBrokerIDType));
 	strncpy(body.InvestorID, m_RspUserLogin.UserID,sizeof(TThostFtdcInvestorIDType));
 	strncpy(body.InstrumentID,szInstrumentId.c_str(),sizeof(TThostFtdcInstrumentIDType));
+	body.HedgeFlag = HedgeFlag;
 
 	AddToSendQueue(pRequest);
 }
@@ -792,4 +826,10 @@ void CTraderApi::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoFi
 
 	if (bIsLast)
 		ReleaseRequestMapBuf(nRequestID);
+}
+
+void CTraderApi::OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField *pInstrumentStatus)
+{
+	if(m_msgQueue)
+		m_msgQueue->Input_OnRtnInstrumentStatus(this,pInstrumentStatus);
 }

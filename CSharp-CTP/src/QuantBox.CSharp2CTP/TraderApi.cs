@@ -32,8 +32,20 @@ namespace QuantBox.CSharp2CTP
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryInvestorPosition")]
         public static extern void CTP_RegOnRspQryInvestorPosition(IntPtr pMsgQueue, fnOnRspQryInvestorPosition pCallback);
 
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryInvestorPositionDetail")]
+        public static extern void CTP_RegOnRspQryInvestorPositionDetail(IntPtr pMsgQueue, fnOnRspQryInvestorPositionDetail pCallback);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryOrder")]
+        public static extern void CTP_RegOnRspQryOrder(IntPtr pMsgQueue, fnOnRspQryOrder pCallback);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryTrade")]
+        public static extern void CTP_RegOnRspQryTrade(IntPtr pMsgQueue, fnOnRspQryTrade pCallback);
+
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryTradingAccount")]
         public static extern void CTP_RegOnRspQryTradingAccount(IntPtr pMsgQueue, fnOnRspQryTradingAccount pCallback);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnInstrumentStatus")]
+        public static extern void CTP_RegOnRtnInstrumentStatus(IntPtr pMsgQueue, fnOnRtnInstrumentStatus pCallback);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnOrder")]
         public static extern void CTP_RegOnRtnOrder(IntPtr pMsgQueue, fnOnRtnOrder pCallback);
@@ -65,7 +77,8 @@ namespace QuantBox.CSharp2CTP
             TThostFtdcOrderPriceTypeType OrderPriceType,
             TThostFtdcTimeConditionType TimeCondition,
             TThostFtdcContingentConditionType ContingentCondition,
-            double StopPrice);
+            double StopPrice,
+            TThostFtdcVolumeConditionType VolumeCondition);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_CancelOrder")]
         public static extern void TD_CancelOrder(IntPtr pTraderApi, ref CThostFtdcOrderField pOrder);
@@ -75,6 +88,9 @@ namespace QuantBox.CSharp2CTP
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryInvestorPosition")]
         public static extern void TD_ReqQryInvestorPosition(IntPtr pTraderApi, string szInstrument);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryInvestorPositionDetail")]
+        public static extern void TD_ReqQryInvestorPositionDetail(IntPtr pTraderApi, string szInstrument);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryTradingAccount")]
         public static extern void TD_ReqQryTradingAccount(IntPtr pTraderApi);
@@ -86,7 +102,7 @@ namespace QuantBox.CSharp2CTP
         public static extern void TD_ReqQryInstrumentCommissionRate(IntPtr pTraderApi, string szInstrument);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryInstrumentMarginRate")]
-        public static extern void TD_ReqQryInstrumentMarginRate(IntPtr pTraderApi, string szInstrument);
+        public static extern void TD_ReqQryInstrumentMarginRate(IntPtr pTraderApi, string szInstrument, TThostFtdcHedgeFlagType HedgeFlag);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryDepthMarketData")]
         public static extern void TD_ReqQryDepthMarketData(IntPtr pTraderApi, string szInstrument);

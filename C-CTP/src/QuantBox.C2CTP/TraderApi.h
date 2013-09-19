@@ -26,6 +26,7 @@ class CTraderApi :
 		E_InputOrderActionField,
 		E_QryTradingAccountField,
 		E_QryInvestorPositionField,
+		E_QryInvestorPositionDetailField,
 		E_QryInstrumentCommissionRateField,
 		E_QryInstrumentMarginRateField,
 		E_QryDepthMarketDataField,
@@ -44,6 +45,7 @@ class CTraderApi :
 			CThostFtdcQryInstrumentCommissionRateField	QryInstrumentCommissionRateField;
 			CThostFtdcQryInstrumentMarginRateField		QryInstrumentMarginRateField;
 			CThostFtdcQryInvestorPositionField			QryInvestorPositionField;
+			CThostFtdcQryInvestorPositionDetailField    QryInvestorPositionDetailField;
 			CThostFtdcQryTradingAccountField			QryTradingAccountField;
 			CThostFtdcInputOrderField					InputOrderField;
 			CThostFtdcInputOrderActionField				InputOrderActionField;
@@ -76,14 +78,16 @@ public:
 		TThostFtdcOrderPriceTypeType OrderPriceType,
 		TThostFtdcTimeConditionType TimeCondition,
 		TThostFtdcContingentConditionType ContingentCondition,
-		TThostFtdcPriceType StopPrice);
+		TThostFtdcPriceType StopPrice,
+		TThostFtdcVolumeConditionType VolumeCondition);
 	void ReqOrderAction(CThostFtdcOrderField *pOrder);
 
 	void ReqQryTradingAccount();
 	void ReqQryInvestorPosition(const string& szInstrumentId);
+	void ReqQryInvestorPositionDetail(const string& szInstrumentId);
 	void ReqQryInstrument(const string& szInstrumentId);
 	void ReqQryInstrumentCommissionRate(const string& szInstrumentId);
-	void ReqQryInstrumentMarginRate(const string& szInstrumentId);
+	void ReqQryInstrumentMarginRate(const string& szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag = THOST_FTDC_HF_Speculation);
 	void ReqQryDepthMarketData(const string& szInstrumentId);
 
 private:
@@ -140,7 +144,7 @@ private:
 
 	//仓位
 	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+	virtual void OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRspQryInvestorPositionCombineDetail(CThostFtdcInvestorPositionCombineDetailField *pInvestorPositionCombineDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
 	//资金
@@ -156,7 +160,7 @@ private:
 
 	//其它
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField *pInstrumentStatus) {};
+	virtual void OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField *pInstrumentStatus);
 
 private:
 	ConnectionStatus			m_status;				//连接状态
@@ -179,7 +183,7 @@ private:
 	string						m_szAuthCode;			//认证码
 
 	int							m_nSleep;
-	bool						m_bRunning;
+	volatile bool				m_bRunning;
 	HANDLE						m_hThread;
 
 	CRITICAL_SECTION			m_csList;

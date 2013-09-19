@@ -488,7 +488,12 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 风险级别标准设置
         /// </summary>
-        CfgRiskLevelStd = (byte)'G'
+        CfgRiskLevelStd = (byte)'G',
+
+        /// <summary>
+        /// 交易终端应急功能
+        /// </summary>
+        TbCommand = (byte)'H'
     }
 
     /// <summary>
@@ -1553,7 +1558,7 @@ namespace QuantBox.CSharp2CTP
         MarginWay = (byte)'5',
 
         /// <summary>
-        /// 结算单(盯市)权益等于结存
+        /// 结算单结存是否包含质押
         /// </summary>
         BillDeposit = (byte)'9'
     }
@@ -1591,7 +1596,17 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 中金所开户最低可用金额
         /// </summary>
-        CFFEXMinPrepa = (byte)'6'
+        CFFEXMinPrepa = (byte)'6',
+
+        /// <summary>
+        /// 郑商所结算方式
+        /// </summary>
+        CZCESettlementType = (byte)'7',
+
+        /// <summary>
+        /// 中金所实物交割手续费收取方式
+        /// </summary>
+        CFFEXDelivFee = (byte)'8'
     }
 
     /// <summary>
@@ -1633,6 +1648,11 @@ namespace QuantBox.CSharp2CTP
         /// 是否启用手续费模板数据权限
         /// </summary>
         CommModelRight = (byte)'7',
+
+        /// <summary>
+        /// 是否启用保证金率模板数据权限
+        /// </summary>
+        MarginModelRight = (byte)'9',
 
         /// <summary>
         /// 是否规范用户才能激活
@@ -1682,7 +1702,27 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 投资者代码编码方式
         /// </summary>
-        InvestorIDType = (byte)'a'
+        InvestorIDType = (byte)'a',
+
+        /// <summary>
+        /// 休眠户最高权益
+        /// </summary>
+        FreezeMaxReMain = (byte)'r',
+
+        /// <summary>
+        /// 手续费相关操作实时上场开关
+        /// </summary>
+        IsSync = (byte)'A',
+
+        /// <summary>
+        /// 解除开仓权限限制
+        /// </summary>
+        RelieveOpenLimit = (byte)'O',
+
+        /// <summary>
+        /// 是否规范用户才能休眠
+        /// </summary>
+        IsStandardFreeze = (byte)'X'
     }
 
     /// <summary>
@@ -1703,7 +1743,32 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 系统风险算法是否全局 0-否 1-是
         /// </summary>
-        RiskModeGlobal = (byte)'G'
+        RiskModeGlobal = (byte)'G',
+
+        /// <summary>
+        /// 密码加密算法
+        /// </summary>
+        modeEncode = (byte)'P',
+
+        /// <summary>
+        /// 价格小数位数参数
+        /// </summary>
+        tickMode = (byte)'T',
+
+        /// <summary>
+        /// 用户最大会话数
+        /// </summary>
+        SingleUserSessionMaxNum = (byte)'S',
+
+        /// <summary>
+        /// 最大连续登录失败数
+        /// </summary>
+        LoginFailMaxNum = (byte)'L',
+
+        /// <summary>
+        /// 是否强制认证
+        /// </summary>
+        IsAuthForce = (byte)'A'
     }
 
     /// <summary>
@@ -1739,7 +1804,17 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 上报保证金监控中心数据
         /// </summary>
-        CSRCData = (byte)'R'
+        CSRCData = (byte)'R',
+
+        /// <summary>
+        /// 郑商所平仓了结数据
+        /// </summary>
+        CZCEClose = (byte)'L',
+
+        /// <summary>
+        /// 郑商所非平仓了结数据
+        /// </summary>
+        CZCENoClose = (byte)'N'
     }
 
     /// <summary>
@@ -2253,7 +2328,12 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 受可提比例限制
         /// </summary>
-        Disable = (byte)'2'
+        Disable = (byte)'2',
+
+        /// <summary>
+        /// 无仓不受可提比例限制
+        /// </summary>
+        NoHoldEnable = (byte)'3'
     }
 
     /// <summary>
@@ -2514,12 +2594,12 @@ namespace QuantBox.CSharp2CTP
     public enum TThostFtdcBillGenStatusType : byte
     {
         /// <summary>
-        /// 不生成
+        /// 未生成
         /// </summary>
         None = (byte)'0',
 
         /// <summary>
-        /// 未生成
+        /// 生成中
         /// </summary>
         NoGenerated = (byte)'1',
 
@@ -3984,6 +4064,64 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// TFtdcDBOperationType是一个记录操作类型类型
+    /// </summary>
+    public enum TThostFtdcDBOperationType : byte
+    {
+        /// <summary>
+        /// 插入
+        /// </summary>
+        Insert = (byte)'0',
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        Update = (byte)'1',
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        Delete = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcSyncFlagType是一个同步标记类型
+    /// </summary>
+    public enum TThostFtdcSyncFlagType : byte
+    {
+        /// <summary>
+        /// 已同步
+        /// </summary>
+        Yes = (byte)'0',
+
+        /// <summary>
+        /// 未同步
+        /// </summary>
+        No = (byte)'1'
+    }
+
+    /// <summary>
+    /// TFtdcSyncTypeType是一个同步类型类型
+    /// </summary>
+    public enum TThostFtdcSyncTypeType : byte
+    {
+        /// <summary>
+        /// 一次同步
+        /// </summary>
+        OneOffSync = (byte)'0',
+
+        /// <summary>
+        /// 定时同步
+        /// </summary>
+        TimerSync = (byte)'1',
+
+        /// <summary>
+        /// 定时完全同步
+        /// </summary>
+        TimerFullSync = (byte)'2'
+    }
+
+    /// <summary>
     /// TFtdcNotifyClassType是一个风险通知类型类型
     /// </summary>
     public enum TThostFtdcNotifyClassType : byte
@@ -4245,57 +4383,6 @@ namespace QuantBox.CSharp2CTP
         /// 填空
         /// </summary>
         Blank = (byte)'3'
-    }
-
-    /// <summary>
-    /// TFtdcProcessTypeType是一个流程功能类型类型
-    /// </summary>
-    public enum TThostFtdcProcessTypeType : byte
-    {
-        /// <summary>
-        /// 申请交易编码
-        /// </summary>
-        ApplyTradingCode = (byte)'1',
-
-        /// <summary>
-        /// 撤销交易编码
-        /// </summary>
-        CancelTradingCode = (byte)'2',
-
-        /// <summary>
-        /// 修改身份信息
-        /// </summary>
-        ModifyIDCard = (byte)'3',
-
-        /// <summary>
-        /// 修改一般信息
-        /// </summary>
-        ModifyNoIDCard = (byte)'4',
-
-        /// <summary>
-        /// 交易所开户报备
-        /// </summary>
-        ExchOpenBak = (byte)'5',
-
-        /// <summary>
-        /// 交易所销户报备
-        /// </summary>
-        ExchCancelBak = (byte)'6',
-
-        /// <summary>
-        /// 补报规范资料
-        /// </summary>
-        StandardAccount = (byte)'7',
-
-        /// <summary>
-        /// 账户休眠
-        /// </summary>
-        FreezeAccount = (byte)'8',
-
-        /// <summary>
-        /// 激活休眠账户
-        /// </summary>
-        ActiveFreezeAccount = (byte)'9'
     }
 
     /// <summary>
@@ -4951,17 +5038,33 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// TFtdcExprSetModeType是一个日期表达式设置类型类型
+    /// </summary>
+    public enum TThostFtdcExprSetModeType : byte
+    {
+        /// <summary>
+        /// 相对已有规则设置
+        /// </summary>
+        Relative = (byte)'1',
+
+        /// <summary>
+        /// 典型设置
+        /// </summary>
+        Typical = (byte)'2'
+    }
+
+    /// <summary>
     /// TFtdcRateInvestorRangeType是一个投资者范围类型
     /// </summary>
     public enum TThostFtdcRateInvestorRangeType : byte
     {
         /// <summary>
-        /// 所有
+        /// 公司标准
         /// </summary>
         All = (byte)'1',
 
         /// <summary>
-        /// 费率模板
+        /// 模板
         /// </summary>
         Model = (byte)'2',
 
@@ -5291,7 +5394,17 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 激活休眠户
         /// </summary>
-        FreezeActive = (byte)'2'
+        FreezeActive = (byte)'2',
+
+        /// <summary>
+        /// 开仓权限限制
+        /// </summary>
+        OpenLimit = (byte)'3',
+
+        /// <summary>
+        /// 解除开仓权限限制
+        /// </summary>
+        RelieveOpenLimit = (byte)'4'
     }
 
     /// <summary>
@@ -5420,7 +5533,7 @@ namespace QuantBox.CSharp2CTP
         After = (byte)'3',
 
         /// <summary>
-        /// 结算完成
+        /// 结算后处理
         /// </summary>
         Settlemented = (byte)'4'
     }
@@ -5507,5 +5620,252 @@ namespace QuantBox.CSharp2CTP
         /// 报送数据
         /// </summary>
         CSRC = (byte)'3'
+    }
+
+    /// <summary>
+    /// TFtdcMarginTypeType是一个保证金类型类型
+    /// </summary>
+    public enum TThostFtdcMarginTypeType : byte
+    {
+        /// <summary>
+        /// 交易所保证金率
+        /// </summary>
+        ExchMarginRate = (byte)'0',
+
+        /// <summary>
+        /// 投资者保证金率
+        /// </summary>
+        InstrMarginRate = (byte)'1',
+
+        /// <summary>
+        /// 投资者交易保证金率
+        /// </summary>
+        InstrMarginRateTrade = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcActiveTypeType是一个生效类型类型
+    /// </summary>
+    public enum TThostFtdcActiveTypeType : byte
+    {
+        /// <summary>
+        /// 仅当日生效
+        /// </summary>
+        Intraday = (byte)'1',
+
+        /// <summary>
+        /// 长期生效
+        /// </summary>
+        Long = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcMarginRateTypeType是一个冲突保证金率类型类型
+    /// </summary>
+    public enum TThostFtdcMarginRateTypeType : byte
+    {
+        /// <summary>
+        /// 交易所保证金率
+        /// </summary>
+        Exchange = (byte)'1',
+
+        /// <summary>
+        /// 投资者保证金率
+        /// </summary>
+        Investor = (byte)'2',
+
+        /// <summary>
+        /// 投资者交易保证金率
+        /// </summary>
+        InvestorTrade = (byte)'3'
+    }
+
+    /// <summary>
+    /// TFtdcBackUpStatusType是一个备份数据状态类型
+    /// </summary>
+    public enum TThostFtdcBackUpStatusType : byte
+    {
+        /// <summary>
+        /// 未生成备份数据
+        /// </summary>
+        UnBak = (byte)'0',
+
+        /// <summary>
+        /// 备份数据生成中
+        /// </summary>
+        BakUp = (byte)'1',
+
+        /// <summary>
+        /// 已生成备份数据
+        /// </summary>
+        BakUped = (byte)'2',
+
+        /// <summary>
+        /// 备份数据失败
+        /// </summary>
+        BakFail = (byte)'3'
+    }
+
+    /// <summary>
+    /// TFtdcInitSettlementType是一个结算初始化状态类型
+    /// </summary>
+    public enum TThostFtdcInitSettlementType : byte
+    {
+        /// <summary>
+        /// 结算初始化未开始
+        /// </summary>
+        UnInitialize = (byte)'0',
+
+        /// <summary>
+        /// 结算初始化中
+        /// </summary>
+        Initialize = (byte)'1',
+
+        /// <summary>
+        /// 结算初始化完成
+        /// </summary>
+        Initialized = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcReportStatusType是一个报表数据生成状态类型
+    /// </summary>
+    public enum TThostFtdcReportStatusType : byte
+    {
+        /// <summary>
+        /// 未生成报表数据
+        /// </summary>
+        NoCreate = (byte)'0',
+
+        /// <summary>
+        /// 报表数据生成中
+        /// </summary>
+        Create = (byte)'1',
+
+        /// <summary>
+        /// 已生成报表数据
+        /// </summary>
+        Created = (byte)'2',
+
+        /// <summary>
+        /// 生成报表数据失败
+        /// </summary>
+        CreateFail = (byte)'3'
+    }
+
+    /// <summary>
+    /// TFtdcSaveStatusType是一个数据归档状态类型
+    /// </summary>
+    public enum TThostFtdcSaveStatusType : byte
+    {
+        /// <summary>
+        /// 归档未完成
+        /// </summary>
+        UnSaveData = (byte)'0',
+
+        /// <summary>
+        /// 归档完成
+        /// </summary>
+        SaveDatad = (byte)'1'
+    }
+
+    /// <summary>
+    /// TFtdcSettArchiveStatusType是一个结算确认数据归档状态类型
+    /// </summary>
+    public enum TThostFtdcSettArchiveStatusType : byte
+    {
+        /// <summary>
+        /// 未归档数据
+        /// </summary>
+        UnArchived = (byte)'0',
+
+        /// <summary>
+        /// 数据归档中
+        /// </summary>
+        Archiving = (byte)'1',
+
+        /// <summary>
+        /// 已归档数据
+        /// </summary>
+        Archived = (byte)'2',
+
+        /// <summary>
+        /// 归档数据失败
+        /// </summary>
+        ArchiveFail = (byte)'3'
+    }
+
+    /// <summary>
+    /// TFtdcCTPTypeType是一个CTP交易系统类型类型
+    /// </summary>
+    public enum TThostFtdcCTPTypeType : byte
+    {
+        /// <summary>
+        /// 未知类型
+        /// </summary>
+        Unkown = (byte)'0',
+
+        /// <summary>
+        /// 主中心
+        /// </summary>
+        MainCenter = (byte)'1',
+
+        /// <summary>
+        /// 备中心
+        /// </summary>
+        BackUp = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcCloseDealTypeType是一个平仓处理类型类型
+    /// </summary>
+    public enum TThostFtdcCloseDealTypeType : byte
+    {
+        /// <summary>
+        /// 正常
+        /// </summary>
+        Normal = (byte)'0',
+
+        /// <summary>
+        /// 投机平仓优先
+        /// </summary>
+        SpecFirst = (byte)'1'
+    }
+
+    /// <summary>
+    /// TFtdcStartModeType是一个启动模式类型
+    /// </summary>
+    public enum TThostFtdcStartModeType : byte
+    {
+        /// <summary>
+        /// 正常
+        /// </summary>
+        Normal = (byte)'1',
+
+        /// <summary>
+        /// 应急
+        /// </summary>
+        Emerge = (byte)'2',
+
+        /// <summary>
+        /// 恢复
+        /// </summary>
+        Restore = (byte)'3'
+    }
+
+    /// <summary>
+    /// TFtdcLoginModeType是一个登录模式类型
+    /// </summary>
+    public enum TThostFtdcLoginModeType : byte
+    {
+        /// <summary>
+        /// 交易
+        /// </summary>
+        Trade = (byte)'0',
+
+        /// <summary>
+        /// 转账
+        /// </summary>
+        Transfer = (byte)'1'
     }
 }

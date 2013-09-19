@@ -52,10 +52,12 @@ typedef void (__stdcall *fnOnRspQryInstrument)(void* pTraderApi,CThostFtdcInstru
 typedef void (__stdcall *fnOnRspQryInstrumentCommissionRate)(void* pTraderApi,CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryInstrumentMarginRate)(void* pTraderApi,CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryInvestorPosition)(void* pTraderApi,CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (__stdcall *fnOnRspQryInvestorPositionDetail)(void* pTraderApi,CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryOrder)(void* pTraderApi,CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryTrade)(void* pTraderApi,CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRspQryTradingAccount)(void* pTraderApi,CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void (__stdcall *fnOnRtnDepthMarketData)(void* pMdUserApi,CThostFtdcDepthMarketDataField *pDepthMarketData);
+typedef void (__stdcall *fnOnRtnInstrumentStatus)(void* pTraderApi,CThostFtdcInstrumentStatusField *pInstrumentStatus);
 typedef void (__stdcall *fnOnRtnOrder)(void* pTraderApi,CThostFtdcOrderField *pOrder);
 typedef void (__stdcall *fnOnRtnTrade)(void* pTraderApi,CThostFtdcTradeField *pTrade);
 
@@ -75,10 +77,12 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrument(void* pMsgQueue,fnOnR
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentCommissionRate(void* pMsgQueue,fnOnRspQryInstrumentCommissionRate pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentMarginRate(void* pMsgQueue,fnOnRspQryInstrumentMarginRate pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPosition(void* pMsgQueue,fnOnRspQryInvestorPosition pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPositionDetail(void* pMsgQueue,fnOnRspQryInvestorPositionDetail pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryOrder(void* pMsgQueue,fnOnRspQryOrder pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTrade(void* pMsgQueue,fnOnRspQryTrade pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTradingAccount(void* pMsgQueue,fnOnRspQryTradingAccount pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnDepthMarketData(void* pMsgQueue,fnOnRtnDepthMarketData pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnInstrumentStatus(void* pMsgQueue,fnOnRtnInstrumentStatus pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnOrder(void* pMsgQueue,fnOnRtnOrder pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnTrade(void* pMsgQueue,fnOnRtnTrade pCallback);
 
@@ -93,6 +97,8 @@ QUANTBOXC2CTP_API bool __stdcall CTP_ProcessMsgQueue(void* pMsgQueue);
 QUANTBOXC2CTP_API void __stdcall CTP_StartMsgQueue(void* pMsgQueue);
 //停止队列回调主动推送线程
 QUANTBOXC2CTP_API void __stdcall CTP_StopMsgQueue(void* pMsgQueue);
+//设置是否直接触发回调
+//QUANTBOXC2CTP_API void __stdcall CTP_EmitDirectly(void* pMsgQueue,bool bDirect);
 
 //行情接口=======================================
 
@@ -109,10 +115,10 @@ QUANTBOXC2CTP_API void __stdcall MD_Connect(
 	const char* szInvestorId,
 	const char* szPassword);
 
-//订阅合约，多个合约以“,”分隔
-QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs);
-//取消订阅，多个合约以“,”分隔
-QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs);
+//订阅合约，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
+QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID);
+//取消订阅，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
+QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID);
 //断开连接
 QUANTBOXC2CTP_API void __stdcall MD_Disconnect(void* pMdUserApi);
 //释放行情接口
@@ -146,7 +152,8 @@ QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 	TThostFtdcOrderPriceTypeType OrderPriceType,
 	TThostFtdcTimeConditionType TimeCondition,
 	TThostFtdcContingentConditionType ContingentCondition,
-	double StopPrice);
+	double StopPrice,
+	TThostFtdcVolumeConditionType VolumeCondition);
 
 //撤单
 QUANTBOXC2CTP_API void __stdcall TD_CancelOrder(void* pTraderApi,CThostFtdcOrderField *pOrder);
@@ -157,6 +164,8 @@ QUANTBOXC2CTP_API void __stdcall TD_Disconnect(void* pTraderApi);
 QUANTBOXC2CTP_API void __stdcall TD_ReleaseTdApi(void* pTraderApi);
 //查综合持仓
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryInvestorPosition(void* pTraderApi,const char* szInstrumentId);
+//查持仓明细
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInvestorPositionDetail(void* pTraderApi,const char* szInstrumentId);
 //查资金账号
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryTradingAccount(void* pTraderApi);
 //查合约
@@ -164,7 +173,7 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrument(void* pTraderApi,const char
 //查手续费
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentCommissionRate(void* pTraderApi,const char* szInstrumentId);
 //查保证金
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId);
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag);
 //查深度行情
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryDepthMarketData(void* pTraderApi,const char* szInstrumentId);
 

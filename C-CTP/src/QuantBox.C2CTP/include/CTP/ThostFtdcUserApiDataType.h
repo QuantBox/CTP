@@ -113,6 +113,11 @@ typedef char TThostFtdcExchangeFlagType[2];
 typedef char TThostFtdcMacAddressType[21];
 
 /////////////////////////////////////////////////////////////////////////
+///TFtdcSystemIDType是一个系统编号类型
+/////////////////////////////////////////////////////////////////////////
+typedef char TThostFtdcSystemIDType[21];
+
+/////////////////////////////////////////////////////////////////////////
 ///TFtdcExchangePropertyType是一个交易所属性类型
 /////////////////////////////////////////////////////////////////////////
 ///正常
@@ -166,6 +171,11 @@ typedef char TThostFtdcCommandTypeType[65];
 ///TFtdcIPAddressType是一个IP地址类型
 /////////////////////////////////////////////////////////////////////////
 typedef char TThostFtdcIPAddressType[16];
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcIPPortType是一个IP端口类型
+/////////////////////////////////////////////////////////////////////////
+typedef int TThostFtdcIPPortType;
 
 /////////////////////////////////////////////////////////////////////////
 ///TFtdcProductInfoType是一个产品信息类型
@@ -451,6 +461,8 @@ typedef char TThostFtdcFunctionCodeType;
 #define THOST_FTDC_BFC_SendBizNotice 'F'
 ///风险级别标准设置
 #define THOST_FTDC_BFC_CfgRiskLevelStd 'G'
+///交易终端应急功能
+#define THOST_FTDC_BFC_TbCommand 'H'
 
 typedef char TThostFtdcBrokerFunctionCodeType;
 
@@ -1249,7 +1261,7 @@ typedef char TThostFtdcMortgageTypeType;
 #define THOST_FTDC_ISPI_MortgageRatio '4'
 ///保证金算法
 #define THOST_FTDC_ISPI_MarginWay '5'
-///结算单(盯市)权益等于结存
+///结算单结存是否包含质押
 #define THOST_FTDC_ISPI_BillDeposit '9'
 
 typedef char TThostFtdcInvestorSettlementParamIDType;
@@ -1269,6 +1281,10 @@ typedef char TThostFtdcInvestorSettlementParamIDType;
 #define THOST_FTDC_ESPI_DCEDelivFee '5'
 ///中金所开户最低可用金额
 #define THOST_FTDC_ESPI_CFFEXMinPrepa '6'
+///郑商所结算方式
+#define THOST_FTDC_ESPI_CZCESettlementType '7'
+///中金所实物交割手续费收取方式
+#define THOST_FTDC_ESPI_CFFEXDelivFee '8'
 
 typedef char TThostFtdcExchangeSettlementParamIDType;
 
@@ -1289,6 +1305,8 @@ typedef char TThostFtdcExchangeSettlementParamIDType;
 #define THOST_FTDC_SPI_CheckFund '6'
 ///是否启用手续费模板数据权限
 #define THOST_FTDC_SPI_CommModelRight '7'
+///是否启用保证金率模板数据权限
+#define THOST_FTDC_SPI_MarginModelRight '9'
 ///是否规范用户才能激活
 #define THOST_FTDC_SPI_IsStandardActive '8'
 ///上传的交易所结算文件路径
@@ -1309,6 +1327,14 @@ typedef char TThostFtdcExchangeSettlementParamIDType;
 #define THOST_FTDC_SPI_CFFEXInvestorSettleFile 'F'
 ///投资者代码编码方式
 #define THOST_FTDC_SPI_InvestorIDType 'a'
+///休眠户最高权益
+#define THOST_FTDC_SPI_FreezeMaxReMain 'r'
+///手续费相关操作实时上场开关
+#define THOST_FTDC_SPI_IsSync 'A'
+///解除开仓权限限制
+#define THOST_FTDC_SPI_RelieveOpenLimit 'O'
+///是否规范用户才能休眠
+#define THOST_FTDC_SPI_IsStandardFreeze 'X'
 
 typedef char TThostFtdcSystemParamIDType;
 
@@ -1321,6 +1347,16 @@ typedef char TThostFtdcSystemParamIDType;
 #define THOST_FTDC_TPID_RiskMode 'R'
 ///系统风险算法是否全局 0-否 1-是
 #define THOST_FTDC_TPID_RiskModeGlobal 'G'
+///密码加密算法
+#define THOST_FTDC_TPID_modeEncode 'P'
+///价格小数位数参数
+#define THOST_FTDC_TPID_tickMode 'T'
+///用户最大会话数
+#define THOST_FTDC_TPID_SingleUserSessionMaxNum 'S'
+///最大连续登录失败数
+#define THOST_FTDC_TPID_LoginFailMaxNum 'L'
+///是否强制认证
+#define THOST_FTDC_TPID_IsAuthForce 'A'
 
 typedef char TThostFtdcTradeParamIDType;
 
@@ -1399,6 +1435,10 @@ typedef int TThostFtdcSubEntryFundNoType;
 #define THOST_FTDC_FI_CZCECombinationPos 'C'
 ///上报保证金监控中心数据
 #define THOST_FTDC_FI_CSRCData 'R'
+///郑商所平仓了结数据
+#define THOST_FTDC_FI_CZCEClose 'L'
+///郑商所非平仓了结数据
+#define THOST_FTDC_FI_CZCENoClose 'N'
 
 typedef char TThostFtdcFileIDType;
 
@@ -1861,6 +1901,8 @@ typedef char TThostFtdcIncludeCloseProfitType;
 #define THOST_FTDC_AWT_Enable '0'
 ///受可提比例限制
 #define THOST_FTDC_AWT_Disable '2'
+///无仓不受可提比例限制
+#define THOST_FTDC_AWT_NoHoldEnable '3'
 
 typedef char TThostFtdcAllWithoutTradeType;
 
@@ -2186,9 +2228,9 @@ typedef char TThostFtdcMarginPriceTypeType;
 /////////////////////////////////////////////////////////////////////////
 ///TFtdcBillGenStatusType是一个结算单生成状态类型
 /////////////////////////////////////////////////////////////////////////
-///不生成
-#define THOST_FTDC_BGS_None '0'
 ///未生成
+#define THOST_FTDC_BGS_None '0'
+///生成中
 #define THOST_FTDC_BGS_NoGenerated '1'
 ///已生成
 #define THOST_FTDC_BGS_Generated '2'
@@ -3556,6 +3598,65 @@ typedef char TThostFtdcFBTUserEventTypeType;
 typedef char TThostFtdcBankIDByBankType[21];
 
 /////////////////////////////////////////////////////////////////////////
+///TFtdcDBOPSeqNoType是一个递增的序列号类型
+/////////////////////////////////////////////////////////////////////////
+typedef int TThostFtdcDBOPSeqNoType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcTableNameType是一个FBT表名类型
+/////////////////////////////////////////////////////////////////////////
+typedef char TThostFtdcTableNameType[61];
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcPKNameType是一个FBT表操作主键名类型
+/////////////////////////////////////////////////////////////////////////
+typedef char TThostFtdcPKNameType[201];
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcPKValueType是一个FBT表操作主键值类型
+/////////////////////////////////////////////////////////////////////////
+typedef char TThostFtdcPKValueType[501];
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcDBOperationType是一个记录操作类型类型
+/////////////////////////////////////////////////////////////////////////
+///插入
+#define THOST_FTDC_DBOP_Insert '0'
+///更新
+#define THOST_FTDC_DBOP_Update '1'
+///删除
+#define THOST_FTDC_DBOP_Delete '2'
+
+typedef char TThostFtdcDBOperationType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcSyncFlagType是一个同步标记类型
+/////////////////////////////////////////////////////////////////////////
+///已同步
+#define THOST_FTDC_SYNF_Yes '0'
+///未同步
+#define THOST_FTDC_SYNF_No '1'
+
+typedef char TThostFtdcSyncFlagType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcTargetIDType是一个同步目标编号类型
+/////////////////////////////////////////////////////////////////////////
+typedef char TThostFtdcTargetIDType[4];
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcSyncTypeType是一个同步类型类型
+/////////////////////////////////////////////////////////////////////////
+///一次同步
+#define THOST_FTDC_SYNT_OneOffSync '0'
+///定时同步
+#define THOST_FTDC_SYNT_TimerSync '1'
+///定时完全同步
+#define THOST_FTDC_SYNT_TimerFullSync '2'
+
+typedef char TThostFtdcSyncTypeType;
+
+/////////////////////////////////////////////////////////////////////////
 ///TFtdcNotifyClassType是一个风险通知类型类型
 /////////////////////////////////////////////////////////////////////////
 ///正常
@@ -3766,26 +3867,7 @@ typedef char TThostFtdcUOAProcessStatusType[3];
 /////////////////////////////////////////////////////////////////////////
 ///TFtdcProcessTypeType是一个流程功能类型类型
 /////////////////////////////////////////////////////////////////////////
-///申请交易编码
-#define THOST_FTDC_PT_ApplyTradingCode '1'
-///撤销交易编码
-#define THOST_FTDC_PT_CancelTradingCode '2'
-///修改身份信息
-#define THOST_FTDC_PT_ModifyIDCard '3'
-///修改一般信息
-#define THOST_FTDC_PT_ModifyNoIDCard '4'
-///交易所开户报备
-#define THOST_FTDC_PT_ExchOpenBak '5'
-///交易所销户报备
-#define THOST_FTDC_PT_ExchCancelBak '6'
-///补报规范资料
-#define THOST_FTDC_PT_StandardAccount '7'
-///账户休眠
-#define THOST_FTDC_PT_FreezeAccount '8'
-///激活休眠账户
-#define THOST_FTDC_PT_ActiveFreezeAccount '9'
-
-typedef char TThostFtdcProcessTypeType;
+typedef char TThostFtdcProcessTypeType[3];
 
 /////////////////////////////////////////////////////////////////////////
 ///TFtdcBusinessTypeType是一个业务类型类型
@@ -4405,6 +4487,11 @@ typedef char TThostFtdcIsSettlementType[2];
 typedef double TThostFtdcCSRCMoneyType;
 
 /////////////////////////////////////////////////////////////////////////
+///TFtdcCSRCPriceType是一个价格类型
+/////////////////////////////////////////////////////////////////////////
+typedef double TThostFtdcCSRCPriceType;
+
+/////////////////////////////////////////////////////////////////////////
 ///TFtdcCommModelNameType是一个手续费率模板名称类型
 /////////////////////////////////////////////////////////////////////////
 typedef char TThostFtdcCommModelNameType[161];
@@ -4415,11 +4502,21 @@ typedef char TThostFtdcCommModelNameType[161];
 typedef char TThostFtdcCommModelMemoType[1025];
 
 /////////////////////////////////////////////////////////////////////////
+///TFtdcExprSetModeType是一个日期表达式设置类型类型
+/////////////////////////////////////////////////////////////////////////
+///相对已有规则设置
+#define THOST_FTDC_ESM_Relative '1'
+///典型设置
+#define THOST_FTDC_ESM_Typical '2'
+
+typedef char TThostFtdcExprSetModeType;
+
+/////////////////////////////////////////////////////////////////////////
 ///TFtdcRateInvestorRangeType是一个投资者范围类型
 /////////////////////////////////////////////////////////////////////////
-///所有
+///公司标准
 #define THOST_FTDC_RIR_All '1'
-///费率模板
+///模板
 #define THOST_FTDC_RIR_Model '2'
 ///单一投资者
 #define THOST_FTDC_RIR_Single '3'
@@ -4639,6 +4736,10 @@ typedef char TThostFtdcCSRCFreezeStatusType[2];
 #define THOST_FTDC_RPT_Freeze '1'
 ///激活休眠户
 #define THOST_FTDC_RPT_FreezeActive '2'
+///开仓权限限制
+#define THOST_FTDC_RPT_OpenLimit '3'
+///解除开仓权限限制
+#define THOST_FTDC_RPT_RelieveOpenLimit '4'
 
 typedef char TThostFtdcRightParamTypeType;
 
@@ -4731,7 +4832,7 @@ typedef char TThostFtdcExportFileTypeType;
 #define THOST_FTDC_SMT_Settlement '2'
 ///结算后核对
 #define THOST_FTDC_SMT_After '3'
-///结算完成
+///结算后处理
 #define THOST_FTDC_SMT_Settlemented '4'
 
 typedef char TThostFtdcSettleManagerTypeType;
@@ -4813,5 +4914,162 @@ typedef char TThostFtdcLimitUseTypeType;
 #define THOST_FTDC_DAR_CSRC '3'
 
 typedef char TThostFtdcDataResourceType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcMarginTypeType是一个保证金类型类型
+/////////////////////////////////////////////////////////////////////////
+///交易所保证金率
+#define THOST_FTDC_MGT_ExchMarginRate '0'
+///投资者保证金率
+#define THOST_FTDC_MGT_InstrMarginRate '1'
+///投资者交易保证金率
+#define THOST_FTDC_MGT_InstrMarginRateTrade '2'
+
+typedef char TThostFtdcMarginTypeType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcActiveTypeType是一个生效类型类型
+/////////////////////////////////////////////////////////////////////////
+///仅当日生效
+#define THOST_FTDC_ACT_Intraday '1'
+///长期生效
+#define THOST_FTDC_ACT_Long '2'
+
+typedef char TThostFtdcActiveTypeType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcMarginRateTypeType是一个冲突保证金率类型类型
+/////////////////////////////////////////////////////////////////////////
+///交易所保证金率
+#define THOST_FTDC_MRT_Exchange '1'
+///投资者保证金率
+#define THOST_FTDC_MRT_Investor '2'
+///投资者交易保证金率
+#define THOST_FTDC_MRT_InvestorTrade '3'
+
+typedef char TThostFtdcMarginRateTypeType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcBackUpStatusType是一个备份数据状态类型
+/////////////////////////////////////////////////////////////////////////
+///未生成备份数据
+#define THOST_FTDC_BUS_UnBak '0'
+///备份数据生成中
+#define THOST_FTDC_BUS_BakUp '1'
+///已生成备份数据
+#define THOST_FTDC_BUS_BakUped '2'
+///备份数据失败
+#define THOST_FTDC_BUS_BakFail '3'
+
+typedef char TThostFtdcBackUpStatusType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcInitSettlementType是一个结算初始化状态类型
+/////////////////////////////////////////////////////////////////////////
+///结算初始化未开始
+#define THOST_FTDC_SIS_UnInitialize '0'
+///结算初始化中
+#define THOST_FTDC_SIS_Initialize '1'
+///结算初始化完成
+#define THOST_FTDC_SIS_Initialized '2'
+
+typedef char TThostFtdcInitSettlementType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcReportStatusType是一个报表数据生成状态类型
+/////////////////////////////////////////////////////////////////////////
+///未生成报表数据
+#define THOST_FTDC_SRS_NoCreate '0'
+///报表数据生成中
+#define THOST_FTDC_SRS_Create '1'
+///已生成报表数据
+#define THOST_FTDC_SRS_Created '2'
+///生成报表数据失败
+#define THOST_FTDC_SRS_CreateFail '3'
+
+typedef char TThostFtdcReportStatusType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcSaveStatusType是一个数据归档状态类型
+/////////////////////////////////////////////////////////////////////////
+///归档未完成
+#define THOST_FTDC_SSS_UnSaveData '0'
+///归档完成
+#define THOST_FTDC_SSS_SaveDatad '1'
+
+typedef char TThostFtdcSaveStatusType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcCombineTypeType是一个组合类型类型
+/////////////////////////////////////////////////////////////////////////
+typedef char TThostFtdcCombineTypeType[25];
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcSettArchiveStatusType是一个结算确认数据归档状态类型
+/////////////////////////////////////////////////////////////////////////
+///未归档数据
+#define THOST_FTDC_SAS_UnArchived '0'
+///数据归档中
+#define THOST_FTDC_SAS_Archiving '1'
+///已归档数据
+#define THOST_FTDC_SAS_Archived '2'
+///归档数据失败
+#define THOST_FTDC_SAS_ArchiveFail '3'
+
+typedef char TThostFtdcSettArchiveStatusType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcCTPTypeType是一个CTP交易系统类型类型
+/////////////////////////////////////////////////////////////////////////
+///未知类型
+#define THOST_FTDC_CTPT_Unkown '0'
+///主中心
+#define THOST_FTDC_CTPT_MainCenter '1'
+///备中心
+#define THOST_FTDC_CTPT_BackUp '2'
+
+typedef char TThostFtdcCTPTypeType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcToolIDType是一个工具代码类型
+/////////////////////////////////////////////////////////////////////////
+typedef char TThostFtdcToolIDType[9];
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcToolNameType是一个工具名称类型
+/////////////////////////////////////////////////////////////////////////
+typedef char TThostFtdcToolNameType[81];
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcCloseDealTypeType是一个平仓处理类型类型
+/////////////////////////////////////////////////////////////////////////
+///正常
+#define THOST_FTDC_CDT_Normal '0'
+///投机平仓优先
+#define THOST_FTDC_CDT_SpecFirst '1'
+
+typedef char TThostFtdcCloseDealTypeType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcStartModeType是一个启动模式类型
+/////////////////////////////////////////////////////////////////////////
+///正常
+#define THOST_FTDC_SM_Normal '1'
+///应急
+#define THOST_FTDC_SM_Emerge '2'
+///恢复
+#define THOST_FTDC_SM_Restore '3'
+
+typedef char TThostFtdcStartModeType;
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcLoginModeType是一个登录模式类型
+/////////////////////////////////////////////////////////////////////////
+///交易
+#define THOST_FTDC_LM_Trade '0'
+///转账
+#define THOST_FTDC_LM_Transfer '1'
+
+typedef char TThostFtdcLoginModeType;
 
 #endif

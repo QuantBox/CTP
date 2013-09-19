@@ -133,6 +133,14 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPosition(void* pMsgQueue
 	}
 }
 
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPositionDetail(void* pMsgQueue,fnOnRspQryInvestorPositionDetail pCallback)
+{
+	if(pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryOrder(void* pMsgQueue,fnOnRspQryOrder pCallback)
 {
 	if(pMsgQueue)
@@ -158,6 +166,14 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTradingAccount(void* pMsgQueue,f
 }
 
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnDepthMarketData(void* pMsgQueue,fnOnRtnDepthMarketData pCallback)
+{
+	if(pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnInstrumentStatus(void* pMsgQueue,fnOnRtnInstrumentStatus pCallback)
 {
 	if(pMsgQueue)
 	{
@@ -214,6 +230,14 @@ QUANTBOXC2CTP_API void __stdcall CTP_StopMsgQueue(void* pMsgQueue)
 	}
 }
 
+//QUANTBOXC2CTP_API void __stdcall CTP_EmitDirectly(void* pMsgQueue,bool bDirect)
+//{
+//	if(pMsgQueue)
+//	{
+//		return CTP_GetQueue(pMsgQueue)->EmitDirectly(bDirect);
+//	}
+//}
+
 QUANTBOXC2CTP_API void* __stdcall MD_CreateMdApi()
 {
 	return new CMdUserApi();
@@ -253,7 +277,7 @@ QUANTBOXC2CTP_API void __stdcall MD_Disconnect(void* pMdUserApi)
 	}
 }
 
-QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs)
+QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID)
 {
 	if(pMdUserApi
 		&&szInstrumentIDs)
@@ -262,7 +286,7 @@ QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szIns
 	}
 }
 
-QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs)
+QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID)
 {
 	if(pMdUserApi
 		&&szInstrumentIDs)
@@ -328,7 +352,8 @@ QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 	TThostFtdcOrderPriceTypeType OrderPriceType,
 	TThostFtdcTimeConditionType TimeCondition,
 	TThostFtdcContingentConditionType ContingentCondition,
-	double StopPrice)
+	double StopPrice,
+	TThostFtdcVolumeConditionType VolumeCondition)
 {
 	if(pTraderApi
 		&&szInstrument
@@ -344,7 +369,8 @@ QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 			OrderPriceType,
 			TimeCondition,
 			ContingentCondition,
-			StopPrice);
+			StopPrice,
+			VolumeCondition);
 	}
 	return 0;
 }
@@ -381,6 +407,14 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryInvestorPosition(void* pTraderApi,cons
 	}
 }
 
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInvestorPositionDetail(void* pTraderApi,const char* szInstrumentId)
+{
+	if(pTraderApi)
+	{
+		TD_GetApi(pTraderApi)->ReqQryInvestorPositionDetail(NULL==szInstrumentId?"":szInstrumentId);
+	}
+}
+
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryTradingAccount(void* pTraderApi)
 {
 	if(pTraderApi)
@@ -405,11 +439,11 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentCommissionRate(void* pTrader
 	}
 }
 
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId)
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag)
 {
 	if(pTraderApi)
 	{
-		TD_GetApi(pTraderApi)->ReqQryInstrumentMarginRate(szInstrumentId);
+		TD_GetApi(pTraderApi)->ReqQryInstrumentMarginRate(szInstrumentId,HedgeFlag);
 	}
 }
 

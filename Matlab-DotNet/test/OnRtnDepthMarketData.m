@@ -1,5 +1,8 @@
-function pDepthMarketData = OnRtnDepthMarketData(varargin)
-pDepthMarketData = varargin{2};
-disp(pDepthMarketData.InstrumentID);
-disp(pDepthMarketData.LastPrice);
+function OnRtnDepthMarketData(sender,arg)
+% 行情回报
+
+% 打印行情
+disp(arg.pDepthMarketData.InstrumentID)
+disp(arg.pDepthMarketData.LastPrice)
+
 end

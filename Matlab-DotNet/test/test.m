@@ -1,21 +1,36 @@
-NET.addAssembly('D:\test\QuantBox.CSharp2C.dll');
-import QuantBox.CSharp2C.*;
+%% 导入C#库，请按自己目录进行调整
+cd 'D:\wukan\Documents\GitHub\CTP\Matlab-DotNet\test\'
+NET.addAssembly(fullfile(cd,'QuantBox.CSharp2CTP.dll'));
+import QuantBox.CSharp2CTP.*;
 
-pMsgQueue = CommApi.CTP_CreateMsgQueue();
-pMdApi = MdApi.MD_CreateMdApi();
+%% 行情
+global md;
+md =  MdApiWrapper();
+addlistener(md,'OnConnect',@OnMdConnect);
+addlistener(md,'OnDisconnect',@OnMdDisconnect);
+addlistener(md,'OnRtnDepthMarketData',@OnRtnDepthMarketData);
+md.Connect('D:\',... %行情流文件路径
+    'tcp://27.115.78.35:41213',... %行情服务器地址
+    '1009',... %经纪公司代码
+    '123456',... %用户代码
+    '888888'); %密码
 
-CommApi.CTP_RegOnConnect(pMsgQueue,@OnConnect);
-MdApi.CTP_RegOnRtnDepthMarketData(pMsgQueue,@OnRtnDepthMarketData);
+%% 交易
+global td;
+td = TraderApiWrapper();
+addlistener(td,'OnConnect',@OnTdConnect);
+addlistener(td,'OnDisconnect',@OnTdDisconnect);
+addlistener(td,'OnRtnOrder',@OnRtnOrder);
 
-MdApi.MD_RegMsgQueue2MdApi(pMdApi,pMsgQueue);
+td.Connect('D:\',... %交易流文件路径
+    'tcp://27.115.78.35:41205',... %交易服务器地址
+    '1009',... %经纪公司代码
+    '00000015',... %用户代码
+    '123456',... %密码
+    THOST_TE_RESUME_TYPE.THOST_TERT_QUICK,... %流重传方式
+    '',... %用户端产品信息
+    ''); %认证码
 
-MdApi.MD_Connect(pMdApi, 'D:\', 'tcp://asp-sim2-md1.financial-trading-platform.com:26213', '2030', '123456', '888888');
-MdApi.MD_Subscribe(pMdApi, 'IF1208;IF1207');
-
-t = timer('StartDelay',1,...
-          'Period',0.001,...
-          'ExecutionMode','fixedDelay');
-t.TimerFcn = {@CTP_TimerFcn,pMsgQueue};
-t.StopFcn = {@CTP_StopFcn,pMdApi,pMsgQueue};
-start(t)
-%可以使用stop(timerfind)或stop(t)来停止
+%% 退出
+% md.Disconnect() %行情退出
+% td.Disconnect() %交易退出
