@@ -846,6 +846,10 @@ namespace QuantBox.CSharp2CTP
         /// 空头保证金率
         /// </summary>
         public double ShortMarginRatio;
+        /// <summary>
+        /// 是否使用大额单边保证金算法
+        /// </summary>
+        public TThostFtdcMaxMarginSideAlgorithmType MaxMarginSideAlgorithm;
     }
 
     /// <summary>
@@ -1242,6 +1246,10 @@ namespace QuantBox.CSharp2CTP
         /// 交易所交割保证金
         /// </summary>
         public double ExchangeDeliveryMargin;
+        /// <summary>
+        /// 保底期货结算准备金
+        /// </summary>
+        public double ReserveBalance;
     }
 
     /// <summary>
@@ -3977,6 +3985,10 @@ namespace QuantBox.CSharp2CTP
         /// 交易所交割保证金
         /// </summary>
         public double ExchangeDeliveryMargin;
+        /// <summary>
+        /// 保底期货结算准备金
+        /// </summary>
+        public double ReserveBalance;
     }
 
     /// <summary>
@@ -4462,7 +4474,7 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
-    /// 查询交易编码
+    /// 投资者组
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CThostFtdcQryInvestorGroupField
@@ -4475,7 +4487,7 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
-    /// 查询交易编码
+    /// 查询合约保证金率
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CThostFtdcQryInstrumentMarginRateField
@@ -4502,7 +4514,7 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
-    /// 查询交易编码
+    /// 查询手续费率
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CThostFtdcQryInstrumentCommissionRateField
@@ -4525,7 +4537,7 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
-    /// 查询交易编码
+    /// 查询合约交易权限
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CThostFtdcQryInstrumentTradingRightField
@@ -4584,29 +4596,6 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
-    /// 查询经纪公司会员代码
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct CThostFtdcQryPartBrokerField
-    {
-        /// <summary>
-        /// 交易所代码
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
-        public string ExchangeID;
-        /// <summary>
-        /// 经纪公司代码
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-        public string BrokerID;
-        /// <summary>
-        /// 会员代码
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-        public string ParticipantID;
-    }
-
-    /// <summary>
     /// 查询管理用户功能权限
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
@@ -4643,6 +4632,29 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
         public string UserID;
+    }
+
+    /// <summary>
+    /// 查询经纪公司会员代码
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryPartBrokerField
+    {
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
     }
 
     /// <summary>
@@ -4919,6 +4931,50 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
         public string TradingDay;
+    }
+
+    /// <summary>
+    /// 查询交易所保证金率
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExchangeMarginRateField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
+    }
+
+    /// <summary>
+    /// 查询交易所调整保证金率
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExchangeMarginRateAdjustField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
     }
 
     /// <summary>
@@ -6379,6 +6435,10 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
         public string CombInstrumentID;
+        /// <summary>
+        /// 成交组号
+        /// </summary>
+        public int TradeGroupID;
     }
 
     /// <summary>
@@ -8088,6 +8148,145 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
         public string InstrumentID;
+    }
+
+    /// <summary>
+    /// 查询投资者品种/跨品种保证金
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryInvestorProductGroupMarginField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 品种/跨品种标示
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ProductGroupID;
+    }
+
+    /// <summary>
+    /// 投资者品种/跨品种保证金
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcInvestorProductGroupMarginField
+    {
+        /// <summary>
+        /// 品种/跨品种标示
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ProductGroupID;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 交易日
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string TradingDay;
+        /// <summary>
+        /// 结算编号
+        /// </summary>
+        public int SettlementID;
+        /// <summary>
+        /// 冻结的保证金
+        /// </summary>
+        public double FrozenMargin;
+        /// <summary>
+        /// 多头冻结的保证金
+        /// </summary>
+        public double LongFrozenMargin;
+        /// <summary>
+        /// 空头冻结的保证金
+        /// </summary>
+        public double ShortFrozenMargin;
+        /// <summary>
+        /// 占用的保证金
+        /// </summary>
+        public double UseMargin;
+        /// <summary>
+        /// 多头保证金
+        /// </summary>
+        public double LongUseMargin;
+        /// <summary>
+        /// 空头保证金
+        /// </summary>
+        public double ShortUseMargin;
+        /// <summary>
+        /// 交易所保证金
+        /// </summary>
+        public double ExchMargin;
+        /// <summary>
+        /// 交易所多头保证金
+        /// </summary>
+        public double LongExchMargin;
+        /// <summary>
+        /// 交易所空头保证金
+        /// </summary>
+        public double ShortExchMargin;
+        /// <summary>
+        /// 平仓盈亏
+        /// </summary>
+        public double CloseProfit;
+        /// <summary>
+        /// 冻结的手续费
+        /// </summary>
+        public double FrozenCommission;
+        /// <summary>
+        /// 手续费
+        /// </summary>
+        public double Commission;
+        /// <summary>
+        /// 冻结的资金
+        /// </summary>
+        public double FrozenCash;
+        /// <summary>
+        /// 资金差额
+        /// </summary>
+        public double CashIn;
+        /// <summary>
+        /// 持仓盈亏
+        /// </summary>
+        public double PositionProfit;
+        /// <summary>
+        /// 折抵总金额
+        /// </summary>
+        public double OffsetAmount;
+        /// <summary>
+        /// 多头折抵总金额
+        /// </summary>
+        public double LongOffsetAmount;
+        /// <summary>
+        /// 空头折抵总金额
+        /// </summary>
+        public double ShortOffsetAmount;
+        /// <summary>
+        /// 交易所折抵总金额
+        /// </summary>
+        public double ExchOffsetAmount;
+        /// <summary>
+        /// 交易所多头折抵总金额
+        /// </summary>
+        public double LongExchOffsetAmount;
+        /// <summary>
+        /// 交易所空头折抵总金额
+        /// </summary>
+        public double ShortExchOffsetAmount;
     }
 
     /// <summary>
@@ -12795,5 +12994,27 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
         public string SourceIP;
+    }
+
+    /// <summary>
+    /// 资金账户基本准备金
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcTradingAccountReserveField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 基本准备金
+        /// </summary>
+        public double Reserve;
     }
 }

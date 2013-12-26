@@ -1584,16 +1584,6 @@ namespace QuantBox.CSharp2CTP
         OtherFundImport = (byte)'3',
 
         /// <summary>
-        /// 上期所交割手续费收取方式
-        /// </summary>
-        SHFEDelivFee = (byte)'4',
-
-        /// <summary>
-        /// 大商所交割手续费收取方式
-        /// </summary>
-        DCEDelivFee = (byte)'5',
-
-        /// <summary>
         /// 中金所开户最低可用金额
         /// </summary>
         CFFEXMinPrepa = (byte)'6',
@@ -1604,9 +1594,19 @@ namespace QuantBox.CSharp2CTP
         CZCESettlementType = (byte)'7',
 
         /// <summary>
-        /// 中金所实物交割手续费收取方式
+        /// 交易所交割手续费收取方式
         /// </summary>
-        CFFEXDelivFee = (byte)'8'
+        ExchDelivFeeMode = (byte)'9',
+
+        /// <summary>
+        /// 投资者交割手续费收取方式
+        /// </summary>
+        DelivFeeMode = (byte)'0',
+
+        /// <summary>
+        /// 郑商所组合持仓保证金收取方式
+        /// </summary>
+        CZCEComMarginType = (byte)'A'
     }
 
     /// <summary>
@@ -1722,7 +1722,12 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 是否规范用户才能休眠
         /// </summary>
-        IsStandardFreeze = (byte)'X'
+        IsStandardFreeze = (byte)'X',
+
+        /// <summary>
+        /// 郑商所是否开放所有品种套保交易
+        /// </summary>
+        CZCENormalProductHedge = (byte)'B'
     }
 
     /// <summary>
@@ -2186,7 +2191,12 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 投资基金
         /// </summary>
-        Fund = (byte)'2'
+        Fund = (byte)'2',
+
+        /// <summary>
+        /// 特殊法人
+        /// </summary>
+        SpecialOrgan = (byte)'3'
     }
 
     /// <summary>
@@ -2321,7 +2331,7 @@ namespace QuantBox.CSharp2CTP
     public enum TThostFtdcAllWithoutTradeType : byte
     {
         /// <summary>
-        /// 不受可提比例限制
+        /// 无仓无成交不受可提比例限制
         /// </summary>
         Enable = (byte)'0',
 
@@ -2726,7 +2736,32 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 投资者联系人
         /// </summary>
-        LinkMan = (byte)'7'
+        LinkMan = (byte)'7',
+
+        /// <summary>
+        /// 分户管理资产负责人
+        /// </summary>
+        Ledger = (byte)'8',
+
+        /// <summary>
+        /// 托（保）管人
+        /// </summary>
+        Trustee = (byte)'9',
+
+        /// <summary>
+        /// 托（保）管机构法人代表
+        /// </summary>
+        TrusteeCorporation = (byte)'A',
+
+        /// <summary>
+        /// 托（保）管机构开户授权人
+        /// </summary>
+        TrusteeOpen = (byte)'B',
+
+        /// <summary>
+        /// 托（保）管机构联系人
+        /// </summary>
+        TrusteeContact = (byte)'C'
     }
 
     /// <summary>
@@ -4455,7 +4490,12 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 单位
         /// </summary>
-        Company = (byte)'2'
+        Company = (byte)'2',
+
+        /// <summary>
+        /// 特殊法人
+        /// </summary>
+        SpecialOrgan = (byte)'4'
     }
 
     /// <summary>
@@ -5833,6 +5873,22 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// TFtdcExStatusType是一个修改状态类型
+    /// </summary>
+    public enum TThostFtdcExStatusType : byte
+    {
+        /// <summary>
+        /// 修改前
+        /// </summary>
+        Before = (byte)'0',
+
+        /// <summary>
+        /// 修改后
+        /// </summary>
+        After = (byte)'1'
+    }
+
+    /// <summary>
     /// TFtdcStartModeType是一个启动模式类型
     /// </summary>
     public enum TThostFtdcStartModeType : byte
@@ -5854,6 +5910,27 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// TFtdcTemplateTypeType是一个模型类型类型
+    /// </summary>
+    public enum TThostFtdcTemplateTypeType : byte
+    {
+        /// <summary>
+        /// 全量
+        /// </summary>
+        Full = (byte)'1',
+
+        /// <summary>
+        /// 增量
+        /// </summary>
+        Increment = (byte)'2',
+
+        /// <summary>
+        /// 备份
+        /// </summary>
+        BackUp = (byte)'3'
+    }
+
+    /// <summary>
     /// TFtdcLoginModeType是一个登录模式类型
     /// </summary>
     public enum TThostFtdcLoginModeType : byte
@@ -5867,5 +5944,195 @@ namespace QuantBox.CSharp2CTP
         /// 转账
         /// </summary>
         Transfer = (byte)'1'
+    }
+
+    /// <summary>
+    /// TFtdcPromptTypeType是一个日历提示类型类型
+    /// </summary>
+    public enum TThostFtdcPromptTypeType : byte
+    {
+        /// <summary>
+        /// 合约上下市
+        /// </summary>
+        Instrument = (byte)'1',
+
+        /// <summary>
+        /// 保证金分段生效
+        /// </summary>
+        Margin = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcHasTrusteeType是一个是否有托管人类型
+    /// </summary>
+    public enum TThostFtdcHasTrusteeType : byte
+    {
+        /// <summary>
+        /// 有
+        /// </summary>
+        Yes = (byte)'1',
+
+        /// <summary>
+        /// 没有
+        /// </summary>
+        No = (byte)'0'
+    }
+
+    /// <summary>
+    /// TFtdcAmTypeType是一个机构类型类型
+    /// </summary>
+    public enum TThostFtdcAmTypeType : byte
+    {
+        /// <summary>
+        /// 银行
+        /// </summary>
+        Bank = (byte)'1',
+
+        /// <summary>
+        /// 证券公司
+        /// </summary>
+        Securities = (byte)'2',
+
+        /// <summary>
+        /// 基金公司
+        /// </summary>
+        Fund = (byte)'3',
+
+        /// <summary>
+        /// 保险公司
+        /// </summary>
+        Insurance = (byte)'4',
+
+        /// <summary>
+        /// 信托公司
+        /// </summary>
+        Trust = (byte)'5',
+
+        /// <summary>
+        /// 其他
+        /// </summary>
+        Other = (byte)'9'
+    }
+
+    /// <summary>
+    /// TFtdcCSRCFundIOTypeType是一个出入金类型类型
+    /// </summary>
+    public enum TThostFtdcCSRCFundIOTypeType : byte
+    {
+        /// <summary>
+        /// 出入金
+        /// </summary>
+        FundIO = (byte)'0',
+
+        /// <summary>
+        /// 银期换汇
+        /// </summary>
+        SwapCurrency = (byte)'1'
+    }
+
+    /// <summary>
+    /// TFtdcCusAccountTypeType是一个结算账户类型类型
+    /// </summary>
+    public enum TThostFtdcCusAccountTypeType : byte
+    {
+        /// <summary>
+        /// 期货结算账户
+        /// </summary>
+        Futures = (byte)'1',
+
+        /// <summary>
+        /// 资管结算账户
+        /// </summary>
+        Assetmgr = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcClientRegionType是一个开户客户地域类型
+    /// </summary>
+    public enum TThostFtdcClientRegionType : byte
+    {
+        /// <summary>
+        /// 国内客户
+        /// </summary>
+        Domestic = (byte)'1',
+
+        /// <summary>
+        /// 港澳台客户
+        /// </summary>
+        GMT = (byte)'2',
+
+        /// <summary>
+        /// 国外客户
+        /// </summary>
+        Foreign = (byte)'3'
+    }
+
+    /// <summary>
+    /// TFtdcAssetmgrTypeType是一个投资类型类型
+    /// </summary>
+    public enum TThostFtdcAssetmgrTypeType : byte
+    {
+        /// <summary>
+        /// 期货类
+        /// </summary>
+        Futures = (byte)'3',
+
+        /// <summary>
+        /// 综合类
+        /// </summary>
+        SpecialOrgan = (byte)'4'
+    }
+
+    /// <summary>
+    /// TFtdcCheckInstrTypeType是一个合约比较类型类型
+    /// </summary>
+    public enum TThostFtdcCheckInstrTypeType : byte
+    {
+        /// <summary>
+        /// 合约交易所不存在
+        /// </summary>
+        HasExch = (byte)'0',
+
+        /// <summary>
+        /// 合约本系统不存在
+        /// </summary>
+        HasATP = (byte)'1',
+
+        /// <summary>
+        /// 合约比较不一致
+        /// </summary>
+        HasDiff = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcDeliveryTypeType是一个交割类型类型
+    /// </summary>
+    public enum TThostFtdcDeliveryTypeType : byte
+    {
+        /// <summary>
+        /// 手工交割
+        /// </summary>
+        HandDeliv = (byte)'1',
+
+        /// <summary>
+        /// 到期交割
+        /// </summary>
+        PersonDeliv = (byte)'2'
+    }
+
+    /// <summary>
+    /// TFtdcMaxMarginSideAlgorithmType是一个大额单边保证金算法类型
+    /// </summary>
+    public enum TThostFtdcMaxMarginSideAlgorithmType : byte
+    {
+        /// <summary>
+        /// 不使用大额单边保证金算法
+        /// </summary>
+        NO = (byte)'0',
+
+        /// <summary>
+        /// 使用大额单边保证金算法
+        /// </summary>
+        YES = (byte)'1'
     }
 }

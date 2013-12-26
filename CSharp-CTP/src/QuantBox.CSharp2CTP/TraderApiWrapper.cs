@@ -234,7 +234,7 @@ namespace QuantBox.CSharp2CTP
             TThostFtdcTimeConditionType TimeCondition,
             TThostFtdcContingentConditionType ContingentCondition,
             double StopPrice,
-            TThostFtdcVolumeConditionType VolumeCondition = TThostFtdcVolumeConditionType.AV)
+            TThostFtdcVolumeConditionType VolumeCondition)
         {
             if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
             {
