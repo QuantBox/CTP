@@ -5,7 +5,7 @@ function OnTdConnect(sender,arg)
 if arg.result == QuantBox.CSharp2CTP.ConnectionStatus.E_confirmed
     global td;
     % 下单
-    td.SendOrder('IF1309',... %合约
+    td.SendOrder('IF1401',... %合约
         QuantBox.CSharp2CTP.TThostFtdcDirectionType.Buy,... %买卖
         '0',... %开平标记
         '1',... %投机套保标记
@@ -14,7 +14,8 @@ if arg.result == QuantBox.CSharp2CTP.ConnectionStatus.E_confirmed
         QuantBox.CSharp2CTP.TThostFtdcOrderPriceTypeType.LimitPrice,... %价格类型
         QuantBox.CSharp2CTP.TThostFtdcTimeConditionType.GFD,... %时间类型
         QuantBox.CSharp2CTP.TThostFtdcContingentConditionType.Immediately,... %条件类型
-        0);
+        0,... % 止损价
+        QuantBox.CSharp2CTP.TThostFtdcVolumeConditionType.AV); %成交量类型
 end
 
 end
