@@ -275,6 +275,15 @@ namespace QuantBox.CSharp2CTP
             TraderApi.TD_ReqQryTradingAccount(m_pTdApi);
         }
 
+        public void ReqQryInvestorPosition(string szInstrument)
+        {
+            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQryInvestorPosition(m_pTdApi, szInstrument);
+        }
+
         public void ReqQryInvestorPositionDetail(string szInstrument)
         {
             if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
