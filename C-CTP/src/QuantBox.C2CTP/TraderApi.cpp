@@ -6,6 +6,7 @@
 
 CTraderApi::CTraderApi(void)
 {
+	m_pApi = NULL;
 	m_msgQueue = NULL;
 	m_status = E_uninit;
 	m_lRequestID = 0;

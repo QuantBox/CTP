@@ -9,9 +9,11 @@ using namespace std;
 
 CMdUserApi::CMdUserApi(void)
 {
+	m_pApi = NULL;
 	m_msgQueue = NULL;
 	m_status = E_uninit;
 	m_nRequestID = 0;
+	
 
 	InitializeCriticalSection(&m_csMapInstrumentIDs);
 }
