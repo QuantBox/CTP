@@ -318,6 +318,19 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 //行情回调，得保证此函数尽快返回
 void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
+	static bool __isFilterData = true;
+	static int __recordhistorytick = 0;
+
+	if (__isFilterData)	{		
+		__recordhistorytick++;
+
+		if (__recordhistorytick == this->m_setInstrumentIDs.size())	{
+			__isFilterData = false;
+		}	
+	}
+	else	{
+
 	if(m_msgQueue)
 		m_msgQueue->Input_OnRtnDepthMarketData(this,pDepthMarketData);
+	}
 }

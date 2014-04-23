@@ -524,7 +524,7 @@ int CTraderApi::ReqOrderInsert(
 	body.TimeCondition = TimeCondition;
 	body.ContingentCondition = ContingentCondition;
 	body.StopPrice = StopPrice;
-
+	int n;
 	int nRet = 0;
 	{
 		//可能报单太快，m_nMaxOrderRef还没有改变就提交了
@@ -536,13 +536,13 @@ int CTraderApi::ReqOrderInsert(
 
 		//不保存到队列，而是直接发送
 		long lRequest = InterlockedIncrement(&m_lRequestID);
-		int n = m_pApi->ReqOrderInsert(&pRequest->InputOrderField,lRequest);
+		n = m_pApi->ReqOrderInsert(&pRequest->InputOrderField,lRequest);
 	}
 	delete pRequest;//用完后直接删除
 
 	//如何定位报单，用报单引用实际上并不靠谱
 	//如重新开软件、条件单，同时别的软件下单三个可能性要处理
-	return nRet;
+	return n >= 0 ? nRet: n;
 }
 
 void CTraderApi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
