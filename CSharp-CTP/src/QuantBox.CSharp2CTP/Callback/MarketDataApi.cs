@@ -12,7 +12,7 @@ namespace QuantBox.CSharp2CTP.Callback
         {
             get
             {
-                lock (_Instruments)
+                lock (this)
                 {
                     return _Instruments;
                 }
@@ -27,7 +27,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnDepthMarketData = value;
-                MdApi.CTP_RegOnRtnDepthMarketData(_MsgQueue, _OnRtnDepthMarketData);
+                MdApi.CTP_RegOnRtnDepthMarketData(_MsgQueue.Queue, _OnRtnDepthMarketData);
             }
         }
 
@@ -36,41 +36,49 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnForQuoteRsp = value;
-                MdApi.CTP_RegOnRtnForQuoteRsp(_MsgQueue, _OnRtnForQuoteRsp);
+                MdApi.CTP_RegOnRtnForQuoteRsp(_MsgQueue.Queue, _OnRtnForQuoteRsp);
             }
         }
 
-        public MarketDataApi(IntPtr MsgQueue)
-            : base(MsgQueue)
+        public MarketDataApi(MsgQueue msgQueue)
+            : base(msgQueue)
         {
-            IntPtrKey = MdApi.MD_CreateMdApi();
-            MdApi.MD_RegMsgQueue2MdApi(IntPtrKey, _MsgQueue);
+
         }
 
         public override void Connect()
         {
-            base.Connect();
+            lock(this)
+            {
+                base.Connect();
 
-            MdApi.MD_Connect(IntPtrKey, _TempPath,
-                _Front.MarketDataAddress, _Front.BrokerId,
-                _Account.InvestorId, _Account.Password);
+                IntPtrKey = MdApi.MD_CreateMdApi();
+                MdApi.MD_RegMsgQueue2MdApi(IntPtrKey, _MsgQueue.Queue);
+
+                MdApi.MD_Connect(IntPtrKey, _TempPath,
+                    _Front.MarketDataAddress, _Front.BrokerId,
+                    _Account.InvestorId, _Account.Password);
+            }
         }
 
         public override void Disconnect()
         {
-            if (null != IntPtrKey && IntPtr.Zero != IntPtrKey)
+            lock(this)
             {
-                MdApi.MD_RegMsgQueue2MdApi(IntPtrKey, IntPtr.Zero);
-                MdApi.MD_ReleaseMdApi(IntPtrKey);
-                IntPtrKey = IntPtr.Zero;
-            }
+                if (null != IntPtrKey && IntPtr.Zero != IntPtrKey)
+                {
+                    MdApi.MD_RegMsgQueue2MdApi(IntPtrKey, IntPtr.Zero);
+                    MdApi.MD_ReleaseMdApi(IntPtrKey);
+                    IntPtrKey = IntPtr.Zero;
+                }
 
-            base.Disconnect();
+                base.Disconnect();
+            }
         }
 
         public virtual void Subscribe(string inst, string szExchange)
         {
-            lock (_Instruments)
+            lock (this)
             {
                 MdApi.MD_Subscribe(IntPtrKey, inst, szExchange);
                 inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>
@@ -83,7 +91,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public virtual void Unsubscribe(string inst, string szExchange)
         {
-            lock (_Instruments)
+            lock (this)
             {
                 MdApi.MD_Unsubscribe(IntPtrKey, inst, szExchange);
                 inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>

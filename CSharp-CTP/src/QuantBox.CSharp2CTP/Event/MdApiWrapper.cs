@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuantBox.CSharp2CTP.Callback;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,32 +12,18 @@ namespace QuantBox.CSharp2CTP.Event
         public event OnRspErrorHandler OnRspError;
         public event OnRtnDepthMarketDataHandler OnRtnDepthMarketData;
 
-        private readonly fnOnConnect _fnOnConnect_Holder;
-        private readonly fnOnDisconnect _fnOnDisconnect_Holder;
-        private readonly fnOnRspError _fnOnRspError_Holder;
-        private readonly fnOnRtnDepthMarketData _fnOnRtnDepthMarketData_Holder;
-
-        private readonly object _lockMd = new object();
-        private readonly object _lockMsgQueue = new object();
-
-        private IntPtr m_pMdApi = IntPtr.Zero;
-        private IntPtr m_pMsgQueue = IntPtr.Zero;
+        
         private volatile bool _bMdConnected;
 
         private bool disposed;
 
-        private string szPath;
-        private string szAddresses;
-        private string szBrokerId;
-        private string szInvestorId;
-        private string szPassword;
+        private MsgQueue m_pMsgQueue;
+        private MarketDataApi m_Api;
 
         public MdApiWrapper()
         {
-            _fnOnConnect_Holder = OnConnect_callback;
-            _fnOnDisconnect_Holder = OnDisconnect_callback;
-            _fnOnRspError_Holder = OnRspError_callback;
-            _fnOnRtnDepthMarketData_Holder = OnRtnDepthMarketData_callback;
+            m_pMsgQueue = new MsgQueue();
+            m_Api = new MarketDataApi(m_pMsgQueue);
         }
 
         //Implement IDisposable.
@@ -71,104 +58,69 @@ namespace QuantBox.CSharp2CTP.Event
 
         public void Connect(string szPath, string szAddresses, string szBrokerId, string szInvestorId, string szPassword)
         {
-            this.szPath = szPath;
-            this.szAddresses = szAddresses;
-            this.szBrokerId = szBrokerId;
-            this.szInvestorId = szInvestorId;
-            this.szPassword = szPassword;
+            m_Api.Connection = new ConnectionInfo()
+            {
+                TempPath = szPath,
+            };
+
+            m_Api.Front = new FrontInfo()
+            {
+                BrokerId = szBrokerId,
+                MarketDataAddress = szAddresses,
+            };
+
+            m_Api.Account = new AccountInfo()
+            {
+                InvestorId = szInvestorId,
+                Password = szPassword,
+            };
 
             Disconnect_MD();
-            Connect_MsgQueue();
             Connect_MD();
         }
 
         public void Disconnect()
         {
             Disconnect_MD();
-            Disconnect_MsgQueue();
         }
 
         //建立行情
         private void Connect_MD()
         {
-            lock (_lockMd)
+            lock(this)
             {
-                if (null == m_pMdApi || IntPtr.Zero == m_pMdApi)
-                {
-                    m_pMdApi = MdApi.MD_CreateMdApi();
-                    MdApi.CTP_RegOnRtnDepthMarketData(m_pMsgQueue, _fnOnRtnDepthMarketData_Holder);
-                    MdApi.MD_RegMsgQueue2MdApi(m_pMdApi, m_pMsgQueue);
-                    MdApi.MD_Connect(m_pMdApi, szPath, szAddresses, szBrokerId, szInvestorId, szPassword);
-                }
+                m_Api.OnConnect = OnConnect_callback;
+                m_Api.OnDisconnect = OnDisconnect_callback;
+                m_Api.OnRspError = OnRspError_callback;
+
+                m_Api.OnRtnDepthMarketData = OnRtnDepthMarketData_callback;
+
+                m_Api.Connect();
             }
         }
 
         private void Disconnect_MD()
         {
-            lock (_lockMd)
+            lock (this)
             {
-                if (null != m_pMdApi && IntPtr.Zero != m_pMdApi)
-                {
-                    MdApi.MD_RegMsgQueue2MdApi(m_pMdApi, IntPtr.Zero);
-                    MdApi.MD_ReleaseMdApi(m_pMdApi);
-                    m_pMdApi = IntPtr.Zero;
-                }
+                m_Api.Disconnect();
                 _bMdConnected = false;
             }
         }
 
-        private void Connect_MsgQueue()
+        public void Subscribe(string inst, string szExchange)
         {
-            lock (_lockMsgQueue)
+            lock(this)
             {
-                if (null == m_pMsgQueue || IntPtr.Zero == m_pMsgQueue)
-                {
-                    m_pMsgQueue = CommApi.CTP_CreateMsgQueue();
-
-                    CommApi.CTP_RegOnConnect(m_pMsgQueue, _fnOnConnect_Holder);
-                    CommApi.CTP_RegOnDisconnect(m_pMsgQueue, _fnOnDisconnect_Holder);
-                    CommApi.CTP_RegOnRspError(m_pMsgQueue, _fnOnRspError_Holder);
-
-                    //由底层启动线程
-                    CommApi.CTP_StartMsgQueue(m_pMsgQueue);
-                }
+                m_Api.Subscribe(inst, szExchange);
             }
         }
 
-        private void Disconnect_MsgQueue()
+        public void Unsubscribe(string inst, string szExchange)
         {
-            lock (_lockMsgQueue)
+            lock(this)
             {
-                if (null != m_pMsgQueue && IntPtr.Zero != m_pMsgQueue)
-                {
-                    //停止底层线程
-                    CommApi.CTP_StopMsgQueue(m_pMsgQueue);
-
-                    CommApi.CTP_ReleaseMsgQueue(m_pMsgQueue);
-                    m_pMsgQueue = IntPtr.Zero;
-                }
-            }
-        }
-
-        public void Subscribe(string inst)
-        {
-            lock (_lockMd)
-            {
-                if (null != m_pMdApi && IntPtr.Zero != m_pMdApi)
-                {
-                    MdApi.MD_Subscribe(m_pMdApi, inst,null);
-                }
-            }
-        }
-
-        public void Unsubscribe(string inst)
-        {
-            lock (_lockMd)
-            {
-                if (null != m_pMdApi && IntPtr.Zero != m_pMdApi)
-                {
-                    MdApi.MD_Unsubscribe(m_pMdApi, inst,null);
-                }
+                m_Api.Unsubscribe(inst, szExchange);
             }
         }
 

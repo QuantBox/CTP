@@ -18,12 +18,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\SmartQuant Ltd\OpenQuant\Bin\</OutputPath>
+    <OutputPath>..\..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <RegisterForComInterop>true</RegisterForComInterop>
+    <PlatformTarget>x86</PlatformTarget>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -47,14 +50,16 @@
     <Compile Include="Callback\FrontInfo.cs" />
     <Compile Include="Callback\KeyInfo.cs" />
     <Compile Include="Callback\MarketDataApi.cs" />
+    <Compile Include="Callback\MsgQueue.cs" />
     <Compile Include="Callback\TradeApi.cs" />
     <Compile Include="CommApi.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Error.cs" />
-    <Compile Include="EventArgs.cs" />
+    <Compile Include="Event\EventArgs.cs" />
     <Compile Include="MdApi.cs" />
     <Compile Include="Event\MdApiWrapper.cs" />
     <Compile Include="otherTypes.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Struct.cs" />
     <Compile Include="TraderApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

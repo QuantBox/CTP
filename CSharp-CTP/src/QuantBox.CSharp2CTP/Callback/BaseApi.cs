@@ -10,7 +10,7 @@ namespace QuantBox.CSharp2CTP.Callback
     {
         public bool IsConnected;
 
-        protected IntPtr _MsgQueue;
+        protected MsgQueue _MsgQueue;
 
         protected FrontInfo _Front;
         protected AccountInfo _Account;
@@ -22,10 +22,10 @@ namespace QuantBox.CSharp2CTP.Callback
 
         protected string _TempPath;
 
-        public BaseApi(IntPtr MsgQueue)
+        public BaseApi(MsgQueue msgQueue)
         {
-            // 转入消息队列的原因是为了队列使用单线程
-            _MsgQueue = MsgQueue;
+            // 传入消息队列的原因是为了队列使用单线程
+            _MsgQueue = msgQueue;
         }
 
         private bool disposed;
@@ -64,7 +64,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnConnect = value;
-                CommApi.CTP_RegOnConnect(_MsgQueue, _OnConnect);
+                CommApi.CTP_RegOnConnect(_MsgQueue.Queue, _OnConnect);
             }
         }
 
@@ -73,7 +73,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnDisconnect = value;
-                CommApi.CTP_RegOnDisconnect(_MsgQueue, _OnDisconnect);
+                CommApi.CTP_RegOnDisconnect(_MsgQueue.Queue, _OnDisconnect);
             }
         }
 
@@ -82,7 +82,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspError = value;
-                CommApi.CTP_RegOnRspError(_MsgQueue, _OnRspError);
+                CommApi.CTP_RegOnRspError(_MsgQueue.Queue, _OnRspError);
             }
         }
 
@@ -105,27 +105,29 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public virtual void Connect()
         {
-            if (_Connection == null)
-                throw new ArgumentNullException("连接信息不能为空");
+            lock(this)
+            {
+                if (_Connection == null)
+                    throw new ArgumentNullException("连接信息不能为空");
 
-            if (_Front == null)
-                throw new ArgumentNullException("前置机参数不能为空");
+                if (_Front == null)
+                    throw new ArgumentNullException("前置机参数不能为空");
 
-            if (_Account == null)
-                throw new ArgumentNullException("账号不能为空");
+                if (_Account == null)
+                    throw new ArgumentNullException("账号不能为空");
 
-            if (string.IsNullOrWhiteSpace(_Connection.StringKey))
-                _Connection.StringKey = Guid.NewGuid().ToString();
+                if (string.IsNullOrWhiteSpace(_Connection.StringKey))
+                    _Connection.StringKey = Guid.NewGuid().ToString();
 
-            //  生成temp目录，这个地址有问题
-            _TempPath = Path.Combine(_Connection.TempPath,
-                "CTP",
-                _Connection.StringKey);
+                //  生成temp目录，这个地址有问题
+                _TempPath = Path.Combine(_Connection.TempPath,
+                    "CTP",
+                    _Connection.StringKey);
 
-            Directory.CreateDirectory(_TempPath);
-            
-            // 启动消息队列循环
-            CommApi.CTP_StartMsgQueue(_MsgQueue);
+                Directory.CreateDirectory(_TempPath);
+
+                _MsgQueue.Start();
+            }
         }
 
         public virtual void Disconnect()

@@ -36,7 +36,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnErrRtnOrderAction = value;
-                TraderApi.CTP_RegOnErrRtnOrderAction(_MsgQueue, _OnErrRtnOrderAction);
+                TraderApi.CTP_RegOnErrRtnOrderAction(_MsgQueue.Queue, _OnErrRtnOrderAction);
             }
         }
 
@@ -45,7 +45,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnErrRtnOrderInsert = value;
-                TraderApi.CTP_RegOnErrRtnOrderInsert(_MsgQueue, _OnErrRtnOrderInsert);
+                TraderApi.CTP_RegOnErrRtnOrderInsert(_MsgQueue.Queue, _OnErrRtnOrderInsert);
             }
         }
 
@@ -54,7 +54,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnErrRtnQuoteAction = value;
-                TraderApi.CTP_RegOnErrRtnQuoteAction(_MsgQueue, _OnErrRtnQuoteAction);
+                TraderApi.CTP_RegOnErrRtnQuoteAction(_MsgQueue.Queue, _OnErrRtnQuoteAction);
             }
         }
 
@@ -63,7 +63,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnErrRtnQuoteInsert = value;
-                TraderApi.CTP_RegOnErrRtnQuoteInsert(_MsgQueue, _OnErrRtnQuoteInsert);
+                TraderApi.CTP_RegOnErrRtnQuoteInsert(_MsgQueue.Queue, _OnErrRtnQuoteInsert);
             }
         }
 
@@ -72,7 +72,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspOrderAction = value;
-                TraderApi.CTP_RegOnRspOrderAction(_MsgQueue, _OnRspOrderAction);
+                TraderApi.CTP_RegOnRspOrderAction(_MsgQueue.Queue, _OnRspOrderAction);
             }
         }
         public fnOnRspOrderInsert OnRspOrderInsert
@@ -80,7 +80,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspOrderInsert = value;
-                TraderApi.CTP_RegOnRspOrderInsert(_MsgQueue, _OnRspOrderInsert);
+                TraderApi.CTP_RegOnRspOrderInsert(_MsgQueue.Queue, _OnRspOrderInsert);
             }
         }
 
@@ -89,7 +89,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQuoteAction = value;
-                TraderApi.CTP_RegOnRspQuoteAction(_MsgQueue, _OnRspQuoteAction);
+                TraderApi.CTP_RegOnRspQuoteAction(_MsgQueue.Queue, _OnRspQuoteAction);
             }
         }
         public fnOnRspQuoteInsert OnRspQuoteInsert
@@ -97,7 +97,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQuoteInsert = value;
-                TraderApi.CTP_RegOnRspQuoteInsert(_MsgQueue, _OnRspQuoteInsert);
+                TraderApi.CTP_RegOnRspQuoteInsert(_MsgQueue.Queue, _OnRspQuoteInsert);
             }
         }
 
@@ -106,7 +106,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryDepthMarketData = value;
-                TraderApi.CTP_RegOnRspQryDepthMarketData(_MsgQueue, _OnRspQryDepthMarketData);
+                TraderApi.CTP_RegOnRspQryDepthMarketData(_MsgQueue.Queue, _OnRspQryDepthMarketData);
             }
         }
         public fnOnRspQryInstrument OnRspQryInstrument
@@ -114,7 +114,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryInstrument = value;
-                TraderApi.CTP_RegOnRspQryInstrument(_MsgQueue, _OnRspQryInstrument);
+                TraderApi.CTP_RegOnRspQryInstrument(_MsgQueue.Queue, _OnRspQryInstrument);
             }
         }
         public fnOnRspQryInstrumentCommissionRate OnRspQryInstrumentCommissionRate
@@ -122,7 +122,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryInstrumentCommissionRate = value;
-                TraderApi.CTP_RegOnRspQryInstrumentCommissionRate(_MsgQueue, _OnRspQryInstrumentCommissionRate);
+                TraderApi.CTP_RegOnRspQryInstrumentCommissionRate(_MsgQueue.Queue, _OnRspQryInstrumentCommissionRate);
             }
         }
         public fnOnRspQryInstrumentMarginRate OnRspQryInstrumentMarginRate
@@ -130,7 +130,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryInstrumentMarginRate = value;
-                TraderApi.CTP_RegOnRspQryInstrumentMarginRate(_MsgQueue, _OnRspQryInstrumentMarginRate);
+                TraderApi.CTP_RegOnRspQryInstrumentMarginRate(_MsgQueue.Queue, _OnRspQryInstrumentMarginRate);
             }
         }
         public fnOnRspQryInvestorPosition OnRspQryInvestorPosition
@@ -138,7 +138,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryInvestorPosition = value;
-                TraderApi.CTP_RegOnRspQryInvestorPosition(_MsgQueue, _OnRspQryInvestorPosition);
+                TraderApi.CTP_RegOnRspQryInvestorPosition(_MsgQueue.Queue, _OnRspQryInvestorPosition);
             }
         }
         public fnOnRspQryInvestorPositionDetail OnRspQryInvestorPositionDetail
@@ -146,7 +146,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryInvestorPositionDetail = value;
-                TraderApi.CTP_RegOnRspQryInvestorPositionDetail(_MsgQueue, _OnRspQryInvestorPositionDetail);
+                TraderApi.CTP_RegOnRspQryInvestorPositionDetail(_MsgQueue.Queue, _OnRspQryInvestorPositionDetail);
             }
         }
         public fnOnRspQryOrder OnRspQryOrder
@@ -154,7 +154,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryOrder = value;
-                TraderApi.CTP_RegOnRspQryOrder(_MsgQueue, _OnRspQryOrder);
+                TraderApi.CTP_RegOnRspQryOrder(_MsgQueue.Queue, _OnRspQryOrder);
             }
         }
         public fnOnRspQryTrade OnRspQryTrade
@@ -162,7 +162,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryTrade = value;
-                TraderApi.CTP_RegOnRspQryTrade(_MsgQueue, _OnRspQryTrade);
+                TraderApi.CTP_RegOnRspQryTrade(_MsgQueue.Queue, _OnRspQryTrade);
             }
         }
         public fnOnRspQryTradingAccount OnRspQryTradingAccount
@@ -170,7 +170,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryTradingAccount = value;
-                TraderApi.CTP_RegOnRspQryTradingAccount(_MsgQueue, _OnRspQryTradingAccount);
+                TraderApi.CTP_RegOnRspQryTradingAccount(_MsgQueue.Queue, _OnRspQryTradingAccount);
             }
         }
         public fnOnRtnInstrumentStatus OnRtnInstrumentStatus
@@ -178,7 +178,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnInstrumentStatus = value;
-                TraderApi.CTP_RegOnRtnInstrumentStatus(_MsgQueue, _OnRtnInstrumentStatus);
+                TraderApi.CTP_RegOnRtnInstrumentStatus(_MsgQueue.Queue, _OnRtnInstrumentStatus);
             }
         }
         public fnOnRtnOrder OnRtnOrder
@@ -186,7 +186,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnOrder = value;
-                TraderApi.CTP_RegOnRtnOrder(_MsgQueue, _OnRtnOrder);
+                TraderApi.CTP_RegOnRtnOrder(_MsgQueue.Queue, _OnRtnOrder);
             }
         }
 
@@ -195,7 +195,7 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnQuote = value;
-                TraderApi.CTP_RegOnRtnQuote(_MsgQueue, _OnRtnQuote);
+                TraderApi.CTP_RegOnRtnQuote(_MsgQueue.Queue, _OnRtnQuote);
             }
         }
 
@@ -204,38 +204,45 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnTrade = value;
-                TraderApi.CTP_RegOnRtnTrade(_MsgQueue, _OnRtnTrade);
+                TraderApi.CTP_RegOnRtnTrade(_MsgQueue.Queue, _OnRtnTrade);
             }
         }
 
-        public TradeApi(IntPtr MsgQueue)
-            : base(MsgQueue)
+        public TradeApi(MsgQueue msgQueue)
+            : base(msgQueue)
         {
-            IntPtrKey = TraderApi.TD_CreateTdApi();
-            TraderApi.TD_RegMsgQueue2TdApi(IntPtrKey, _MsgQueue);
         }
 
         public override void Connect()
         {
-            base.Connect();
+            lock(this)
+            {
+                base.Connect();
 
-            TraderApi.TD_Connect(IntPtrKey, _TempPath,
-                _Front.TradeAddress, _Front.BrokerId,
-                _Account.InvestorId, _Account.Password,
-                ResumeType,
-                _Front.UserProductInfo, _Front.AuthCode);
+                IntPtrKey = TraderApi.TD_CreateTdApi();
+                TraderApi.TD_RegMsgQueue2TdApi(IntPtrKey, _MsgQueue.Queue);
+
+                TraderApi.TD_Connect(IntPtrKey, _TempPath,
+                    _Front.TradeAddress, _Front.BrokerId,
+                    _Account.InvestorId, _Account.Password,
+                    ResumeType,
+                    _Front.UserProductInfo, _Front.AuthCode);
+            }
         }
 
         public override void Disconnect()
         {
-            if (null != IntPtrKey && IntPtr.Zero != IntPtrKey)
+            lock(this)
             {
-                TraderApi.TD_RegMsgQueue2TdApi(IntPtrKey, IntPtr.Zero);
-                TraderApi.TD_ReleaseTdApi(IntPtrKey);
-                IntPtrKey = IntPtr.Zero;
-            }
+                if (null != IntPtrKey && IntPtr.Zero != IntPtrKey)
+                {
+                    TraderApi.TD_RegMsgQueue2TdApi(IntPtrKey, IntPtr.Zero);
+                    TraderApi.TD_ReleaseTdApi(IntPtrKey);
+                    IntPtrKey = IntPtr.Zero;
+                }
 
-            base.Disconnect();
+                base.Disconnect();
+            }
         }
 
         public int SendOrder(
@@ -331,6 +338,15 @@ namespace QuantBox.CSharp2CTP.Callback
                 return;
             }
             TraderApi.TD_ReqQryTradingAccount(IntPtrKey);
+        }
+
+        public void ReqQryInvestorPosition(string szInstrument)
+        {
+            if (null == IntPtrKey || IntPtr.Zero == IntPtrKey)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQryInvestorPosition(IntPtrKey, szInstrument);
         }
 
         public void ReqQryInvestorPositionDetail(string szInstrument)

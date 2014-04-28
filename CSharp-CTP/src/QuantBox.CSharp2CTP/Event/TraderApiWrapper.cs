@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuantBox.CSharp2CTP.Callback;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,31 +27,29 @@ namespace QuantBox.CSharp2CTP.Event
         public event OnRtnOrderHandler OnRtnOrder;
         public event OnRtnTradeHandler OnRtnTrade;
 
-        private readonly fnOnConnect _fnOnConnect_Holder;
-        private readonly fnOnDisconnect _fnOnDisconnect_Holder;
-        private readonly fnOnErrRtnOrderAction _fnOnErrRtnOrderAction_Holder;
-        private readonly fnOnErrRtnOrderInsert _fnOnErrRtnOrderInsert_Holder;
-        private readonly fnOnRspError _fnOnRspError_Holder;
-        private readonly fnOnRspOrderAction _fnOnRspOrderAction_Holder;
-        private readonly fnOnRspOrderInsert _fnOnRspOrderInsert_Holder;
-        private readonly fnOnRspQryDepthMarketData _fnOnRspQryDepthMarketData_Holder;
-        private readonly fnOnRspQryInstrument _fnOnRspQryInstrument_Holder;
-        private readonly fnOnRspQryInstrumentCommissionRate _fnOnRspQryInstrumentCommissionRate_Holder;
-        private readonly fnOnRspQryInstrumentMarginRate _fnOnRspQryInstrumentMarginRate_Holder;
-        private readonly fnOnRspQryInvestorPosition _fnOnRspQryInvestorPosition_Holder;
-        private readonly fnOnRspQryInvestorPositionDetail _fnOnRspQryInvestorPositionDetail_Holder;
-        private readonly fnOnRspQryOrder _fnOnRspQryOrder_Holder;
-        private readonly fnOnRspQryTrade _fnOnRspQryTrade_Holder;
-        private readonly fnOnRspQryTradingAccount _fnOnRspQryTradingAccount_Holder;
-        private readonly fnOnRtnInstrumentStatus _fnOnRtnInstrumentStatus_Holder;
-        private readonly fnOnRtnOrder _fnOnRtnOrder_Holder;
-        private readonly fnOnRtnTrade _fnOnRtnTrade_Holder;
+        //private readonly fnOnConnect _fnOnConnect_Holder;
+        //private readonly fnOnDisconnect _fnOnDisconnect_Holder;
+        //private readonly fnOnErrRtnOrderAction _fnOnErrRtnOrderAction_Holder;
+        //private readonly fnOnErrRtnOrderInsert _fnOnErrRtnOrderInsert_Holder;
+        //private readonly fnOnRspError _fnOnRspError_Holder;
+        //private readonly fnOnRspOrderAction _fnOnRspOrderAction_Holder;
+        //private readonly fnOnRspOrderInsert _fnOnRspOrderInsert_Holder;
+        //private readonly fnOnRspQryDepthMarketData _fnOnRspQryDepthMarketData_Holder;
+        //private readonly fnOnRspQryInstrument _fnOnRspQryInstrument_Holder;
+        //private readonly fnOnRspQryInstrumentCommissionRate _fnOnRspQryInstrumentCommissionRate_Holder;
+        //private readonly fnOnRspQryInstrumentMarginRate _fnOnRspQryInstrumentMarginRate_Holder;
+        //private readonly fnOnRspQryInvestorPosition _fnOnRspQryInvestorPosition_Holder;
+        //private readonly fnOnRspQryInvestorPositionDetail _fnOnRspQryInvestorPositionDetail_Holder;
+        //private readonly fnOnRspQryOrder _fnOnRspQryOrder_Holder;
+        //private readonly fnOnRspQryTrade _fnOnRspQryTrade_Holder;
+        //private readonly fnOnRspQryTradingAccount _fnOnRspQryTradingAccount_Holder;
+        //private readonly fnOnRtnInstrumentStatus _fnOnRtnInstrumentStatus_Holder;
+        //private readonly fnOnRtnOrder _fnOnRtnOrder_Holder;
+        //private readonly fnOnRtnTrade _fnOnRtnTrade_Holder;
 
-        private readonly object _lockTd = new object();
-        private readonly object _lockMsgQueue = new object();
+        //private readonly object _lockTd = new object();
+        //private readonly object _lockMsgQueue = new object();
 
-        private IntPtr m_pTdApi = IntPtr.Zero;
-        private IntPtr m_pMsgQueue = IntPtr.Zero;
         private volatile bool _bTdConnected;
         public bool isConnected { get; private set; }
 
@@ -65,27 +64,32 @@ namespace QuantBox.CSharp2CTP.Event
         private string szAuthCode;
         private THOST_TE_RESUME_TYPE nResumeType;
 
+        private MsgQueue m_pMsgQueue;
+        private TradeApi m_Api;
+
         public TraderApiWrapper()
         {
-            _fnOnConnect_Holder = OnConnect_callback;
-            _fnOnDisconnect_Holder = OnDisconnect_callback;
-            _fnOnErrRtnOrderAction_Holder = OnErrRtnOrderAction_callback;
-            _fnOnErrRtnOrderInsert_Holder = OnErrRtnOrderInsert_callback;
-            _fnOnRspError_Holder = OnRspError_callback;
-            _fnOnRspOrderAction_Holder = OnRspOrderAction_callback;
-            _fnOnRspOrderInsert_Holder = OnRspOrderInsert_callback;
-            _fnOnRspQryDepthMarketData_Holder = OnRspQryDepthMarketData_callback;
-            _fnOnRspQryInstrument_Holder = OnRspQryInstrument_callback;
-            _fnOnRspQryInstrumentCommissionRate_Holder = OnRspQryInstrumentCommissionRate_callback;
-            _fnOnRspQryInstrumentMarginRate_Holder = OnRspQryInstrumentMarginRate_callback;
-            _fnOnRspQryInvestorPosition_Holder = OnRspQryInvestorPosition_callback;
-            _fnOnRspQryInvestorPositionDetail_Holder = OnRspQryInvestorPositionDetail_callback;
-            _fnOnRspQryOrder_Holder = OnRspQryOrder_callback;
-            _fnOnRspQryTrade_Holder = OnRspQryTrade_callback;
-            _fnOnRspQryTradingAccount_Holder = OnRspQryTradingAccount_callback;
-            _fnOnRtnInstrumentStatus_Holder = OnRtnInstrumentStatus_callback;
-            _fnOnRtnOrder_Holder = OnRtnOrder_callback;
-            _fnOnRtnTrade_Holder = OnRtnTrade_callback;
+            //_fnOnConnect_Holder = OnConnect_callback;
+            //_fnOnDisconnect_Holder = OnDisconnect_callback;
+            //_fnOnErrRtnOrderAction_Holder = OnErrRtnOrderAction_callback;
+            //_fnOnErrRtnOrderInsert_Holder = OnErrRtnOrderInsert_callback;
+            //_fnOnRspError_Holder = OnRspError_callback;
+            //_fnOnRspOrderAction_Holder = OnRspOrderAction_callback;
+            //_fnOnRspOrderInsert_Holder = OnRspOrderInsert_callback;
+            //_fnOnRspQryDepthMarketData_Holder = OnRspQryDepthMarketData_callback;
+            //_fnOnRspQryInstrument_Holder = OnRspQryInstrument_callback;
+            //_fnOnRspQryInstrumentCommissionRate_Holder = OnRspQryInstrumentCommissionRate_callback;
+            //_fnOnRspQryInstrumentMarginRate_Holder = OnRspQryInstrumentMarginRate_callback;
+            //_fnOnRspQryInvestorPosition_Holder = OnRspQryInvestorPosition_callback;
+            //_fnOnRspQryInvestorPositionDetail_Holder = OnRspQryInvestorPositionDetail_callback;
+            //_fnOnRspQryOrder_Holder = OnRspQryOrder_callback;
+            //_fnOnRspQryTrade_Holder = OnRspQryTrade_callback;
+            //_fnOnRspQryTradingAccount_Holder = OnRspQryTradingAccount_callback;
+            //_fnOnRtnInstrumentStatus_Holder = OnRtnInstrumentStatus_callback;
+            //_fnOnRtnOrder_Holder = OnRtnOrder_callback;
+            //_fnOnRtnTrade_Holder = OnRtnTrade_callback;
+            m_pMsgQueue = new MsgQueue();
+            m_Api = new TradeApi(m_pMsgQueue);
         }
 
         //Implement IDisposable.
@@ -123,107 +127,78 @@ namespace QuantBox.CSharp2CTP.Event
             THOST_TE_RESUME_TYPE nResumeType,
             string szUserProductInfo, string szAuthCode)
         {
-            this.szPath = szPath;
-            this.szAddresses = szAddresses;
-            this.szBrokerId = szBrokerId;
-            this.szInvestorId = szInvestorId;
-            this.szPassword = szPassword;
-            this.nResumeType = nResumeType;
-            this.szUserProductInfo = szUserProductInfo;
-            this.szAuthCode = szAuthCode;
+            m_Api.Connection = new ConnectionInfo()
+            {
+                TempPath = szPath,
+            };
+
+            m_Api.Front = new FrontInfo()
+            {
+                BrokerId = szBrokerId,
+                TradeAddress = szAddresses,
+                UserProductInfo = szUserProductInfo,
+                AuthCode = szAuthCode,
+            };
+
+            m_Api.Account = new AccountInfo()
+            {
+                InvestorId = szInvestorId,
+                Password = szPassword,
+            };
+
+            m_Api.ResumeType = nResumeType;
 
             Disconnect_TD();
-            Connect_MsgQueue();
             Connect_TD();
         }
 
         public void Disconnect()
         {
             Disconnect_TD();
-            Disconnect_MsgQueue();
             isConnected = false;
         }
 
         //建立行情
         private void Connect_TD()
         {
-            lock (_lockTd)
+            lock (this)
             {
-                if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
-                {
-                    m_pTdApi = TraderApi.TD_CreateTdApi();
-                    TraderApi.CTP_RegOnErrRtnOrderAction(m_pMsgQueue, _fnOnErrRtnOrderAction_Holder);
-                    TraderApi.CTP_RegOnErrRtnOrderInsert(m_pMsgQueue, _fnOnErrRtnOrderInsert_Holder);
-                    TraderApi.CTP_RegOnRspOrderAction(m_pMsgQueue, _fnOnRspOrderAction_Holder);
-                    TraderApi.CTP_RegOnRspOrderInsert(m_pMsgQueue, _fnOnRspOrderInsert_Holder);
-                    TraderApi.CTP_RegOnRspQryDepthMarketData(m_pMsgQueue, _fnOnRspQryDepthMarketData_Holder);
-                    TraderApi.CTP_RegOnRspQryInstrument(m_pMsgQueue, _fnOnRspQryInstrument_Holder);
-                    TraderApi.CTP_RegOnRspQryInstrumentCommissionRate(m_pMsgQueue, _fnOnRspQryInstrumentCommissionRate_Holder);
-                    TraderApi.CTP_RegOnRspQryInstrumentMarginRate(m_pMsgQueue, _fnOnRspQryInstrumentMarginRate_Holder);
-                    TraderApi.CTP_RegOnRspQryInvestorPosition(m_pMsgQueue, _fnOnRspQryInvestorPosition_Holder);
-                    TraderApi.CTP_RegOnRspQryOrder(m_pMsgQueue, _fnOnRspQryOrder_Holder);
-                    TraderApi.CTP_RegOnRspQryTrade(m_pMsgQueue, _fnOnRspQryTrade_Holder);
-                    TraderApi.CTP_RegOnRspQryTradingAccount(m_pMsgQueue, _fnOnRspQryTradingAccount_Holder);
-                    TraderApi.CTP_RegOnRtnInstrumentStatus(m_pMsgQueue, _fnOnRtnInstrumentStatus_Holder);
-                    TraderApi.CTP_RegOnRtnOrder(m_pMsgQueue, _fnOnRtnOrder_Holder);
-                    TraderApi.CTP_RegOnRtnTrade(m_pMsgQueue, _fnOnRtnTrade_Holder);
-                    TraderApi.TD_RegMsgQueue2TdApi(m_pTdApi, m_pMsgQueue);
-                    TraderApi.TD_Connect(m_pTdApi, szPath,szAddresses,
-                        szBrokerId,szInvestorId, szPassword,
-                        nResumeType,
-                        szUserProductInfo, szAuthCode);
-                }
+                m_Api.OnConnect = OnConnect_callback;
+                m_Api.OnDisconnect = OnDisconnect_callback;
+                m_Api.OnRspError = OnRspError_callback;
+
+                m_Api.OnErrRtnOrderAction = OnErrRtnOrderAction_callback;
+                m_Api.OnErrRtnOrderInsert = OnErrRtnOrderInsert_callback;
+                m_Api.OnRspOrderAction = OnRspOrderAction_callback;
+                m_Api.OnRspOrderInsert = OnRspOrderInsert_callback;
+                m_Api.OnRspQryDepthMarketData = OnRspQryDepthMarketData_callback;
+                m_Api.OnRspQryInstrument = OnRspQryInstrument_callback;
+                m_Api.OnRspQryInstrumentCommissionRate = OnRspQryInstrumentCommissionRate_callback;
+                m_Api.OnRspQryInstrumentMarginRate = OnRspQryInstrumentMarginRate_callback;
+                m_Api.OnRspQryInvestorPosition = OnRspQryInvestorPosition_callback;
+                m_Api.OnRspQryInvestorPositionDetail = OnRspQryInvestorPositionDetail_callback;
+                m_Api.OnRspQryOrder = OnRspQryOrder_callback;
+                m_Api.OnRspQryTrade = OnRspQryTrade_callback;
+                m_Api.OnRspQryTradingAccount = OnRspQryTradingAccount_callback;
+                m_Api.OnRtnInstrumentStatus = OnRtnInstrumentStatus_callback;
+                m_Api.OnRtnOrder = OnRtnOrder_callback;
+                m_Api.OnRtnTrade = OnRtnTrade_callback;
+
+                m_Api.Connect();
             }
         }
 
         private void Disconnect_TD()
         {
-            lock (_lockTd)
+            lock (this)
             {
-                if (null != m_pTdApi && IntPtr.Zero != m_pTdApi)
-                {
-                    TraderApi.TD_RegMsgQueue2TdApi(m_pTdApi, IntPtr.Zero);
-                    TraderApi.TD_ReleaseTdApi(m_pTdApi);
-                    m_pTdApi = IntPtr.Zero;
-                }
+                m_Api.Disconnect();
                 _bTdConnected = false;
             }
         }
 
-        private void Connect_MsgQueue()
-        {
-            lock (_lockMsgQueue)
-            {
-                if (null == m_pMsgQueue || IntPtr.Zero == m_pMsgQueue)
-                {
-                    m_pMsgQueue = CommApi.CTP_CreateMsgQueue();
-
-                    CommApi.CTP_RegOnConnect(m_pMsgQueue, _fnOnConnect_Holder);
-                    CommApi.CTP_RegOnDisconnect(m_pMsgQueue, _fnOnDisconnect_Holder);
-                    CommApi.CTP_RegOnRspError(m_pMsgQueue, _fnOnRspError_Holder);
-
-                    //由底层启动线程
-                    CommApi.CTP_StartMsgQueue(m_pMsgQueue);
-                }
-            }
-        }
-
-        private void Disconnect_MsgQueue()
-        {
-            lock (_lockMsgQueue)
-            {
-                if (null != m_pMsgQueue && IntPtr.Zero != m_pMsgQueue)
-                {
-                    //停止底层线程
-                    CommApi.CTP_StopMsgQueue(m_pMsgQueue);
-
-                    CommApi.CTP_ReleaseMsgQueue(m_pMsgQueue);
-                    m_pMsgQueue = IntPtr.Zero;
-                }
-            }
-        }
-
         public int SendOrder(
+            int OrderRef,
             string szInstrument,
             TThostFtdcDirectionType Direction,
             string szCombOffsetFlag,
@@ -236,14 +211,8 @@ namespace QuantBox.CSharp2CTP.Event
             double StopPrice,
             TThostFtdcVolumeConditionType VolumeCondition)
         {
-            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
-            {
-                return 0;
-            }
-
-             return TraderApi.TD_SendOrder(
-                m_pTdApi,
-                -1,
+            return m_Api.SendOrder(
+                OrderRef,
                 szInstrument,
                 Direction,
                 szCombOffsetFlag,
@@ -259,57 +228,32 @@ namespace QuantBox.CSharp2CTP.Event
 
         public void CancelOrder(ref CThostFtdcOrderField pOrder)
         {
-            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
-            {
-                return;
-            }
-
-            TraderApi.TD_CancelOrder(m_pTdApi, ref pOrder);
+            m_Api.CancelOrder(ref pOrder);
         }
 
         public void ReqQryTradingAccount()
         {
-            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
-            {
-                return;
-            }
-            TraderApi.TD_ReqQryTradingAccount(m_pTdApi);
+            m_Api.ReqQryTradingAccount();
         }
 
         public void ReqQryInvestorPosition(string szInstrument)
         {
-            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
-            {
-                return;
-            }
-            TraderApi.TD_ReqQryInvestorPosition(m_pTdApi, szInstrument);
+            m_Api.ReqQryInvestorPosition(szInstrument);
         }
 
         public void ReqQryInvestorPositionDetail(string szInstrument)
         {
-            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
-            {
-                return;
-            }
-            TraderApi.TD_ReqQryInvestorPositionDetail(m_pTdApi, szInstrument);
+            m_Api.ReqQryInvestorPositionDetail(szInstrument);
         }
 
         public void ReqQryInstrumentCommissionRate(string szInstrument)
         {
-            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
-            {
-                return;
-            }
-            TraderApi.TD_ReqQryInstrumentCommissionRate(m_pTdApi,szInstrument);
+            m_Api.ReqQryInstrumentCommissionRate(szInstrument);
         }
 
         public void ReqQryInstrumentMarginRate(string szInstrument, TThostFtdcHedgeFlagType HedgeFlag)
         {
-            if (null == m_pTdApi || IntPtr.Zero == m_pTdApi)
-            {
-                return;
-            }
-            TraderApi.TD_ReqQryInstrumentMarginRate(m_pTdApi, szInstrument, HedgeFlag);
+            m_Api.ReqQryInstrumentMarginRate(szInstrument, HedgeFlag);
         }
         
         private void OnConnect_callback(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
