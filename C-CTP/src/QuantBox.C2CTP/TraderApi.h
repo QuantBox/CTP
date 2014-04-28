@@ -7,6 +7,8 @@
 #include <list>
 #include <map>
 #include <string>
+#include <mutex>
+#include <atomic>
 
 using namespace std;
 
@@ -24,6 +26,8 @@ class CTraderApi :
 		E_QryInstrumentField,
 		E_InputOrderField,
 		E_InputOrderActionField,
+		E_InputQuoteField,
+		E_InputQuoteActionField,
 		E_QryTradingAccountField,
 		E_QryInvestorPositionField,
 		E_QryInvestorPositionDetailField,
@@ -49,6 +53,8 @@ class CTraderApi :
 			CThostFtdcQryTradingAccountField			QryTradingAccountField;
 			CThostFtdcInputOrderField					InputOrderField;
 			CThostFtdcInputOrderActionField				InputOrderActionField;
+			CThostFtdcInputQuoteField					InputQuoteField;
+			CThostFtdcInputQuoteActionField				InputQuoteActionField;
 		};
 	};
 
@@ -69,6 +75,7 @@ public:
 	void Disconnect();
 
 	int ReqOrderInsert(
+		int OrderRef,
 		const string& szInstrumentId,
 		TThostFtdcDirectionType Direction,
 		const TThostFtdcCombOffsetFlagType CombOffsetFlag,
@@ -80,7 +87,21 @@ public:
 		TThostFtdcContingentConditionType ContingentCondition,
 		TThostFtdcPriceType StopPrice,
 		TThostFtdcVolumeConditionType VolumeCondition);
-	void ReqOrderAction(CThostFtdcOrderField *pOrder);
+	int ReqOrderAction(CThostFtdcOrderField *pOrder);
+
+	int ReqQuoteInsert(
+		int QuoteRef,
+		const string& szInstrumentId,
+		TThostFtdcPriceType	AskPrice,
+		TThostFtdcPriceType	BidPrice,
+		TThostFtdcVolumeType AskVolume,
+		TThostFtdcVolumeType BidVolume,
+		TThostFtdcOffsetFlagType AskOffsetFlag,
+		TThostFtdcOffsetFlagType BidOffsetFlag,
+		TThostFtdcHedgeFlagType	AskHedgeFlag,
+		TThostFtdcHedgeFlagType	BidHedgeFlag
+		);
+	int ReqQuoteAction(CThostFtdcQuoteField *pQuote);
 
 	void ReqQryTradingAccount();
 	void ReqQryInvestorPosition(const string& szInstrumentId);
@@ -137,10 +158,19 @@ private:
 	//报单回报
 	virtual void OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
+	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
 	
 	//撤单回报
 	virtual void OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
+
+	//报价录入
+	virtual void OnRspQuoteInsert(CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnErrRtnQuoteInsert(CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo);
+	virtual void OnRtnQuote(CThostFtdcQuoteField *pQuote);
+	
+	//报价撤单
+	virtual void OnRspQuoteAction(CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void OnErrRtnQuoteAction(CThostFtdcQuoteActionField *pQuoteAction, CThostFtdcRspInfoField *pRspInfo);
 
 	//仓位
 	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -164,11 +194,11 @@ private:
 
 private:
 	ConnectionStatus			m_status;				//连接状态
-	volatile LONG				m_lRequestID;			//请求ID,得保持自增
+	atomic<int>					m_lRequestID;			//请求ID,得保持自增
 	
 	CThostFtdcRspUserLoginField m_RspUserLogin;			//返回的登录成功响应，目前利用此内成员进行报单所属区分
 
-	CRITICAL_SECTION			m_csOrderRef;
+	mutex						m_csOrderRef;
 	int							m_nMaxOrderRef;			//报单引用，用于区分报单，保持自增
 
 	CThostFtdcTraderApi*		m_pApi;					//交易API
@@ -186,10 +216,10 @@ private:
 	volatile bool				m_bRunning;
 	HANDLE						m_hThread;
 
-	CRITICAL_SECTION			m_csList;
+	mutex						m_csList;
 	list<SRequest*>				m_reqList;				//将发送请求队列
 
-	CRITICAL_SECTION			m_csMap;
+	mutex						m_csMap;
 	map<int,SRequest*>			m_reqMap;				//已发送请求池
 };
 

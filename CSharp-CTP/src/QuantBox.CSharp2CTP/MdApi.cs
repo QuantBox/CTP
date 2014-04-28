@@ -8,6 +8,9 @@ namespace QuantBox.CSharp2CTP
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnDepthMarketData")]
         public static extern void CTP_RegOnRtnDepthMarketData(IntPtr pMsgQueue, fnOnRtnDepthMarketData pCallback);
 
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnForQuoteRsp")]
+        public static extern void CTP_RegOnRtnForQuoteRsp(IntPtr pMsgQueue, fnOnRtnForQuoteRsp pCallback);
+
         [DllImport(CommApi.DllFileName, EntryPoint = "MD_CreateMdApi")]
         public static extern IntPtr MD_CreateMdApi();
 
@@ -22,6 +25,12 @@ namespace QuantBox.CSharp2CTP
 
         [DllImport(CommApi.DllFileName, EntryPoint = "MD_Unsubscribe")]
         public static extern void MD_Unsubscribe(IntPtr pMdApi, string inst, string szExchange);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "MD_SubscribeQuote")]
+        public static extern void MD_SubscribeQuote(IntPtr pMdApi, string inst, string szExchange);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "MD_UnsubscribeQuote")]
+        public static extern void MD_UnsubscribeQuote(IntPtr pMdApi, string inst, string szExchange);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "MD_ReleaseMdApi")]
         public static extern void MD_ReleaseMdApi(IntPtr pMdApi);

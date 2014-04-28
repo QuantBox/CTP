@@ -9,9 +9,11 @@ class CCTPMsgQueue
 	enum EnumMsgType
 	{
 		E_fnOnConnect,	
-		E_fnOnDisconnect,	
+		E_fnOnDisconnect,
 		E_fnOnErrRtnOrderAction,
 		E_fnOnErrRtnOrderInsert,
+		E_fnOnErrRtnQuoteAction,
+		E_fnOnErrRtnQuoteInsert,
 		E_fnOnRspError,
 		E_fnOnRspOrderAction,
 		E_fnOnRspOrderInsert,
@@ -24,9 +26,13 @@ class CCTPMsgQueue
 		E_fnOnRspQryOrder,
 		E_fnOnRspQryTrade,
 		E_fnOnRspQryTradingAccount,
+		E_fnOnRspQuoteAction,
+		E_fnOnRspQuoteInsert,
 		E_fnOnRtnDepthMarketData,
+		E_fnOnRtnForQuoteRsp,
 		E_fnOnRtnInstrumentStatus,
 		E_fnOnRtnOrder,
+		E_fnOnRtnQuote,
 		E_fnOnRtnTrade,
 	};
 
@@ -42,6 +48,10 @@ class CCTPMsgQueue
 		};		
 		union{
 			CThostFtdcDepthMarketDataField			DepthMarketData;	//E_fnOnRspQryDepthMarketData与E_fnOnRtnDepthMarketData返回的数据格式相同
+			CThostFtdcForQuoteRspField				ForQuoteRsp;
+			CThostFtdcQuoteActionField				QuoteAction;
+			CThostFtdcInputQuoteField				InputQuote;
+			CThostFtdcInputQuoteActionField			InputQuoteAction;
 			CThostFtdcInputOrderField				InputOrder;
 			CThostFtdcInputOrderActionField			InputOrderAction;
 			CThostFtdcInstrumentField				Instrument;
@@ -55,6 +65,7 @@ class CCTPMsgQueue
 			CThostFtdcRspUserLoginField				RspUserLogin;
 			CThostFtdcTradeField					Trade;
 			CThostFtdcTradingAccountField			TradingAccount;
+			CThostFtdcQuoteField					Quote;
 		};
 	};
 
@@ -69,6 +80,8 @@ public:
 		m_fnOnDisconnect = NULL;
 		m_fnOnErrRtnOrderAction = NULL;
 		m_fnOnErrRtnOrderInsert = NULL;
+		m_fnOnErrRtnQuoteAction = NULL;
+		m_fnOnErrRtnQuoteInsert = NULL;
 		m_fnOnRspError = NULL;
 		m_fnOnRspOrderAction = NULL;
 		m_fnOnRspOrderInsert = NULL;
@@ -81,9 +94,13 @@ public:
 		m_fnOnRspQryOrder = NULL;
 		m_fnOnRspQryTrade = NULL;
 		m_fnOnRspQryTradingAccount = NULL;
+		m_fnOnRspQuoteAction = NULL;
+		m_fnOnRspQuoteInsert = NULL;
 		m_fnOnRtnDepthMarketData = NULL;
+		m_fnOnRtnForQuoteRsp = NULL;
 		m_fnOnRtnInstrumentStatus = NULL;
 		m_fnOnRtnOrder = NULL;
+		m_fnOnRtnQuote = NULL;
 		m_fnOnRtnTrade = NULL;
 
 		m_hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
@@ -108,32 +125,40 @@ public:
 	void StopThread();
 
 	//将外部的函数地址注册到队列(按字母排序)
-	void RegisterCallback(fnOnConnect pCallback){m_fnOnConnect = pCallback;}
-	void RegisterCallback(fnOnDisconnect pCallback){m_fnOnDisconnect = pCallback;}
-	void RegisterCallback(fnOnErrRtnOrderAction pCallback){m_fnOnErrRtnOrderAction = pCallback;}
-	void RegisterCallback(fnOnErrRtnOrderInsert pCallback){m_fnOnErrRtnOrderInsert = pCallback;}
-	void RegisterCallback(fnOnRspError pCallback){m_fnOnRspError = pCallback;}
-	void RegisterCallback(fnOnRspOrderAction pCallback){m_fnOnRspOrderAction = pCallback;}
-	void RegisterCallback(fnOnRspOrderInsert pCallback){m_fnOnRspOrderInsert = pCallback;}
-	void RegisterCallback(fnOnRspQryDepthMarketData pCallback){m_fnOnRspQryDepthMarketData = pCallback;}
-	void RegisterCallback(fnOnRspQryInstrument pCallback){m_fnOnRspQryInstrument = pCallback;}
-	void RegisterCallback(fnOnRspQryInstrumentCommissionRate pCallback){m_fnOnRspQryInstrumentCommissionRate = pCallback;}
-	void RegisterCallback(fnOnRspQryInstrumentMarginRate pCallback){m_fnOnRspQryInstrumentMarginRate = pCallback;}
-	void RegisterCallback(fnOnRspQryInvestorPosition pCallback){m_fnOnRspQryInvestorPosition = pCallback;}
-	void RegisterCallback(fnOnRspQryInvestorPositionDetail pCallback){m_fnOnRspQryInvestorPositionDetail = pCallback;}
-	void RegisterCallback(fnOnRspQryOrder pCallback){m_fnOnRspQryOrder = pCallback;}
-	void RegisterCallback(fnOnRspQryTrade pCallback){m_fnOnRspQryTrade = pCallback;}
-	void RegisterCallback(fnOnRspQryTradingAccount pCallback){m_fnOnRspQryTradingAccount = pCallback;}
-	void RegisterCallback(fnOnRtnDepthMarketData pCallback){m_fnOnRtnDepthMarketData = pCallback;}
-	void RegisterCallback(fnOnRtnInstrumentStatus pCallback){m_fnOnRtnInstrumentStatus = pCallback;}
-	void RegisterCallback(fnOnRtnOrder pCallback){m_fnOnRtnOrder = pCallback;}
-	void RegisterCallback(fnOnRtnTrade pCallback){m_fnOnRtnTrade = pCallback;}
+	void RegisterCallback(fnOnConnect pCallback){ m_fnOnConnect = pCallback; }
+	void RegisterCallback(fnOnDisconnect pCallback){ m_fnOnDisconnect = pCallback; }
+	void RegisterCallback(fnOnErrRtnOrderAction pCallback){ m_fnOnErrRtnOrderAction = pCallback; }
+	void RegisterCallback(fnOnErrRtnOrderInsert pCallback){ m_fnOnErrRtnOrderInsert = pCallback; }
+	void RegisterCallback(fnOnErrRtnQuoteAction pCallback){ m_fnOnErrRtnQuoteAction = pCallback; }
+	void RegisterCallback(fnOnErrRtnQuoteInsert pCallback){ m_fnOnErrRtnQuoteInsert = pCallback; }
+	void RegisterCallback(fnOnRspError pCallback){ m_fnOnRspError = pCallback; }
+	void RegisterCallback(fnOnRspOrderAction pCallback){ m_fnOnRspOrderAction = pCallback; }
+	void RegisterCallback(fnOnRspOrderInsert pCallback){ m_fnOnRspOrderInsert = pCallback; }
+	void RegisterCallback(fnOnRspQryDepthMarketData pCallback){ m_fnOnRspQryDepthMarketData = pCallback; }
+	void RegisterCallback(fnOnRspQryInstrument pCallback){ m_fnOnRspQryInstrument = pCallback; }
+	void RegisterCallback(fnOnRspQryInstrumentCommissionRate pCallback){ m_fnOnRspQryInstrumentCommissionRate = pCallback; }
+	void RegisterCallback(fnOnRspQryInstrumentMarginRate pCallback){ m_fnOnRspQryInstrumentMarginRate = pCallback; }
+	void RegisterCallback(fnOnRspQryInvestorPosition pCallback){ m_fnOnRspQryInvestorPosition = pCallback; }
+	void RegisterCallback(fnOnRspQryInvestorPositionDetail pCallback){ m_fnOnRspQryInvestorPositionDetail = pCallback; }
+	void RegisterCallback(fnOnRspQryOrder pCallback){ m_fnOnRspQryOrder = pCallback; }
+	void RegisterCallback(fnOnRspQryTrade pCallback){ m_fnOnRspQryTrade = pCallback; }
+	void RegisterCallback(fnOnRspQryTradingAccount pCallback){ m_fnOnRspQryTradingAccount = pCallback; }
+	void RegisterCallback(fnOnRspQuoteAction pCallback){ m_fnOnRspQuoteAction = pCallback; }
+	void RegisterCallback(fnOnRspQuoteInsert pCallback){ m_fnOnRspQuoteInsert = pCallback; }
+	void RegisterCallback(fnOnRtnDepthMarketData pCallback){ m_fnOnRtnDepthMarketData = pCallback; }
+	void RegisterCallback(fnOnRtnForQuoteRsp pCallback){ m_fnOnRtnForQuoteRsp = pCallback; }
+	void RegisterCallback(fnOnRtnInstrumentStatus pCallback){ m_fnOnRtnInstrumentStatus = pCallback; }
+	void RegisterCallback(fnOnRtnOrder pCallback){ m_fnOnRtnOrder = pCallback; }
+	void RegisterCallback(fnOnRtnQuote pCallback){ m_fnOnRtnQuote = pCallback; }
+	void RegisterCallback(fnOnRtnTrade pCallback){ m_fnOnRtnTrade = pCallback; }
 
 	//响应结果处理后入队列(按字母排序)
 	void Input_OnConnect(void* pApi,CThostFtdcRspUserLoginField *pRspUserLogin,ConnectionStatus result);
 	void Input_OnDisconnect(void* pApi,CThostFtdcRspInfoField *pRspInfo,ConnectionStatus step);
 	void Input_OnErrRtnOrderAction(void* pTraderApi,CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo);
 	void Input_OnErrRtnOrderInsert(void* pTraderApi,CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo);
+	void Input_OnErrRtnQuoteAction(void* pTraderApi, CThostFtdcQuoteActionField *pQuoteAction, CThostFtdcRspInfoField *pRspInfo);
+	void Input_OnErrRtnQuoteInsert(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo);
 	void Input_OnRspError(void* pApi,CThostFtdcRspInfoField* pRspInfo,int nRequestID,bool bIsLast);
 	void Input_OnRspOrderAction(void* pTraderApi,CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspOrderInsert(void* pTraderApi,CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -146,9 +171,13 @@ public:
 	void Input_OnRspQryOrder(void* pTraderApi,CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQryTrade(void* pTraderApi,CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQryTradingAccount(void* pTraderApi,CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	void Input_OnRtnDepthMarketData(void* pMdApi,CThostFtdcDepthMarketDataField *pDepthMarketData);
+	void Input_OnRspQuoteAction(void* pTraderApi, CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	void Input_OnRspQuoteInsert(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	void Input_OnRtnDepthMarketData(void* pMdUserApi, CThostFtdcDepthMarketDataField *pDepthMarketData);
+	void Input_OnRtnForQuoteRsp(void* pMdUserApi, CThostFtdcForQuoteRspField *pForQuoteRsp);
 	void Input_OnRtnInstrumentStatus(void* pTraderApi,CThostFtdcInstrumentStatusField *pInstrumentStatus);
 	void Input_OnRtnOrder(void* pTraderApi,CThostFtdcOrderField *pOrder);
+	void Input_OnRtnQuote(void* pTraderApi, CThostFtdcQuoteField *pQuote);
 	void Input_OnRtnTrade(void* pTraderApi,CThostFtdcTradeField *pTrade);
 private:
 	friend DWORD WINAPI ProcessThread(LPVOID lpParam);
@@ -181,6 +210,16 @@ private:
 	{
 		if(m_fnOnErrRtnOrderInsert)
 			(*m_fnOnErrRtnOrderInsert)(pItem->pApi,&pItem->InputOrder,&pItem->RspInfo);
+	}
+	void Output_OnErrRtnQuoteAction(SMsgItem* pItem)
+	{
+		if (m_fnOnErrRtnQuoteAction)
+			(*m_fnOnErrRtnQuoteAction)(pItem->pApi, &pItem->QuoteAction, &pItem->RspInfo);
+	}
+	void Output_OnErrRtnQuoteInsert(SMsgItem* pItem)
+	{
+		if (m_fnOnErrRtnQuoteInsert)
+			(*m_fnOnErrRtnQuoteInsert)(pItem->pApi, &pItem->InputQuote, &pItem->RspInfo);
 	}
 	void Output_OnRspError(SMsgItem* pItem)
 	{
@@ -237,6 +276,16 @@ private:
 		if(m_fnOnRspQryTrade)
 			(*m_fnOnRspQryTrade)(pItem->pApi,&pItem->Trade,&pItem->RspInfo,pItem->nRequestID,pItem->bIsLast);
 	}
+	void Output_OnRspQuoteAction(SMsgItem* pItem)
+	{
+		if (m_fnOnRspQuoteAction)
+			(*m_fnOnRspQuoteAction)(pItem->pApi, &pItem->InputQuoteAction, &pItem->RspInfo, pItem->nRequestID, pItem->bIsLast);
+	}
+	void Output_OnRspQuoteInsert(SMsgItem* pItem)
+	{
+		if (m_fnOnRspQuoteInsert)
+			(*m_fnOnRspQuoteInsert)(pItem->pApi, &pItem->InputQuote, &pItem->RspInfo, pItem->nRequestID, pItem->bIsLast);
+	}
 	void Output_OnRspQryTradingAccount(SMsgItem* pItem)
 	{
 		if(m_fnOnRspQryTradingAccount)
@@ -247,6 +296,11 @@ private:
 		if(m_fnOnRtnDepthMarketData)
 			(*m_fnOnRtnDepthMarketData)(pItem->pApi,&pItem->DepthMarketData);
 	}
+	void Output_OnRtnForQuoteRsp(SMsgItem* pItem)
+	{
+		if (m_fnOnRtnForQuoteRsp)
+			(*m_fnOnRtnForQuoteRsp)(pItem->pApi, &pItem->ForQuoteRsp);
+	}
 	void Output_OnRtnInstrumentStatus(SMsgItem* pItem)
 	{
 		if(m_fnOnRtnInstrumentStatus)
@@ -256,6 +310,11 @@ private:
 	{
 		if(m_fnOnRtnOrder)
 			(*m_fnOnRtnOrder)(pItem->pApi,&pItem->Order);
+	}
+	void Output_OnRtnQuote(SMsgItem* pItem)
+	{
+		if (m_fnOnRtnQuote)
+			(*m_fnOnRtnQuote)(pItem->pApi, &pItem->Quote);
 	}
 	void Output_OnRtnTrade(SMsgItem* pItem)
 	{
@@ -276,6 +335,8 @@ private:
 	fnOnDisconnect						m_fnOnDisconnect;
 	fnOnErrRtnOrderAction				m_fnOnErrRtnOrderAction;
 	fnOnErrRtnOrderInsert				m_fnOnErrRtnOrderInsert;
+	fnOnErrRtnQuoteAction				m_fnOnErrRtnQuoteAction;
+	fnOnErrRtnQuoteInsert				m_fnOnErrRtnQuoteInsert;
 	fnOnRspError						m_fnOnRspError;
 	fnOnRspOrderAction					m_fnOnRspOrderAction;
 	fnOnRspOrderInsert					m_fnOnRspOrderInsert;
@@ -288,9 +349,13 @@ private:
 	fnOnRspQryOrder						m_fnOnRspQryOrder;
 	fnOnRspQryTrade						m_fnOnRspQryTrade;
 	fnOnRspQryTradingAccount			m_fnOnRspQryTradingAccount;
+	fnOnRspQuoteAction					m_fnOnRspQuoteAction;
+	fnOnRspQuoteInsert					m_fnOnRspQuoteInsert;
 	fnOnRtnDepthMarketData				m_fnOnRtnDepthMarketData;
+	fnOnRtnForQuoteRsp					m_fnOnRtnForQuoteRsp;
 	fnOnRtnInstrumentStatus				m_fnOnRtnInstrumentStatus;
 	fnOnRtnOrder						m_fnOnRtnOrder;
+	fnOnRtnQuote						m_fnOnRtnQuote;
 	fnOnRtnTrade						m_fnOnRtnTrade;
 };
 

@@ -40,26 +40,33 @@ enum ConnectionStatus
 };
 
 //回调函数类型定义（为编写方便，按字母排序）
-typedef void (__stdcall *fnOnConnect)(void* pApi,CThostFtdcRspUserLoginField *pRspUserLogin,ConnectionStatus result);//连接后的结果状态
-typedef void (__stdcall *fnOnDisconnect)(void* pApi,CThostFtdcRspInfoField *pRspInfo,ConnectionStatus step);//出错时所处的状态
-typedef void (__stdcall *fnOnErrRtnOrderAction)(void* pTraderApi,CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo);
-typedef void (__stdcall *fnOnErrRtnOrderInsert)(void* pTraderApi,CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo);
-typedef void (__stdcall *fnOnRspError)(void* pApi,CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspOrderAction)(void* pTraderApi,CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspOrderInsert)(void* pTraderApi,CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryDepthMarketData)(void* pTraderApi,CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryInstrument)(void* pTraderApi,CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryInstrumentCommissionRate)(void* pTraderApi,CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryInstrumentMarginRate)(void* pTraderApi,CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryInvestorPosition)(void* pTraderApi,CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryInvestorPositionDetail)(void* pTraderApi,CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryOrder)(void* pTraderApi,CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryTrade)(void* pTraderApi,CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRspQryTradingAccount)(void* pTraderApi,CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-typedef void (__stdcall *fnOnRtnDepthMarketData)(void* pMdUserApi,CThostFtdcDepthMarketDataField *pDepthMarketData);
-typedef void (__stdcall *fnOnRtnInstrumentStatus)(void* pTraderApi,CThostFtdcInstrumentStatusField *pInstrumentStatus);
-typedef void (__stdcall *fnOnRtnOrder)(void* pTraderApi,CThostFtdcOrderField *pOrder);
-typedef void (__stdcall *fnOnRtnTrade)(void* pTraderApi,CThostFtdcTradeField *pTrade);
+typedef void(__stdcall *fnOnConnect)(void* pApi, CThostFtdcRspUserLoginField *pRspUserLogin, ConnectionStatus result);//连接后的结果状态
+typedef void(__stdcall *fnOnDisconnect)(void* pApi, CThostFtdcRspInfoField *pRspInfo, ConnectionStatus step);//出错时所处的状态
+typedef void(__stdcall *fnOnErrRtnOrderAction)(void* pTraderApi, CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo);
+typedef void(__stdcall *fnOnErrRtnOrderInsert)(void* pTraderApi, CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo);
+typedef void(__stdcall *fnOnErrRtnQuoteAction)(void* pTraderApi, CThostFtdcQuoteActionField *pQuoteAction, CThostFtdcRspInfoField *pRspInfo);
+typedef void(__stdcall *fnOnErrRtnQuoteInsert)(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo);
+typedef void(__stdcall *fnOnRspError)(void* pApi, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspOrderAction)(void* pTraderApi, CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspOrderInsert)(void* pTraderApi, CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryDepthMarketData)(void* pTraderApi, CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryInstrument)(void* pTraderApi, CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryInstrumentCommissionRate)(void* pTraderApi, CThostFtdcInstrumentCommissionRateField *pInstrumentCommissionRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryInstrumentMarginRate)(void* pTraderApi, CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryInvestorPosition)(void* pTraderApi, CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryInvestorPositionDetail)(void* pTraderApi, CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryOrder)(void* pTraderApi, CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryTrade)(void* pTraderApi, CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQryTradingAccount)(void* pTraderApi, CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQuoteAction)(void* pTraderApi, CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQuoteInsert)(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRtnDepthMarketData)(void* pMdUserApi, CThostFtdcDepthMarketDataField *pDepthMarketData);
+typedef void(__stdcall *fnOnRtnForQuoteRsp)(void* pMdUserApi, CThostFtdcForQuoteRspField *pForQuoteRsp);
+typedef void(__stdcall *fnOnRtnInstrumentStatus)(void* pTraderApi, CThostFtdcInstrumentStatusField *pInstrumentStatus);
+typedef void(__stdcall *fnOnRtnOrder)(void* pTraderApi, CThostFtdcOrderField *pOrder);
+typedef void(__stdcall *fnOnRtnQuote)(void* pTraderApi, CThostFtdcQuoteField *pQuote);
+typedef void(__stdcall *fnOnRtnTrade)(void* pTraderApi, CThostFtdcTradeField *pTrade);
+
 
 //创建接收消息队列，支持响应行情和交易
 QUANTBOXC2CTP_API void* __stdcall CTP_CreateMsgQueue();
@@ -69,9 +76,13 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnConnect(void* pMsgQueue,fnOnConnect pC
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnDisconnect(void* pMsgQueue,fnOnDisconnect pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnOrderAction(void* pMsgQueue,fnOnErrRtnOrderAction pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnOrderInsert(void* pMsgQueue,fnOnErrRtnOrderInsert pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnQuoteAction(void* pMsgQueue, fnOnErrRtnQuoteAction pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnQuoteInsert(void* pMsgQueue, fnOnErrRtnQuoteInsert pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspError(void* pMsgQueue,fnOnRspError pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderAction(void* pMsgQueue,fnOnRspOrderAction pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderInsert(void* pMsgQueue,fnOnRspOrderInsert pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQuoteAction(void* pMsgQueue, fnOnRspQuoteAction pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQuoteInsert(void* pMsgQueue, fnOnRspQuoteInsert pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryDepthMarketData(void* pMsgQueue,fnOnRspQryDepthMarketData pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrument(void* pMsgQueue,fnOnRspQryInstrument pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentCommissionRate(void* pMsgQueue,fnOnRspQryInstrumentCommissionRate pCallback);
@@ -82,8 +93,10 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryOrder(void* pMsgQueue,fnOnRspQry
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTrade(void* pMsgQueue,fnOnRspQryTrade pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTradingAccount(void* pMsgQueue,fnOnRspQryTradingAccount pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnDepthMarketData(void* pMsgQueue,fnOnRtnDepthMarketData pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnForQuoteRsp(void* pMsgQueue, fnOnRtnForQuoteRsp pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnInstrumentStatus(void* pMsgQueue,fnOnRtnInstrumentStatus pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnOrder(void* pMsgQueue,fnOnRtnOrder pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnQuote(void* pMsgQueue, fnOnRtnQuote pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnTrade(void* pMsgQueue,fnOnRtnTrade pCallback);
 
 //释放消息队列
@@ -97,8 +110,7 @@ QUANTBOXC2CTP_API bool __stdcall CTP_ProcessMsgQueue(void* pMsgQueue);
 QUANTBOXC2CTP_API void __stdcall CTP_StartMsgQueue(void* pMsgQueue);
 //停止队列回调主动推送线程
 QUANTBOXC2CTP_API void __stdcall CTP_StopMsgQueue(void* pMsgQueue);
-//设置是否直接触发回调
-//QUANTBOXC2CTP_API void __stdcall CTP_EmitDirectly(void* pMsgQueue,bool bDirect);
+
 
 //行情接口=======================================
 
@@ -119,6 +131,10 @@ QUANTBOXC2CTP_API void __stdcall MD_Connect(
 QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID);
 //取消订阅，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
 QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID);
+//订阅合约，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
+QUANTBOXC2CTP_API void __stdcall MD_SubscribeQuote(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
+//取消订阅，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
+QUANTBOXC2CTP_API void __stdcall MD_UnsubscribeQuote(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
 //断开连接
 QUANTBOXC2CTP_API void __stdcall MD_Disconnect(void* pMdUserApi);
 //释放行情接口
@@ -143,6 +159,7 @@ QUANTBOXC2CTP_API void __stdcall TD_Connect(
 //报单
 QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 	void* pTraderApi,
+	int OrderRef,
 	const char* szInstrument,
 	TThostFtdcDirectionType Direction,
 	const char* szCombOffsetFlag,
@@ -157,6 +174,23 @@ QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 
 //撤单
 QUANTBOXC2CTP_API void __stdcall TD_CancelOrder(void* pTraderApi,CThostFtdcOrderField *pOrder);
+
+//报单
+QUANTBOXC2CTP_API int __stdcall TD_SendQuote(
+	void* pTraderApi,
+	int QuoteRef,
+	const char* szInstrument,
+	double	AskPrice,
+	double	BidPrice,
+	int AskVolume,
+	int BidVolume,
+	TThostFtdcOffsetFlagType AskOffsetFlag,
+	TThostFtdcOffsetFlagType BidOffsetFlag,
+	TThostFtdcHedgeFlagType	AskHedgeFlag,
+	TThostFtdcHedgeFlagType	BidHedgeFlag);
+
+//撤单
+QUANTBOXC2CTP_API void __stdcall TD_CancelQuote(void* pTraderApi, CThostFtdcQuoteField *pQuote);
 
 //断开连接
 QUANTBOXC2CTP_API void __stdcall TD_Disconnect(void* pTraderApi);

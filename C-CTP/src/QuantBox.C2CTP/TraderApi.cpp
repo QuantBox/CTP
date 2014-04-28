@@ -2,7 +2,6 @@
 #include "TraderApi.h"
 #include "CTPMsgQueue.h"
 #include "include\toolkit.h"
-#include "include\Lock.h"
 
 CTraderApi::CTraderApi(void)
 {
@@ -13,20 +12,12 @@ CTraderApi::CTraderApi(void)
 
 	m_hThread = NULL;
 	m_bRunning = false;
-
-	InitializeCriticalSection(&m_csList);
-	InitializeCriticalSection(&m_csMap);
-	InitializeCriticalSection(&m_csOrderRef);
 }
 
 
 CTraderApi::~CTraderApi(void)
 {
 	Disconnect();
-
-	DeleteCriticalSection(&m_csList);
-	DeleteCriticalSection(&m_csMap);
-	DeleteCriticalSection(&m_csOrderRef);
 }
 
 void CTraderApi::StopThread()
@@ -154,7 +145,7 @@ CTraderApi::SRequest* CTraderApi::MakeRequestBuf(RequestType type)
 
 void CTraderApi::ReleaseRequestListBuf()
 {
-	CLock cl(&m_csList);
+	lock_guard<mutex> cl(m_csList);
 	while (!m_reqList.empty())
 	{
 		SRequest * pRequest = m_reqList.front();
@@ -165,7 +156,7 @@ void CTraderApi::ReleaseRequestListBuf()
 
 void CTraderApi::ReleaseRequestMapBuf()
 {
-	CLock cl(&m_csMap);
+	lock_guard<mutex> cl(m_csMap);
 	for (map<int,SRequest*>::iterator it=m_reqMap.begin();it!=m_reqMap.end();++it)
 	{
 		delete (*it).second;
@@ -175,7 +166,7 @@ void CTraderApi::ReleaseRequestMapBuf()
 
 void CTraderApi::ReleaseRequestMapBuf(int nRequestID)
 {
-	CLock cl(&m_csMap);
+	lock_guard<mutex> cl(m_csMap);
 	map<int,SRequest*>::iterator it = m_reqMap.find(nRequestID);
 	if (it!=m_reqMap.end())
 	{
@@ -189,7 +180,7 @@ void CTraderApi::AddRequestMapBuf(int nRequestID,SRequest* pRequest)
 	if(NULL == pRequest)
 		return;
 
-	CLock cl(&m_csMap);
+	lock_guard<mutex> cl(m_csMap);
 	map<int,SRequest*>::iterator it = m_reqMap.find(nRequestID);
 	if (it!=m_reqMap.end())
 	{
@@ -215,7 +206,7 @@ void CTraderApi::AddToSendQueue(SRequest * pRequest)
 	if (NULL == pRequest)
 		return;
 
-	CLock cl(&m_csList);
+	lock_guard<mutex> cl(m_csList);
 	bool bFind = false;
 	//目前不去除相同类型的请求，即没有对大量同类型请求进行优化
 	//for (list<SRequest*>::iterator it = m_reqList.begin();it!= m_reqList.end();++it)
@@ -246,7 +237,7 @@ void CTraderApi::RunInThread()
 	while (!m_reqList.empty()&&m_bRunning)
 	{
 		SRequest * pRequest = m_reqList.front();
-		long lRequest = InterlockedIncrement(&m_lRequestID);
+		int lRequest = ++m_lRequestID;// 这个地方是否会出现原子操作的问题呢？
 		switch(pRequest->type)
 		{
 		case E_ReqAuthenticateField:
@@ -290,7 +281,7 @@ void CTraderApi::RunInThread()
 			m_nSleep = 1;
 			AddRequestMapBuf(lRequest,pRequest);
 
-			CLock cl(&m_csList);
+			lock_guard<mutex> cl(m_csList);
 			m_reqList.pop_front();
 		}
 		else
@@ -473,6 +464,7 @@ void CTraderApi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
 }
 
 int CTraderApi::ReqOrderInsert(
+	int OrderRef,
 	const string& szInstrumentId,
 	TThostFtdcDirectionType Direction,
 	const TThostFtdcCombOffsetFlagType CombOffsetFlag,
@@ -528,15 +520,26 @@ int CTraderApi::ReqOrderInsert(
 	int nRet = 0;
 	{
 		//可能报单太快，m_nMaxOrderRef还没有改变就提交了
-		CLock cl(&m_csOrderRef);
+		lock_guard<mutex> cl(m_csOrderRef);
 
-		nRet = m_nMaxOrderRef;
-		sprintf(body.OrderRef,"%d",nRet);
-		++m_nMaxOrderRef;
+		if (OrderRef < 0)
+		{
+			nRet = m_nMaxOrderRef;
+			sprintf(body.OrderRef, "%d", nRet);
+			++m_nMaxOrderRef;
+		}
+		else
+		{
+			nRet = OrderRef;
+			sprintf(body.OrderRef, "%d", OrderRef);
+		}
 
 		//不保存到队列，而是直接发送
-		long lRequest = InterlockedIncrement(&m_lRequestID);
-		int n = m_pApi->ReqOrderInsert(&pRequest->InputOrderField,lRequest);
+		int n = m_pApi->ReqOrderInsert(&pRequest->InputOrderField, ++m_lRequestID);
+		if (n < 0)
+		{
+			nRet = n;
+		}
 	}
 	delete pRequest;//用完后直接删除
 
@@ -563,14 +566,14 @@ void CTraderApi::OnRtnTrade(CThostFtdcTradeField *pTrade)
 		m_msgQueue->Input_OnRtnTrade(this,pTrade);
 }
 
-void CTraderApi::ReqOrderAction(CThostFtdcOrderField *pOrder)
+int CTraderApi::ReqOrderAction(CThostFtdcOrderField *pOrder)
 {
 	if (NULL == m_pApi)
-		return;
+		return 0;
 	
 	SRequest* pRequest = MakeRequestBuf(E_InputOrderActionField);
 	if (NULL == pRequest)
-		return;
+		return 0;
 	
 	CThostFtdcInputOrderActionField& body = pRequest->InputOrderActionField;
 
@@ -593,9 +596,9 @@ void CTraderApi::ReqOrderAction(CThostFtdcOrderField *pOrder)
 	///合约代码
 	strncpy(body.InstrumentID, pOrder->InstrumentID,sizeof(TThostFtdcInstrumentIDType));
 	
-	long lRequest = InterlockedIncrement(&m_lRequestID);
-	m_pApi->ReqOrderAction(&pRequest->InputOrderActionField,lRequest);
+	int nRet = m_pApi->ReqOrderAction(&pRequest->InputOrderActionField, ++m_lRequestID);
 	delete pRequest;
+	return nRet;
 }
 
 void CTraderApi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -614,6 +617,142 @@ void CTraderApi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
 	if(m_msgQueue)
 		m_msgQueue->Input_OnRtnOrder(this,pOrder);
+}
+
+int CTraderApi::ReqQuoteInsert(
+	int QuoteRef,
+	const string& szInstrumentId,
+	TThostFtdcPriceType	AskPrice,
+	TThostFtdcPriceType	BidPrice,
+	TThostFtdcVolumeType AskVolume,
+	TThostFtdcVolumeType BidVolume,
+	TThostFtdcOffsetFlagType AskOffsetFlag,
+	TThostFtdcOffsetFlagType BidOffsetFlag,
+	TThostFtdcHedgeFlagType	AskHedgeFlag,
+	TThostFtdcHedgeFlagType	BidHedgeFlag
+	)
+{
+	if (NULL == m_pApi)
+		return 0;
+
+	SRequest* pRequest = MakeRequestBuf(E_InputQuoteField);
+	if (NULL == pRequest)
+		return 0;
+
+	CThostFtdcInputQuoteField& body = pRequest->InputQuoteField;
+
+	strncpy(body.BrokerID, m_RspUserLogin.BrokerID, sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_RspUserLogin.UserID, sizeof(TThostFtdcInvestorIDType));
+
+	//合约
+	strncpy(body.InstrumentID, szInstrumentId.c_str(), sizeof(TThostFtdcInstrumentIDType));
+	//开平
+	body.AskHedgeFlag = AskOffsetFlag;
+	body.BidHedgeFlag = BidHedgeFlag;
+	//投保
+	body.AskHedgeFlag = AskHedgeFlag;
+	body.BidHedgeFlag = BidHedgeFlag;
+
+	//价格
+	body.AskPrice = AskPrice;
+	body.BidPrice = BidPrice;
+
+	//数量
+	body.AskVolume = AskVolume;
+	body.BidVolume = BidVolume;
+	
+	int nRet = 0;
+	{
+		//可能报单太快，m_nMaxOrderRef还没有改变就提交了
+		lock_guard<mutex> cl(m_csOrderRef);
+
+		if (QuoteRef < 0)
+		{
+			nRet = m_nMaxOrderRef;
+			sprintf(body.QuoteRef, "%d", nRet);
+			++m_nMaxOrderRef;
+		}
+		else
+		{
+			nRet = QuoteRef;
+			sprintf(body.QuoteRef, "%d", QuoteRef);
+		}
+
+		//不保存到队列，而是直接发送
+		int n = m_pApi->ReqQuoteInsert(&pRequest->InputQuoteField, ++m_lRequestID);
+		if (n < 0)
+		{
+			nRet = n;
+		}
+	}
+	delete pRequest;//用完后直接删除
+
+	return nRet;
+}
+
+void CTraderApi::OnRspQuoteInsert(CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (m_msgQueue)
+		m_msgQueue->Input_OnRspQuoteInsert(this, pInputQuote, pRspInfo, nRequestID, bIsLast);
+}
+
+void CTraderApi::OnErrRtnQuoteInsert(CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo)
+{
+	if (m_msgQueue)
+		m_msgQueue->Input_OnErrRtnQuoteInsert(this, pInputQuote, pRspInfo);
+}
+
+void CTraderApi::OnRtnQuote(CThostFtdcQuoteField *pQuote)
+{
+	if (m_msgQueue)
+		m_msgQueue->Input_OnRtnQuote(this, pQuote);
+}
+
+int CTraderApi::ReqQuoteAction(CThostFtdcQuoteField *pQuote)
+{
+	if (NULL == m_pApi)
+		return 0;
+
+	SRequest* pRequest = MakeRequestBuf(E_InputQuoteActionField);
+	if (NULL == pRequest)
+		return 0;
+
+	CThostFtdcInputQuoteActionField& body = pRequest->InputQuoteActionField;
+
+	///经纪公司代码
+	strncpy(body.BrokerID, pQuote->BrokerID, sizeof(TThostFtdcBrokerIDType));
+	///投资者代码
+	strncpy(body.InvestorID, pQuote->InvestorID, sizeof(TThostFtdcInvestorIDType));
+	///报单引用
+	strncpy(body.QuoteRef, pQuote->QuoteRef, sizeof(TThostFtdcOrderRefType));
+	///前置编号
+	body.FrontID = pQuote->FrontID;
+	///会话编号
+	body.SessionID = pQuote->SessionID;
+	///交易所代码
+	strncpy(body.ExchangeID, pQuote->ExchangeID, sizeof(TThostFtdcExchangeIDType));
+	///报单编号
+	strncpy(body.QuoteSysID, pQuote->QuoteSysID, sizeof(TThostFtdcOrderSysIDType));
+	///操作标志
+	body.ActionFlag = THOST_FTDC_AF_Delete;
+	///合约代码
+	strncpy(body.InstrumentID, pQuote->InstrumentID, sizeof(TThostFtdcInstrumentIDType));
+
+	int nRet = m_pApi->ReqQuoteAction(&pRequest->InputQuoteActionField, ++m_lRequestID);
+	delete pRequest;
+	return nRet;
+}
+
+void CTraderApi::OnRspQuoteAction(CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (m_msgQueue)
+		m_msgQueue->Input_OnRspQuoteAction(this, pInputQuoteAction, pRspInfo, nRequestID, bIsLast);
+}
+
+void CTraderApi::OnErrRtnQuoteAction(CThostFtdcQuoteActionField *pQuoteAction, CThostFtdcRspInfoField *pRspInfo)
+{
+	if (m_msgQueue)
+		m_msgQueue->Input_OnErrRtnQuoteAction(this, pQuoteAction, pRspInfo);
 }
 
 void CTraderApi::ReqQryTradingAccount()

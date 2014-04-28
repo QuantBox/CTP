@@ -69,6 +69,22 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnOrderInsert(void* pMsgQueue,fnOn
 	}
 }
 
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnQuoteAction(void* pMsgQueue, fnOnErrRtnQuoteAction pCallback)
+{
+	if (pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnQuoteInsert(void* pMsgQueue, fnOnErrRtnQuoteInsert pCallback)
+{
+	if (pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspError(void* pMsgQueue,fnOnRspError pCallback)
 {
 	if(pMsgQueue)
@@ -88,6 +104,22 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderAction(void* pMsgQueue,fnOnRsp
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderInsert(void* pMsgQueue,fnOnRspOrderInsert pCallback)
 {
 	if(pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQuoteAction(void* pMsgQueue, fnOnRspQuoteAction pCallback)
+{
+	if (pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQuoteInsert(void* pMsgQueue, fnOnRspQuoteInsert pCallback)
+{
+	if (pMsgQueue)
 	{
 		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
 	}
@@ -165,9 +197,17 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTradingAccount(void* pMsgQueue,f
 	}
 }
 
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnDepthMarketData(void* pMsgQueue,fnOnRtnDepthMarketData pCallback)
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnForQuoteRsp(void* pMsgQueue, fnOnRtnForQuoteRsp pCallback)
 {
 	if(pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnDepthMarketData(void* pMsgQueue, fnOnRtnDepthMarketData pCallback)
+{
+	if (pMsgQueue)
 	{
 		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
 	}
@@ -184,6 +224,14 @@ QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnInstrumentStatus(void* pMsgQueue,fn
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnOrder(void* pMsgQueue,fnOnRtnOrder pCallback)
 {
 	if(pMsgQueue)
+	{
+		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnQuote(void* pMsgQueue, fnOnRtnQuote pCallback)
+{
+	if (pMsgQueue)
 	{
 		CTP_GetQueue(pMsgQueue)->RegisterCallback(pCallback);
 	}
@@ -295,6 +343,24 @@ QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szI
 	}
 }
 
+QUANTBOXC2CTP_API void __stdcall MD_SubscribeQuote(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID)
+{
+	if (pMdUserApi
+		&&szInstrumentIDs)
+	{
+		MD_GetApi(pMdUserApi)->SubscribeQuote(szInstrumentIDs);
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall MD_UnsubscribeQuote(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID)
+{
+	if (pMdUserApi
+		&&szInstrumentIDs)
+	{
+		MD_GetApi(pMdUserApi)->UnsubscribeQuote(szInstrumentIDs);
+	}
+}
+
 QUANTBOXC2CTP_API void __stdcall MD_ReleaseMdApi(void* pMdUserApi)
 {
 	if(pMdUserApi)
@@ -343,6 +409,7 @@ QUANTBOXC2CTP_API void __stdcall TD_Connect(
 
 QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 	void* pTraderApi,
+	int OrderRef,
 	const char* szInstrument,
 	TThostFtdcDirectionType Direction,
 	const char* szCombOffsetFlag,
@@ -360,7 +427,9 @@ QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 		&&szCombOffsetFlag
 		&&szCombHedgeFlag)
 	{
-		return TD_GetApi(pTraderApi)->ReqOrderInsert(szInstrument,
+		return TD_GetApi(pTraderApi)->ReqOrderInsert(
+			OrderRef,
+			szInstrument,
 			Direction,
 			szCombOffsetFlag,
 			szCombHedgeFlag,
@@ -380,6 +449,45 @@ QUANTBOXC2CTP_API void __stdcall TD_CancelOrder(void* pTraderApi,CThostFtdcOrder
 	if(pTraderApi)
 	{
 		TD_GetApi(pTraderApi)->ReqOrderAction(pOrder);
+	}
+}
+
+QUANTBOXC2CTP_API int __stdcall TD_SendQuote(
+	void* pTraderApi,
+	int QuoteRef,
+	const char* szInstrument,
+	double	AskPrice,
+	double	BidPrice,
+	int AskVolume,
+	int BidVolume,
+	TThostFtdcOffsetFlagType AskOffsetFlag,
+	TThostFtdcOffsetFlagType BidOffsetFlag,
+	TThostFtdcHedgeFlagType	AskHedgeFlag,
+	TThostFtdcHedgeFlagType	BidHedgeFlag)
+{
+	if (pTraderApi
+		&&szInstrument)
+	{
+		return TD_GetApi(pTraderApi)->ReqQuoteInsert(
+			QuoteRef,
+			szInstrument,
+			AskPrice,
+			BidPrice,
+			AskVolume,
+			BidVolume,
+			AskOffsetFlag,
+			BidOffsetFlag,
+			AskHedgeFlag,
+			BidHedgeFlag);
+	}
+	return 0;
+}
+
+QUANTBOXC2CTP_API void __stdcall TD_CancelQuote(void* pTraderApi, CThostFtdcQuoteField *pQuote)
+{
+	if (pTraderApi)
+	{
+		TD_GetApi(pTraderApi)->ReqQuoteAction(pQuote);
 	}
 }
 

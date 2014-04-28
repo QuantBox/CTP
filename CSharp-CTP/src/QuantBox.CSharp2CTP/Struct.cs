@@ -140,6 +140,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
         public string FFEXTime;
+        /// <summary>
+        /// 能源中心时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string INETime;
     }
 
     /// <summary>
@@ -659,7 +664,7 @@ namespace QuantBox.CSharp2CTP
         /// <summary>
         /// 交易所名称
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 61)]
         public string ExchangeName;
         /// <summary>
         /// 交易所属性
@@ -728,6 +733,24 @@ namespace QuantBox.CSharp2CTP
         /// 平仓处理类型
         /// </summary>
         public TThostFtdcCloseDealTypeType CloseDealType;
+        /// <summary>
+        /// 交易币种类型
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string TradeCurrencyID;
+        /// <summary>
+        /// 质押资金可用范围
+        /// </summary>
+        public TThostFtdcMortgageFundUseRangeType MortgageFundUseRange;
+        /// <summary>
+        /// 交易所产品代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeProductID;
+        /// <summary>
+        /// 合约基础商品乘数
+        /// </summary>
+        public double UnderlyingMultiple;
     }
 
     /// <summary>
@@ -850,6 +873,27 @@ namespace QuantBox.CSharp2CTP
         /// 是否使用大额单边保证金算法
         /// </summary>
         public TThostFtdcMaxMarginSideAlgorithmType MaxMarginSideAlgorithm;
+        /// <summary>
+        /// 基础商品代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string UnderlyingInstrID;
+        /// <summary>
+        /// 执行价
+        /// </summary>
+        public double StrikePrice;
+        /// <summary>
+        /// 期权类型
+        /// </summary>
+        public TThostFtdcOptionsTypeType OptionsType;
+        /// <summary>
+        /// 合约基础商品乘数
+        /// </summary>
+        public double UnderlyingMultiple;
+        /// <summary>
+        /// 组合类型
+        /// </summary>
+        public TThostFtdcCombinationTypeType CombinationType;
     }
 
     /// <summary>
@@ -1250,6 +1294,75 @@ namespace QuantBox.CSharp2CTP
         /// 保底期货结算准备金
         /// </summary>
         public double ReserveBalance;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+        /// <summary>
+        /// 上次货币质入金额
+        /// </summary>
+        public double PreFundMortgageIn;
+        /// <summary>
+        /// 上次货币质出金额
+        /// </summary>
+        public double PreFundMortgageOut;
+        /// <summary>
+        /// 货币质入金额
+        /// </summary>
+        public double FundMortgageIn;
+        /// <summary>
+        /// 货币质出金额
+        /// </summary>
+        public double FundMortgageOut;
+        /// <summary>
+        /// 货币质押余额
+        /// </summary>
+        public double FundMortgageAvailable;
+        /// <summary>
+        /// 可质押货币金额
+        /// </summary>
+        public double MortgageableFund;
+        /// <summary>
+        /// 特殊产品占用保证金
+        /// </summary>
+        public double SpecProductMargin;
+        /// <summary>
+        /// 特殊产品冻结保证金
+        /// </summary>
+        public double SpecProductFrozenMargin;
+        /// <summary>
+        /// 特殊产品手续费
+        /// </summary>
+        public double SpecProductCommission;
+        /// <summary>
+        /// 特殊产品冻结手续费
+        /// </summary>
+        public double SpecProductFrozenCommission;
+        /// <summary>
+        /// 特殊产品持仓盈亏
+        /// </summary>
+        public double SpecProductPositionProfit;
+        /// <summary>
+        /// 特殊产品平仓盈亏
+        /// </summary>
+        public double SpecProductCloseProfit;
+        /// <summary>
+        /// 根据持仓盈亏算法计算的特殊产品持仓盈亏
+        /// </summary>
+        public double SpecProductPositionProfitByAlg;
+        /// <summary>
+        /// 特殊产品交易所保证金
+        /// </summary>
+        public double SpecProductExchangeMargin;
+        /// <summary>
+        /// 期权平仓盈亏
+        /// </summary>
+        public double OptionCloseProfit;
+        /// <summary>
+        /// 期权市值
+        /// </summary>
+        public double OptionValue;
     }
 
     /// <summary>
@@ -1422,6 +1535,22 @@ namespace QuantBox.CSharp2CTP
         /// 保证金率(按手数)
         /// </summary>
         public double MarginRateByVolume;
+        /// <summary>
+        /// 执行冻结
+        /// </summary>
+        public int StrikeFrozen;
+        /// <summary>
+        /// 执行冻结金额
+        /// </summary>
+        public double StrikeFrozenAmount;
+        /// <summary>
+        /// 放弃执行冻结
+        /// </summary>
+        public int AbandonFrozen;
+        /// <summary>
+        /// 期权市值
+        /// </summary>
+        public double OptionValue;
     }
 
     /// <summary>
@@ -2124,6 +2253,37 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// 汇率
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcExchangeRateField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 源币种
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string FromCurrencyID;
+        /// <summary>
+        /// 源币种单位数量
+        /// </summary>
+        public double FromCurrencyUnit;
+        /// <summary>
+        /// 目标币种
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string ToCurrencyID;
+        /// <summary>
+        /// 汇率
+        /// </summary>
+        public double ExchangeRate;
+    }
+
+    /// <summary>
     /// 结算引用
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
@@ -2288,6 +2448,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
         public string OneTimePassword;
+        /// <summary>
+        /// 能源中心时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string INETime;
     }
 
     /// <summary>
@@ -3711,6 +3876,48 @@ namespace QuantBox.CSharp2CTP
         /// 是否强制进行
         /// </summary>
         public int IsForce;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+    }
+
+    /// <summary>
+    /// 货币质押同步
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcSyncFundMortgageField
+    {
+        /// <summary>
+        /// 货币质押流水号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string MortgageSeqNo;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 源币种
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string FromCurrencyID;
+        /// <summary>
+        /// 质押金额
+        /// </summary>
+        public double MortgageAmount;
+        /// <summary>
+        /// 目标币种
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string ToCurrencyID;
     }
 
     /// <summary>
@@ -3989,6 +4196,75 @@ namespace QuantBox.CSharp2CTP
         /// 保底期货结算准备金
         /// </summary>
         public double ReserveBalance;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+        /// <summary>
+        /// 上次货币质入金额
+        /// </summary>
+        public double PreFundMortgageIn;
+        /// <summary>
+        /// 上次货币质出金额
+        /// </summary>
+        public double PreFundMortgageOut;
+        /// <summary>
+        /// 货币质入金额
+        /// </summary>
+        public double FundMortgageIn;
+        /// <summary>
+        /// 货币质出金额
+        /// </summary>
+        public double FundMortgageOut;
+        /// <summary>
+        /// 货币质押余额
+        /// </summary>
+        public double FundMortgageAvailable;
+        /// <summary>
+        /// 可质押货币金额
+        /// </summary>
+        public double MortgageableFund;
+        /// <summary>
+        /// 特殊产品占用保证金
+        /// </summary>
+        public double SpecProductMargin;
+        /// <summary>
+        /// 特殊产品冻结保证金
+        /// </summary>
+        public double SpecProductFrozenMargin;
+        /// <summary>
+        /// 特殊产品手续费
+        /// </summary>
+        public double SpecProductCommission;
+        /// <summary>
+        /// 特殊产品冻结手续费
+        /// </summary>
+        public double SpecProductFrozenCommission;
+        /// <summary>
+        /// 特殊产品持仓盈亏
+        /// </summary>
+        public double SpecProductPositionProfit;
+        /// <summary>
+        /// 特殊产品平仓盈亏
+        /// </summary>
+        public double SpecProductCloseProfit;
+        /// <summary>
+        /// 根据持仓盈亏算法计算的特殊产品持仓盈亏
+        /// </summary>
+        public double SpecProductPositionProfitByAlg;
+        /// <summary>
+        /// 特殊产品交易所保证金
+        /// </summary>
+        public double SpecProductExchangeMargin;
+        /// <summary>
+        /// 期权平仓盈亏
+        /// </summary>
+        public double OptionCloseProfit;
+        /// <summary>
+        /// 期权市值
+        /// </summary>
+        public double OptionValue;
     }
 
     /// <summary>
@@ -4161,6 +4437,22 @@ namespace QuantBox.CSharp2CTP
         /// 保证金率(按手数)
         /// </summary>
         public double MarginRateByVolume;
+        /// <summary>
+        /// 执行冻结
+        /// </summary>
+        public int StrikeFrozen;
+        /// <summary>
+        /// 执行冻结金额
+        /// </summary>
+        public double StrikeFrozenAmount;
+        /// <summary>
+        /// 放弃执行冻结
+        /// </summary>
+        public int AbandonFrozen;
+        /// <summary>
+        /// 期权市值
+        /// </summary>
+        public double OptionValue;
     }
 
     /// <summary>
@@ -4421,6 +4713,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string InvestorID;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -4474,7 +4771,7 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
-    /// 投资者组
+    /// 查询投资者组
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct CThostFtdcQryInvestorGroupField
@@ -4790,6 +5087,10 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
         public string ProductID;
+        /// <summary>
+        /// 产品类型
+        /// </summary>
+        public TThostFtdcProductClassType ProductClass;
     }
 
     /// <summary>
@@ -4978,6 +5279,47 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// 查询汇率
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExchangeRateField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 源币种
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string FromCurrencyID;
+        /// <summary>
+        /// 目标币种
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string ToCurrencyID;
+    }
+
+    /// <summary>
+    /// 查询货币质押流水
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQrySyncFundMortgageField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 货币质押流水号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string MortgageSeqNo;
+    }
+
+    /// <summary>
     /// 查询报单
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
@@ -5027,6 +5369,2424 @@ namespace QuantBox.CSharp2CTP
         /// 结算编号
         /// </summary>
         public int SettlementID;
+    }
+
+    /// <summary>
+    /// 当前期权合约最小保证金
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcOptionInstrMiniMarginField
+    {
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投资者范围
+        /// </summary>
+        public TThostFtdcInvestorRangeType InvestorRange;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 单位（手）期权合约最小保证金
+        /// </summary>
+        public double MinMargin;
+        /// <summary>
+        /// 取值方式
+        /// </summary>
+        public TThostFtdcValueMethodType ValueMethod;
+        /// <summary>
+        /// 是否跟随交易所收取
+        /// </summary>
+        public int IsRelative;
+    }
+
+    /// <summary>
+    /// 当前期权合约保证金调整系数
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcOptionInstrMarginAdjustField
+    {
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投资者范围
+        /// </summary>
+        public TThostFtdcInvestorRangeType InvestorRange;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 投机空头保证金调整系数
+        /// </summary>
+        public double SShortMarginRatioByMoney;
+        /// <summary>
+        /// 投机空头保证金调整系数
+        /// </summary>
+        public double SShortMarginRatioByVolume;
+        /// <summary>
+        /// 保值空头保证金调整系数
+        /// </summary>
+        public double HShortMarginRatioByMoney;
+        /// <summary>
+        /// 保值空头保证金调整系数
+        /// </summary>
+        public double HShortMarginRatioByVolume;
+        /// <summary>
+        /// 套利空头保证金调整系数
+        /// </summary>
+        public double AShortMarginRatioByMoney;
+        /// <summary>
+        /// 套利空头保证金调整系数
+        /// </summary>
+        public double AShortMarginRatioByVolume;
+        /// <summary>
+        /// 是否跟随交易所收取
+        /// </summary>
+        public int IsRelative;
+    }
+
+    /// <summary>
+    /// 当前期权合约手续费的详细内容
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcOptionInstrCommRateField
+    {
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投资者范围
+        /// </summary>
+        public TThostFtdcInvestorRangeType InvestorRange;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 开仓手续费率
+        /// </summary>
+        public double OpenRatioByMoney;
+        /// <summary>
+        /// 开仓手续费
+        /// </summary>
+        public double OpenRatioByVolume;
+        /// <summary>
+        /// 平仓手续费率
+        /// </summary>
+        public double CloseRatioByMoney;
+        /// <summary>
+        /// 平仓手续费
+        /// </summary>
+        public double CloseRatioByVolume;
+        /// <summary>
+        /// 平今手续费率
+        /// </summary>
+        public double CloseTodayRatioByMoney;
+        /// <summary>
+        /// 平今手续费
+        /// </summary>
+        public double CloseTodayRatioByVolume;
+        /// <summary>
+        /// 执行手续费率
+        /// </summary>
+        public double StrikeRatioByMoney;
+        /// <summary>
+        /// 执行手续费
+        /// </summary>
+        public double StrikeRatioByVolume;
+    }
+
+    /// <summary>
+    /// 期权交易成本
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcOptionInstrTradeCostField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
+        /// <summary>
+        /// 期权合约保证金不变部分
+        /// </summary>
+        public double FixedMargin;
+        /// <summary>
+        /// 期权合约最小保证金
+        /// </summary>
+        public double MiniMargin;
+        /// <summary>
+        /// 期权合约权利金
+        /// </summary>
+        public double Royalty;
+        /// <summary>
+        /// 交易所期权合约保证金不变部分
+        /// </summary>
+        public double ExchFixedMargin;
+        /// <summary>
+        /// 交易所期权合约最小保证金
+        /// </summary>
+        public double ExchMiniMargin;
+    }
+
+    /// <summary>
+    /// 期权交易成本查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryOptionInstrTradeCostField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
+        /// <summary>
+        /// 期权合约报价
+        /// </summary>
+        public double InputPrice;
+        /// <summary>
+        /// 标的价格,填0则用昨结算价
+        /// </summary>
+        public double UnderlyingPrice;
+    }
+
+    /// <summary>
+    /// 期权手续费率查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryOptionInstrCommRateField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+    }
+
+    /// <summary>
+    /// 股指现货指数
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcIndexPriceField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 指数现货收盘价
+        /// </summary>
+        public double ClosePrice;
+    }
+
+    /// <summary>
+    /// 输入的执行宣告
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcInputExecOrderField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 执行宣告引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderRef;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 数量
+        /// </summary>
+        public int Volume;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType OffsetFlag;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
+        /// <summary>
+        /// 执行类型
+        /// </summary>
+        public TThostFtdcActionTypeType ActionType;
+        /// <summary>
+        /// 保留头寸申请的持仓方向
+        /// </summary>
+        public TThostFtdcPosiDirectionType PosiDirection;
+        /// <summary>
+        /// 期权行权后是否保留期货头寸的标记
+        /// </summary>
+        public TThostFtdcExecOrderPositionFlagType ReservePositionFlag;
+        /// <summary>
+        /// 期权行权后生成的头寸是否自动平仓
+        /// </summary>
+        public TThostFtdcExecOrderCloseFlagType CloseFlag;
+    }
+
+    /// <summary>
+    /// 输入执行宣告操作
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcInputExecOrderActionField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 执行宣告操作引用
+        /// </summary>
+        public int ExecOrderActionRef;
+        /// <summary>
+        /// 执行宣告引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderRef;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 前置编号
+        /// </summary>
+        public int FrontID;
+        /// <summary>
+        /// 会话编号
+        /// </summary>
+        public int SessionID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 执行宣告操作编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string ExecOrderSysID;
+        /// <summary>
+        /// 操作标志
+        /// </summary>
+        public TThostFtdcActionFlagType ActionFlag;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+    }
+
+    /// <summary>
+    /// 执行宣告
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcExecOrderField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 执行宣告引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderRef;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 数量
+        /// </summary>
+        public int Volume;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType OffsetFlag;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
+        /// <summary>
+        /// 执行类型
+        /// </summary>
+        public TThostFtdcActionTypeType ActionType;
+        /// <summary>
+        /// 保留头寸申请的持仓方向
+        /// </summary>
+        public TThostFtdcPosiDirectionType PosiDirection;
+        /// <summary>
+        /// 期权行权后是否保留期货头寸的标记
+        /// </summary>
+        public TThostFtdcExecOrderPositionFlagType ReservePositionFlag;
+        /// <summary>
+        /// 期权行权后生成的头寸是否自动平仓
+        /// </summary>
+        public TThostFtdcExecOrderCloseFlagType CloseFlag;
+        /// <summary>
+        /// 本地执行宣告编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderLocalID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 执行宣告提交状态
+        /// </summary>
+        public TThostFtdcOrderSubmitStatusType OrderSubmitStatus;
+        /// <summary>
+        /// 报单提示序号
+        /// </summary>
+        public int NotifySequence;
+        /// <summary>
+        /// 交易日
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string TradingDay;
+        /// <summary>
+        /// 结算编号
+        /// </summary>
+        public int SettlementID;
+        /// <summary>
+        /// 执行宣告编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string ExecOrderSysID;
+        /// <summary>
+        /// 报单日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertDate;
+        /// <summary>
+        /// 插入时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTime;
+        /// <summary>
+        /// 撤销时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string CancelTime;
+        /// <summary>
+        /// 执行结果
+        /// </summary>
+        public TThostFtdcExecResultType ExecResult;
+        /// <summary>
+        /// 结算会员编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClearingPartID;
+        /// <summary>
+        /// 序号
+        /// </summary>
+        public int SequenceNo;
+        /// <summary>
+        /// 前置编号
+        /// </summary>
+        public int FrontID;
+        /// <summary>
+        /// 会话编号
+        /// </summary>
+        public int SessionID;
+        /// <summary>
+        /// 用户端产品信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string UserProductInfo;
+        /// <summary>
+        /// 状态信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+        public string StatusMsg;
+        /// <summary>
+        /// 操作用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string ActiveUserID;
+        /// <summary>
+        /// 经纪公司报单编号
+        /// </summary>
+        public int BrokerExecOrderSeq;
+    }
+
+    /// <summary>
+    /// 执行宣告操作
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcExecOrderActionField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 执行宣告操作引用
+        /// </summary>
+        public int ExecOrderActionRef;
+        /// <summary>
+        /// 执行宣告引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderRef;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 前置编号
+        /// </summary>
+        public int FrontID;
+        /// <summary>
+        /// 会话编号
+        /// </summary>
+        public int SessionID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 执行宣告操作编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string ExecOrderSysID;
+        /// <summary>
+        /// 操作标志
+        /// </summary>
+        public TThostFtdcActionFlagType ActionFlag;
+        /// <summary>
+        /// 操作日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDate;
+        /// <summary>
+        /// 操作时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionTime;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 本地执行宣告编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderLocalID;
+        /// <summary>
+        /// 操作本地编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ActionLocalID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 报单操作状态
+        /// </summary>
+        public TThostFtdcOrderActionStatusType OrderActionStatus;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 执行类型
+        /// </summary>
+        public TThostFtdcActionTypeType ActionType;
+        /// <summary>
+        /// 状态信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+        public string StatusMsg;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+    }
+
+    /// <summary>
+    /// 执行宣告查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExecOrderField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 执行宣告编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string ExecOrderSysID;
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTimeStart;
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTimeEnd;
+    }
+
+    /// <summary>
+    /// 交易所执行宣告信息
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcExchangeExecOrderField
+    {
+        /// <summary>
+        /// 数量
+        /// </summary>
+        public int Volume;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType OffsetFlag;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
+        /// <summary>
+        /// 执行类型
+        /// </summary>
+        public TThostFtdcActionTypeType ActionType;
+        /// <summary>
+        /// 保留头寸申请的持仓方向
+        /// </summary>
+        public TThostFtdcPosiDirectionType PosiDirection;
+        /// <summary>
+        /// 期权行权后是否保留期货头寸的标记
+        /// </summary>
+        public TThostFtdcExecOrderPositionFlagType ReservePositionFlag;
+        /// <summary>
+        /// 期权行权后生成的头寸是否自动平仓
+        /// </summary>
+        public TThostFtdcExecOrderCloseFlagType CloseFlag;
+        /// <summary>
+        /// 本地执行宣告编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderLocalID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 执行宣告提交状态
+        /// </summary>
+        public TThostFtdcOrderSubmitStatusType OrderSubmitStatus;
+        /// <summary>
+        /// 报单提示序号
+        /// </summary>
+        public int NotifySequence;
+        /// <summary>
+        /// 交易日
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string TradingDay;
+        /// <summary>
+        /// 结算编号
+        /// </summary>
+        public int SettlementID;
+        /// <summary>
+        /// 执行宣告编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string ExecOrderSysID;
+        /// <summary>
+        /// 报单日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertDate;
+        /// <summary>
+        /// 插入时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTime;
+        /// <summary>
+        /// 撤销时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string CancelTime;
+        /// <summary>
+        /// 执行结果
+        /// </summary>
+        public TThostFtdcExecResultType ExecResult;
+        /// <summary>
+        /// 结算会员编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClearingPartID;
+        /// <summary>
+        /// 序号
+        /// </summary>
+        public int SequenceNo;
+    }
+
+    /// <summary>
+    /// 交易所执行宣告查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExchangeExecOrderField
+    {
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+    }
+
+    /// <summary>
+    /// 执行宣告操作查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExecOrderActionField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+    }
+
+    /// <summary>
+    /// 交易所执行宣告操作
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcExchangeExecOrderActionField
+    {
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 执行宣告操作编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string ExecOrderSysID;
+        /// <summary>
+        /// 操作标志
+        /// </summary>
+        public TThostFtdcActionFlagType ActionFlag;
+        /// <summary>
+        /// 操作日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDate;
+        /// <summary>
+        /// 操作时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionTime;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 本地执行宣告编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderLocalID;
+        /// <summary>
+        /// 操作本地编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ActionLocalID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 报单操作状态
+        /// </summary>
+        public TThostFtdcOrderActionStatusType OrderActionStatus;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 执行类型
+        /// </summary>
+        public TThostFtdcActionTypeType ActionType;
+    }
+
+    /// <summary>
+    /// 交易所执行宣告操作查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExchangeExecOrderActionField
+    {
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+    }
+
+    /// <summary>
+    /// 错误执行宣告
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcErrExecOrderField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 执行宣告引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderRef;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 数量
+        /// </summary>
+        public int Volume;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType OffsetFlag;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
+        /// <summary>
+        /// 执行类型
+        /// </summary>
+        public TThostFtdcActionTypeType ActionType;
+        /// <summary>
+        /// 保留头寸申请的持仓方向
+        /// </summary>
+        public TThostFtdcPosiDirectionType PosiDirection;
+        /// <summary>
+        /// 期权行权后是否保留期货头寸的标记
+        /// </summary>
+        public TThostFtdcExecOrderPositionFlagType ReservePositionFlag;
+        /// <summary>
+        /// 期权行权后生成的头寸是否自动平仓
+        /// </summary>
+        public TThostFtdcExecOrderCloseFlagType CloseFlag;
+        /// <summary>
+        /// 错误代码
+        /// </summary>
+        public int ErrorID;
+        /// <summary>
+        /// 错误信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+        public string ErrorMsg;
+    }
+
+    /// <summary>
+    /// 查询错误执行宣告
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryErrExecOrderField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+    }
+
+    /// <summary>
+    /// 错误执行宣告操作
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcErrExecOrderActionField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 执行宣告操作引用
+        /// </summary>
+        public int ExecOrderActionRef;
+        /// <summary>
+        /// 执行宣告引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ExecOrderRef;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 前置编号
+        /// </summary>
+        public int FrontID;
+        /// <summary>
+        /// 会话编号
+        /// </summary>
+        public int SessionID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 执行宣告操作编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string ExecOrderSysID;
+        /// <summary>
+        /// 操作标志
+        /// </summary>
+        public TThostFtdcActionFlagType ActionFlag;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 错误代码
+        /// </summary>
+        public int ErrorID;
+        /// <summary>
+        /// 错误信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+        public string ErrorMsg;
+    }
+
+    /// <summary>
+    /// 查询错误执行宣告操作
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryErrExecOrderActionField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+    }
+
+    /// <summary>
+    /// 投资者期权合约交易权限
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcOptionInstrTradingRightField
+    {
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投资者范围
+        /// </summary>
+        public TThostFtdcInvestorRangeType InvestorRange;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 买卖方向
+        /// </summary>
+        public TThostFtdcDirectionType Direction;
+        /// <summary>
+        /// 交易权限
+        /// </summary>
+        public TThostFtdcTradingRightType TradingRight;
+    }
+
+    /// <summary>
+    /// 查询期权合约交易权限
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryOptionInstrTradingRightField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 买卖方向
+        /// </summary>
+        public TThostFtdcDirectionType Direction;
+    }
+
+    /// <summary>
+    /// 输入的询价
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcInputForQuoteField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 询价引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ForQuoteRef;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+    }
+
+    /// <summary>
+    /// 询价
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcForQuoteField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 询价引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ForQuoteRef;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 本地询价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ForQuoteLocalID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 报单日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertDate;
+        /// <summary>
+        /// 插入时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTime;
+        /// <summary>
+        /// 询价状态
+        /// </summary>
+        public TThostFtdcForQuoteStatusType ForQuoteStatus;
+        /// <summary>
+        /// 前置编号
+        /// </summary>
+        public int FrontID;
+        /// <summary>
+        /// 会话编号
+        /// </summary>
+        public int SessionID;
+        /// <summary>
+        /// 状态信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+        public string StatusMsg;
+        /// <summary>
+        /// 操作用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string ActiveUserID;
+        /// <summary>
+        /// 经纪公司询价编号
+        /// </summary>
+        public int BrokerForQutoSeq;
+    }
+
+    /// <summary>
+    /// 询价查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryForQuoteField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTimeStart;
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTimeEnd;
+    }
+
+    /// <summary>
+    /// 交易所询价信息
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcExchangeForQuoteField
+    {
+        /// <summary>
+        /// 本地询价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ForQuoteLocalID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 报单日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertDate;
+        /// <summary>
+        /// 插入时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTime;
+        /// <summary>
+        /// 询价状态
+        /// </summary>
+        public TThostFtdcForQuoteStatusType ForQuoteStatus;
+    }
+
+    /// <summary>
+    /// 交易所询价查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExchangeForQuoteField
+    {
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+    }
+
+    /// <summary>
+    /// 输入的报价
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcInputQuoteField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 报价引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string QuoteRef;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 卖价格
+        /// </summary>
+        public double AskPrice;
+        /// <summary>
+        /// 买价格
+        /// </summary>
+        public double BidPrice;
+        /// <summary>
+        /// 卖数量
+        /// </summary>
+        public int AskVolume;
+        /// <summary>
+        /// 买数量
+        /// </summary>
+        public int BidVolume;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 卖开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType AskOffsetFlag;
+        /// <summary>
+        /// 买开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType BidOffsetFlag;
+        /// <summary>
+        /// 卖投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType AskHedgeFlag;
+        /// <summary>
+        /// 买投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType BidHedgeFlag;
+    }
+
+    /// <summary>
+    /// 输入报价操作
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcInputQuoteActionField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 报价操作引用
+        /// </summary>
+        public int QuoteActionRef;
+        /// <summary>
+        /// 报价引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string QuoteRef;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 前置编号
+        /// </summary>
+        public int FrontID;
+        /// <summary>
+        /// 会话编号
+        /// </summary>
+        public int SessionID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 报价操作编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string QuoteSysID;
+        /// <summary>
+        /// 操作标志
+        /// </summary>
+        public TThostFtdcActionFlagType ActionFlag;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+    }
+
+    /// <summary>
+    /// 报价
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQuoteField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 报价引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string QuoteRef;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 卖价格
+        /// </summary>
+        public double AskPrice;
+        /// <summary>
+        /// 买价格
+        /// </summary>
+        public double BidPrice;
+        /// <summary>
+        /// 卖数量
+        /// </summary>
+        public int AskVolume;
+        /// <summary>
+        /// 买数量
+        /// </summary>
+        public int BidVolume;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 卖开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType AskOffsetFlag;
+        /// <summary>
+        /// 买开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType BidOffsetFlag;
+        /// <summary>
+        /// 卖投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType AskHedgeFlag;
+        /// <summary>
+        /// 买投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType BidHedgeFlag;
+        /// <summary>
+        /// 本地报价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string QuoteLocalID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 报价提示序号
+        /// </summary>
+        public int NotifySequence;
+        /// <summary>
+        /// 报价提交状态
+        /// </summary>
+        public TThostFtdcOrderSubmitStatusType OrderSubmitStatus;
+        /// <summary>
+        /// 交易日
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string TradingDay;
+        /// <summary>
+        /// 结算编号
+        /// </summary>
+        public int SettlementID;
+        /// <summary>
+        /// 报价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string QuoteSysID;
+        /// <summary>
+        /// 报单日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertDate;
+        /// <summary>
+        /// 插入时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTime;
+        /// <summary>
+        /// 撤销时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string CancelTime;
+        /// <summary>
+        /// 报价状态
+        /// </summary>
+        public TThostFtdcOrderStatusType QuoteStatus;
+        /// <summary>
+        /// 结算会员编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClearingPartID;
+        /// <summary>
+        /// 序号
+        /// </summary>
+        public int SequenceNo;
+        /// <summary>
+        /// 卖方报单编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string AskOrderSysID;
+        /// <summary>
+        /// 买方报单编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BidOrderSysID;
+        /// <summary>
+        /// 前置编号
+        /// </summary>
+        public int FrontID;
+        /// <summary>
+        /// 会话编号
+        /// </summary>
+        public int SessionID;
+        /// <summary>
+        /// 用户端产品信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string UserProductInfo;
+        /// <summary>
+        /// 状态信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+        public string StatusMsg;
+        /// <summary>
+        /// 操作用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string ActiveUserID;
+        /// <summary>
+        /// 经纪公司报价编号
+        /// </summary>
+        public int BrokerQuoteSeq;
+    }
+
+    /// <summary>
+    /// 报价操作
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQuoteActionField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 报价操作引用
+        /// </summary>
+        public int QuoteActionRef;
+        /// <summary>
+        /// 报价引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string QuoteRef;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 前置编号
+        /// </summary>
+        public int FrontID;
+        /// <summary>
+        /// 会话编号
+        /// </summary>
+        public int SessionID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 报价操作编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string QuoteSysID;
+        /// <summary>
+        /// 操作标志
+        /// </summary>
+        public TThostFtdcActionFlagType ActionFlag;
+        /// <summary>
+        /// 操作日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDate;
+        /// <summary>
+        /// 操作时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionTime;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 本地报价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string QuoteLocalID;
+        /// <summary>
+        /// 操作本地编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ActionLocalID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 报单操作状态
+        /// </summary>
+        public TThostFtdcOrderActionStatusType OrderActionStatus;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 状态信息
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+        public string StatusMsg;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+    }
+
+    /// <summary>
+    /// 报价查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryQuoteField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 报价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string QuoteSysID;
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTimeStart;
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTimeEnd;
+    }
+
+    /// <summary>
+    /// 交易所报价信息
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcExchangeQuoteField
+    {
+        /// <summary>
+        /// 卖价格
+        /// </summary>
+        public double AskPrice;
+        /// <summary>
+        /// 买价格
+        /// </summary>
+        public double BidPrice;
+        /// <summary>
+        /// 卖数量
+        /// </summary>
+        public int AskVolume;
+        /// <summary>
+        /// 买数量
+        /// </summary>
+        public int BidVolume;
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 卖开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType AskOffsetFlag;
+        /// <summary>
+        /// 买开平标志
+        /// </summary>
+        public TThostFtdcOffsetFlagType BidOffsetFlag;
+        /// <summary>
+        /// 卖投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType AskHedgeFlag;
+        /// <summary>
+        /// 买投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType BidHedgeFlag;
+        /// <summary>
+        /// 本地报价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string QuoteLocalID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 报价提示序号
+        /// </summary>
+        public int NotifySequence;
+        /// <summary>
+        /// 报价提交状态
+        /// </summary>
+        public TThostFtdcOrderSubmitStatusType OrderSubmitStatus;
+        /// <summary>
+        /// 交易日
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string TradingDay;
+        /// <summary>
+        /// 结算编号
+        /// </summary>
+        public int SettlementID;
+        /// <summary>
+        /// 报价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string QuoteSysID;
+        /// <summary>
+        /// 报单日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertDate;
+        /// <summary>
+        /// 插入时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string InsertTime;
+        /// <summary>
+        /// 撤销时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string CancelTime;
+        /// <summary>
+        /// 报价状态
+        /// </summary>
+        public TThostFtdcOrderStatusType QuoteStatus;
+        /// <summary>
+        /// 结算会员编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClearingPartID;
+        /// <summary>
+        /// 序号
+        /// </summary>
+        public int SequenceNo;
+        /// <summary>
+        /// 卖方报单编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string AskOrderSysID;
+        /// <summary>
+        /// 买方报单编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BidOrderSysID;
+    }
+
+    /// <summary>
+    /// 交易所报价查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExchangeQuoteField
+    {
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 合约在交易所的代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string ExchangeInstID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+    }
+
+    /// <summary>
+    /// 报价操作查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryQuoteActionField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+    }
+
+    /// <summary>
+    /// 交易所报价操作
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcExchangeQuoteActionField
+    {
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 报价操作编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string QuoteSysID;
+        /// <summary>
+        /// 操作标志
+        /// </summary>
+        public TThostFtdcActionFlagType ActionFlag;
+        /// <summary>
+        /// 操作日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDate;
+        /// <summary>
+        /// 操作时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionTime;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+        /// <summary>
+        /// 安装编号
+        /// </summary>
+        public int InstallID;
+        /// <summary>
+        /// 本地报价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string QuoteLocalID;
+        /// <summary>
+        /// 操作本地编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string ActionLocalID;
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 业务单元
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string BusinessUnit;
+        /// <summary>
+        /// 报单操作状态
+        /// </summary>
+        public TThostFtdcOrderActionStatusType OrderActionStatus;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+    }
+
+    /// <summary>
+    /// 交易所报价操作查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryExchangeQuoteActionField
+    {
+        /// <summary>
+        /// 会员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ClientID;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
+        /// <summary>
+        /// 交易所交易员代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string TraderID;
+    }
+
+    /// <summary>
+    /// 期权合约delta值
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcOptionInstrDeltaField
+    {
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投资者范围
+        /// </summary>
+        public TThostFtdcInvestorRangeType InvestorRange;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// Delta值
+        /// </summary>
+        public double Delta;
+    }
+
+    /// <summary>
+    /// 发给做市商的询价请求
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcForQuoteRspField
+    {
+        /// <summary>
+        /// 交易日
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string TradingDay;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 询价编号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string ForQuoteSysID;
+        /// <summary>
+        /// 询价时间
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ForQuoteTime;
+        /// <summary>
+        /// 业务日期
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ActionDay;
     }
 
     /// <summary>
@@ -5485,6 +8245,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string AccountID;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -5512,6 +8277,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
         public string Memo;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -5749,6 +8519,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
         public string Password;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -6003,6 +8778,19 @@ namespace QuantBox.CSharp2CTP
         /// 是否启用用户事件
         /// </summary>
         public int IsBrokerUserEvent;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+        /// <summary>
+        /// 货币质押比率
+        /// </summary>
+        public double FundMortgageRatio;
+        /// <summary>
+        /// 权益算法
+        /// </summary>
+        public TThostFtdcBalanceAlgorithmType BalanceAlgorithm;
     }
 
     /// <summary>
@@ -6059,6 +8847,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
         public string NewPassword;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -6218,6 +9011,16 @@ namespace QuantBox.CSharp2CTP
         /// 优先级
         /// </summary>
         public int Priority;
+        /// <summary>
+        /// 开户邮政编码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string UOAZipCode;
+        /// <summary>
+        /// 全称
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 101)]
+        public string PersonFullName;
     }
 
     /// <summary>
@@ -6796,6 +9599,15 @@ namespace QuantBox.CSharp2CTP
         /// 可提资金比例
         /// </summary>
         public double UsingRatio;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+        /// <summary>
+        /// 货币质押比率
+        /// </summary>
+        public double FundMortgageRatio;
     }
 
     /// <summary>
@@ -7642,6 +10454,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
         public string InvestorID;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -7672,6 +10489,15 @@ namespace QuantBox.CSharp2CTP
         /// 可用是否包含平仓盈利
         /// </summary>
         public TThostFtdcIncludeCloseProfitType AvailIncludeCloseProfit;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+        /// <summary>
+        /// 期权权利金价格类型
+        /// </summary>
+        public TThostFtdcOptionRoyaltyPriceTypeType OptionRoyaltyPriceType;
     }
 
     /// <summary>
@@ -8171,6 +10997,10 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
         public string ProductGroupID;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
     }
 
     /// <summary>
@@ -8287,6 +11117,10 @@ namespace QuantBox.CSharp2CTP
         /// 交易所空头折抵总金额
         /// </summary>
         public double ShortExchOffsetAmount;
+        /// <summary>
+        /// 投机套保标志
+        /// </summary>
+        public TThostFtdcHedgeFlagType HedgeFlag;
     }
 
     /// <summary>
@@ -11054,6 +13888,11 @@ namespace QuantBox.CSharp2CTP
         /// 交易ID
         /// </summary>
         public int TID;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -11116,6 +13955,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
         public string Password;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -11721,6 +14565,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
         public string BankID;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -12097,6 +14946,16 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
         public string BankID;
+        /// <summary>
+        /// 银行分支机构编码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
+        public string BankBranchID;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 
     /// <summary>
@@ -12836,6 +15695,67 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// 二级代理操作员银期权限
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcSecAgentACIDMapField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 资金账户
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string AccountID;
+        /// <summary>
+        /// 币种
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+        /// <summary>
+        /// 境外中介机构资金帐号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string BrokerSecAgentID;
+    }
+
+    /// <summary>
+    /// 二级代理操作员银期权限查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQrySecAgentACIDMapField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+        public string UserID;
+        /// <summary>
+        /// 资金账户
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string AccountID;
+        /// <summary>
+        /// 币种
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+    }
+
+    /// <summary>
     /// 灾备中心交易权限
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
@@ -13008,13 +15928,18 @@ namespace QuantBox.CSharp2CTP
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
         public string BrokerID;
         /// <summary>
-        /// 投资者代码
+        /// 投资者帐号
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
-        public string InvestorID;
+        public string AccountID;
         /// <summary>
         /// 基本准备金
         /// </summary>
         public double Reserve;
+        /// <summary>
+        /// 币种代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
     }
 }

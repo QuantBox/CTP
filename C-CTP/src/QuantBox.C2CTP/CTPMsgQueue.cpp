@@ -99,6 +99,7 @@ void CCTPMsgQueue::_Input_TD(SMsgItem* pMsgItem)
 
 void CCTPMsgQueue::_Output_MD(SMsgItem* pMsgItem)
 {
+	// 行情压入此，本来询价也应当压入此，但想想询价优先级高，所以不放这
 	Output_OnRtnDepthMarketData(pMsgItem);
 }
 
@@ -120,6 +121,12 @@ void CCTPMsgQueue::_Output_TD(SMsgItem* pMsgItem)
 	case E_fnOnErrRtnOrderInsert:
 		Output_OnErrRtnOrderInsert(pMsgItem);
 		break;
+	case E_fnOnErrRtnQuoteAction:
+		Output_OnErrRtnQuoteAction(pMsgItem);
+		break;
+	case E_fnOnErrRtnQuoteInsert:
+		Output_OnErrRtnQuoteInsert(pMsgItem);
+		break;
 	case E_fnOnRspError:
 		Output_OnRspError(pMsgItem);
 		break;
@@ -128,6 +135,12 @@ void CCTPMsgQueue::_Output_TD(SMsgItem* pMsgItem)
 		break;
 	case E_fnOnRspOrderInsert:
 		Output_OnRspOrderInsert(pMsgItem);
+		break;
+	case E_fnOnRspQuoteAction:
+		Output_OnRspQuoteAction(pMsgItem);
+		break;
+	case E_fnOnRspQuoteInsert:
+		Output_OnRspQuoteInsert(pMsgItem);
 		break;
 	case E_fnOnRspQryDepthMarketData:
 		Output_OnRspQryDepthMarketData(pMsgItem);
@@ -156,14 +169,20 @@ void CCTPMsgQueue::_Output_TD(SMsgItem* pMsgItem)
 	case E_fnOnRspQryTradingAccount:
 		Output_OnRspQryTradingAccount(pMsgItem);
 		break;
-	case E_fnOnRtnDepthMarketData: //这条不会运行
-		Output_OnRtnDepthMarketData(pMsgItem);
+	//case E_fnOnRtnDepthMarketData: //这条不会运行
+	//	Output_OnRtnDepthMarketData(pMsgItem);
+	//	break;
+	case E_fnOnRtnForQuoteRsp:
+		Output_OnRtnForQuoteRsp(pMsgItem);
 		break;
 	case E_fnOnRtnInstrumentStatus:
 		Output_OnRtnInstrumentStatus(pMsgItem);
 		break;
 	case E_fnOnRtnOrder:
 		Output_OnRtnOrder(pMsgItem);
+		break;
+	case E_fnOnRtnQuote:
+		Output_OnRtnQuote(pMsgItem);
 		break;
 	case E_fnOnRtnTrade:
 		Output_OnRtnTrade(pMsgItem);
@@ -227,7 +246,7 @@ void CCTPMsgQueue::Input_OnRspError(void* pApi,CThostFtdcRspInfoField* pRspInfo,
 	}
 }
 
-void CCTPMsgQueue::Input_OnRtnDepthMarketData(void* pMdApi,CThostFtdcDepthMarketDataField *pDepthMarketData)
+void CCTPMsgQueue::Input_OnRtnDepthMarketData(void* pMdUserApi, CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
 	if(NULL == pDepthMarketData)
 		return;
@@ -236,10 +255,27 @@ void CCTPMsgQueue::Input_OnRtnDepthMarketData(void* pMdApi,CThostFtdcDepthMarket
 	if(pItem)
 	{
 		pItem->type = E_fnOnRtnDepthMarketData;
-		pItem->pApi = pMdApi;
+		pItem->pApi = pMdUserApi;
 		pItem->DepthMarketData = *pDepthMarketData;
 
 		_Input_MD(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnRtnForQuoteRsp(void* pMdUserApi, CThostFtdcForQuoteRspField *pForQuoteRsp)
+{
+	if (NULL == pForQuoteRsp)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if (pItem)
+	{
+		pItem->type = E_fnOnRtnForQuoteRsp;
+		pItem->pApi = pMdUserApi;
+		pItem->ForQuoteRsp = *pForQuoteRsp;
+
+		// 由于优先问题，这个放交易队列，而不是行情队列
+		_Input_TD(pItem);
 	}
 }
 
@@ -270,6 +306,22 @@ void CCTPMsgQueue::Input_OnRtnOrder(void* pTraderApi,CThostFtdcOrderField *pOrde
 		pItem->type = E_fnOnRtnOrder;
 		pItem->pApi = pTraderApi;
 		pItem->Order = *pOrder;
+
+		_Input_TD(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnRtnQuote(void* pTraderApi, CThostFtdcQuoteField *pQuote)
+{
+	if (NULL == pQuote)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if (pItem)
+	{
+		pItem->type = E_fnOnRtnQuote;
+		pItem->pApi = pTraderApi;
+		pItem->Quote = *pQuote;
 
 		_Input_TD(pItem);
 	}
@@ -309,6 +361,30 @@ void CCTPMsgQueue::Input_OnRspOrderInsert(void* pTraderApi,CThostFtdcInputOrderF
 		if(pInputOrder)
 			pItem->InputOrder = *pInputOrder;
 		if(pRspInfo)
+			pItem->RspInfo = *pRspInfo;
+
+		_Input_TD(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnRspQuoteInsert(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (NULL == pInputQuote
+		&&NULL == pRspInfo)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if (pItem)
+	{
+		memset(pItem, 0, sizeof(SMsgItem));
+		pItem->type = E_fnOnRspQuoteInsert;
+		pItem->pApi = pTraderApi;
+		pItem->nRequestID = nRequestID;
+		pItem->bIsLast = bIsLast;
+
+		if (pInputQuote)
+			pItem->InputQuote = *pInputQuote;
+		if (pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
 		_Input_TD(pItem);
@@ -456,6 +532,27 @@ void CCTPMsgQueue::Input_OnErrRtnOrderInsert(void* pTraderApi,CThostFtdcInputOrd
 	}
 }
 
+void CCTPMsgQueue::Input_OnErrRtnQuoteInsert(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo)
+{
+	if (NULL == pInputQuote
+		&&NULL == pRspInfo)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if (pItem)
+	{
+		memset(pItem, 0, sizeof(SMsgItem));
+		pItem->type = E_fnOnErrRtnQuoteInsert;
+		pItem->pApi = pTraderApi;
+		if (pInputQuote)
+			pItem->InputQuote = *pInputQuote;
+		if (pRspInfo)
+			pItem->RspInfo = *pRspInfo;
+
+		_Input_TD(pItem);
+	}
+}
+
 void CCTPMsgQueue::Input_OnRspOrderAction(void* pTraderApi,CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	if(NULL == pInputOrderAction
@@ -480,6 +577,30 @@ void CCTPMsgQueue::Input_OnRspOrderAction(void* pTraderApi,CThostFtdcInputOrderA
 	}
 }
 
+void CCTPMsgQueue::Input_OnRspQuoteAction(void* pTraderApi, CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (NULL == pInputQuoteAction
+		&&NULL == pRspInfo)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if (pItem)
+	{
+		memset(pItem, 0, sizeof(SMsgItem));
+		pItem->type = E_fnOnRspQuoteAction;
+		pItem->pApi = pTraderApi;
+		pItem->nRequestID = nRequestID;
+		pItem->bIsLast = bIsLast;
+
+		if (pInputQuoteAction)
+			pItem->InputQuoteAction = *pInputQuoteAction;
+		if (pRspInfo)
+			pItem->RspInfo = *pRspInfo;
+
+		_Input_TD(pItem);
+	}
+}
+
 void CCTPMsgQueue::Input_OnErrRtnOrderAction(void* pTraderApi,CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo)
 {
 	if(NULL == pOrderAction
@@ -495,6 +616,27 @@ void CCTPMsgQueue::Input_OnErrRtnOrderAction(void* pTraderApi,CThostFtdcOrderAct
 		if(pOrderAction)
 			pItem->OrderAction = *pOrderAction;
 		if(pRspInfo)
+			pItem->RspInfo = *pRspInfo;
+
+		_Input_TD(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnErrRtnQuoteAction(void* pTraderApi, CThostFtdcQuoteActionField *pQuoteAction, CThostFtdcRspInfoField *pRspInfo)
+{
+	if (NULL == pQuoteAction
+		&&NULL == pRspInfo)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if (pItem)
+	{
+		memset(pItem, 0, sizeof(SMsgItem));
+		pItem->type = E_fnOnErrRtnQuoteAction;
+		pItem->pApi = pTraderApi;
+		if (pQuoteAction)
+			pItem->QuoteAction = *pQuoteAction;
+		if (pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
 		_Input_TD(pItem);

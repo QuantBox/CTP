@@ -11,11 +11,23 @@ namespace QuantBox.CSharp2CTP
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnErrRtnOrderInsert")]
         public static extern void CTP_RegOnErrRtnOrderInsert(IntPtr pMsgQueue, fnOnErrRtnOrderInsert pCallback);
 
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnErrRtnQuoteAction")]
+        public static extern void CTP_RegOnErrRtnQuoteAction(IntPtr pMsgQueue, fnOnErrRtnQuoteAction pCallback);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnErrRtnQuoteInsert")]
+        public static extern void CTP_RegOnErrRtnQuoteInsert(IntPtr pMsgQueue, fnOnErrRtnQuoteInsert pCallback);
+
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspOrderAction")]
         public static extern void CTP_RegOnRspOrderAction(IntPtr pMsgQueue, fnOnRspOrderAction pCallback);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspOrderInsert")]
         public static extern void CTP_RegOnRspOrderInsert(IntPtr pMsgQueue, fnOnRspOrderInsert pCallback);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQuoteAction")]
+        public static extern void CTP_RegOnRspQuoteAction(IntPtr pMsgQueue, fnOnRspQuoteAction pCallback);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQuoteInsert")]
+        public static extern void CTP_RegOnRspQuoteInsert(IntPtr pMsgQueue, fnOnRspQuoteInsert pCallback);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryDepthMarketData")]
         public static extern void CTP_RegOnRspQryDepthMarketData(IntPtr pMsgQueue, fnOnRspQryDepthMarketData pCallback);
@@ -50,6 +62,9 @@ namespace QuantBox.CSharp2CTP
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnOrder")]
         public static extern void CTP_RegOnRtnOrder(IntPtr pMsgQueue, fnOnRtnOrder pCallback);
 
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnQuote")]
+        public static extern void CTP_RegOnRtnQuote(IntPtr pMsgQueue, fnOnRtnQuote pCallback);
+
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRtnTrade")]
         public static extern void CTP_RegOnRtnTrade(IntPtr pMsgQueue, fnOnRtnTrade pCallback);
 
@@ -67,7 +82,9 @@ namespace QuantBox.CSharp2CTP
             string szUserProductInfo, string szAuthCode);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_SendOrder")]
-        public static extern int TD_SendOrder(IntPtr pTraderApi,
+        public static extern int TD_SendOrder(
+            IntPtr pTraderApi,
+            int OrderRef,
             string szInstrument,
             TThostFtdcDirectionType Direction,
             string szCombOffsetFlag,
@@ -82,6 +99,23 @@ namespace QuantBox.CSharp2CTP
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_CancelOrder")]
         public static extern void TD_CancelOrder(IntPtr pTraderApi, ref CThostFtdcOrderField pOrder);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_SendQuote")]
+        public static extern int TD_SendQuote(
+            IntPtr pTraderApi,
+            int QuoteRef,
+            string szInstrument,
+            double AskPrice,
+            double BidPrice,
+            int AskVolume,
+            int BidVolume,
+            TThostFtdcOffsetFlagType AskOffsetFlag,
+            TThostFtdcOffsetFlagType BidOffsetFlag,
+            TThostFtdcHedgeFlagType AskHedgeFlag,
+            TThostFtdcHedgeFlagType BidHedgeFlag);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_CancelQuote")]
+        public static extern void TD_CancelQuote(IntPtr pTraderApi, ref CThostFtdcQuoteField pQuote);
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReleaseTdApi")]
         public static extern void TD_ReleaseTdApi(IntPtr pTraderApi);

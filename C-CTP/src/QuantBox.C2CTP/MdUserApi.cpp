@@ -2,9 +2,9 @@
 #include "MdUserApi.h"
 #include "CTPMsgQueue.h"
 #include "include\toolkit.h"
-#include "include\Lock.h"
 
 #include <iostream>
+#include <mutex>
 using namespace std;
 
 CMdUserApi::CMdUserApi(void)
@@ -13,16 +13,11 @@ CMdUserApi::CMdUserApi(void)
 	m_msgQueue = NULL;
 	m_status = E_uninit;
 	m_nRequestID = 0;
-	
-
-	InitializeCriticalSection(&m_csMapInstrumentIDs);
 }
 
 CMdUserApi::~CMdUserApi(void)
 {
 	Disconnect();
-
-	DeleteCriticalSection(&m_csMapInstrumentIDs);
 }
 
 void CMdUserApi::RegisterMsgQueue(CCTPMsgQueue* pMsgQueue)
@@ -145,7 +140,7 @@ void CMdUserApi::Subscribe(const string& szInstrumentIDs)
 	char* buf = new char[len];
 	strncpy(buf,szInstrumentIDs.c_str(),len);
 
-	CLock cl(&m_csMapInstrumentIDs);
+	lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
 	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
 	while(token)
@@ -207,7 +202,7 @@ void CMdUserApi::Unsubscribe(const string& szInstrumentIDs)
 	char* buf = new char[len];
 	strncpy(buf,szInstrumentIDs.c_str(),len);
 
-	CLock cl(&m_csMapInstrumentIDs);
+	lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
 	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
 	while(token)
@@ -233,6 +228,113 @@ void CMdUserApi::Unsubscribe(const string& szInstrumentIDs)
 
 		//订阅
 		m_pApi->UnSubscribeMarketData(pArray,(int)vct.size());
+
+		delete[] pArray;
+	}
+
+	//释放内存
+	delete[] buf;
+}
+
+void CMdUserApi::SubscribeQuote(const string& szInstrumentIDs)
+{
+	if (NULL == m_pApi)
+		return;
+
+	vector<char*> vct;
+
+	size_t len = szInstrumentIDs.length() + 1;
+	char* buf = new char[len];
+	strncpy(buf, szInstrumentIDs.c_str(), len);
+
+	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
+
+	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
+	while (token)
+	{
+		size_t l = strlen(token);
+		if (l>0)
+		{
+			//合约已经存在，不用再订阅，但多次订阅也没关系
+			m_setQuoteInstrumentIDs.insert(token);//记录此合约进行订阅
+			vct.push_back(token);
+		}
+		token = strtok(NULL, _QUANTBOXC2CTP_SEPS_);
+	}
+
+	if (vct.size()>0)
+	{
+		//转成字符串数组
+		char** pArray = new char*[vct.size()];
+		for (size_t j = 0; j<vct.size(); ++j)
+		{
+			pArray[j] = vct[j];
+		}
+
+		//订阅
+		m_pApi->SubscribeForQuoteRsp(pArray, (int)vct.size());
+
+		delete[] pArray;
+	}
+
+	//释放内存
+	delete[] buf;
+}
+
+void CMdUserApi::SubscribeQuote(const set<string>& instrumentIDs)
+{
+	if (NULL == m_pApi)
+		return;
+
+	string szInstrumentIDs;
+	for (set<string>::iterator i = instrumentIDs.begin(); i != instrumentIDs.end(); ++i)
+	{
+		szInstrumentIDs.append(*i);
+		szInstrumentIDs.append(";");
+	}
+
+	if (szInstrumentIDs.length()>1)
+	{
+		SubscribeQuote(szInstrumentIDs);
+	}
+}
+
+void CMdUserApi::UnsubscribeQuote(const string& szInstrumentIDs)
+{
+	if (NULL == m_pApi)
+		return;
+
+	vector<char*> vct;
+	size_t len = szInstrumentIDs.length() + 1;
+	char* buf = new char[len];
+	strncpy(buf, szInstrumentIDs.c_str(), len);
+
+	lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
+
+	char* token = strtok(buf, _QUANTBOXC2CTP_SEPS_);
+	while (token)
+	{
+		size_t l = strlen(token);
+		if (l>0)
+		{
+			//合约已经不存在，不用再取消订阅，但多次取消也没什么关系
+			m_setQuoteInstrumentIDs.erase(token);
+			vct.push_back(token);
+		}
+		token = strtok(NULL, _QUANTBOXC2CTP_SEPS_);
+	}
+
+	if (vct.size()>0)
+	{
+		//转成字符串数组
+		char** pArray = new char*[vct.size()];
+		for (size_t j = 0; j<vct.size(); ++j)
+		{
+			pArray[j] = vct[j];
+		}
+
+		//订阅
+		m_pApi->UnSubscribeForQuoteRsp(pArray, (int)vct.size());
 
 		delete[] pArray;
 	}
@@ -276,6 +378,10 @@ void CMdUserApi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
 		set<string> mapOld = m_setInstrumentIDs;//记下上次订阅的合约
 		//Unsubscribe(mapOld);//由于已经断线了，没有必要再取消订阅
 		Subscribe(mapOld);//订阅
+
+		//有可能断线了，本处是断线重连后重新订阅
+		mapOld = m_setQuoteInstrumentIDs;//记下上次订阅的合约
+		SubscribeQuote(mapOld);//订阅
 	}
 	else
 	{
@@ -297,7 +403,7 @@ void CMdUserApi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
 		&&pSpecificInstrument)
 	{
-		CLock cl(&m_csMapInstrumentIDs);
+		lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
 		m_setInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
 	}
@@ -309,7 +415,7 @@ void CMdUserApi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecif
 	if(!IsErrorRspInfo(pRspInfo,nRequestID,bIsLast)
 		&&pSpecificInstrument)
 	{
-		CLock cl(&m_csMapInstrumentIDs);
+		lock_guard<mutex> cl(m_csMapInstrumentIDs);
 
 		m_setInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
 	}
@@ -320,4 +426,32 @@ void CMdUserApi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMark
 {
 	if(m_msgQueue)
 		m_msgQueue->Input_OnRtnDepthMarketData(this,pDepthMarketData);
+}
+
+void CMdUserApi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) 
+{
+	if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
+		&& pSpecificInstrument)
+	{
+		lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
+
+		m_setQuoteInstrumentIDs.insert(pSpecificInstrument->InstrumentID);
+	}
+}
+
+void CMdUserApi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (!IsErrorRspInfo(pRspInfo, nRequestID, bIsLast)
+		&& pSpecificInstrument)
+	{
+		lock_guard<mutex> cl(m_csMapQuoteInstrumentIDs);
+
+		m_setQuoteInstrumentIDs.erase(pSpecificInstrument->InstrumentID);
+	}
+}
+
+void CMdUserApi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp)
+{
+	if (m_msgQueue)
+		m_msgQueue->Input_OnRtnForQuoteRsp(this, pForQuoteRsp);
 }

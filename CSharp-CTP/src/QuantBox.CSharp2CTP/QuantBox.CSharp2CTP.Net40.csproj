@@ -33,26 +33,35 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <RegisterForComInterop>true</RegisterForComInterop>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Callbacks.cs" />
+    <Compile Include="Callback\AccountInfo.cs" />
+    <Compile Include="Callback\BaseApi.cs" />
+    <Compile Include="Callback\ConnectionInfo.cs" />
+    <Compile Include="Callback\FrontInfo.cs" />
+    <Compile Include="Callback\KeyInfo.cs" />
+    <Compile Include="Callback\MarketDataApi.cs" />
+    <Compile Include="Callback\TradeApi.cs" />
     <Compile Include="CommApi.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="MdApi.cs" />
-    <Compile Include="MdApiWrapper.cs" />
+    <Compile Include="Event\MdApiWrapper.cs" />
     <Compile Include="otherTypes.cs" />
     <Compile Include="Struct.cs" />
     <Compile Include="TraderApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Delegates.cs" />
-    <Compile Include="TraderApiWrapper.cs" />
+    <Compile Include="Event\Delegates.cs" />
+    <Compile Include="Event\TraderApiWrapper.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
