@@ -403,7 +403,7 @@ QUANTBOXC2CTP_API void __stdcall TD_Connect(
 		if(szUserProductInfo&&szAuthCode)
 			TD_GetApi(pTraderApi)->Connect(szPath,szAddresses,szBrokerId,szInvestorId,szPassword,nResumeType,szUserProductInfo,szAuthCode);
 		else
-			TD_GetApi(pTraderApi)->Connect(szPath,szAddresses,szBrokerId,szInvestorId,szPassword,nResumeType,"","");
+			TD_GetApi(pTraderApi)->Connect(szPath,szAddresses,szBrokerId,szInvestorId,szPassword,nResumeType,szUserProductInfo,"");
 	}
 }
 
