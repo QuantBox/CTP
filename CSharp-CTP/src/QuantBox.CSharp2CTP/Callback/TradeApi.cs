@@ -36,8 +36,12 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnErrRtnOrderAction = value;
-                TraderApi.CTP_RegOnErrRtnOrderAction(_MsgQueue.Queue, _OnErrRtnOrderAction);
+                TraderApi.CTP_RegOnErrRtnOrderAction(_MsgQueue.Queue, __OnErrRtnOrderAction);
             }
+        }
+        private void __OnErrRtnOrderAction(IntPtr pTraderApi, ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
+        {
+            _OnErrRtnOrderAction(this, pTraderApi, ref pOrderAction, ref pRspInfo);
         }
 
         public fnOnErrRtnOrderInsert OnErrRtnOrderInsert
@@ -45,8 +49,13 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnErrRtnOrderInsert = value;
-                TraderApi.CTP_RegOnErrRtnOrderInsert(_MsgQueue.Queue, _OnErrRtnOrderInsert);
+                TraderApi.CTP_RegOnErrRtnOrderInsert(_MsgQueue.Queue, __OnErrRtnOrderInsert);
             }
+        }
+
+        private void __OnErrRtnOrderInsert(IntPtr pTraderApi, ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
+        {
+            _OnErrRtnOrderInsert(this, pTraderApi, ref pInputOrder, ref pRspInfo);
         }
 
         public fnOnErrRtnQuoteAction OnErrRtnQuoteAction
@@ -54,51 +63,86 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnErrRtnQuoteAction = value;
-                TraderApi.CTP_RegOnErrRtnQuoteAction(_MsgQueue.Queue, _OnErrRtnQuoteAction);
+                TraderApi.CTP_RegOnErrRtnQuoteAction(_MsgQueue.Queue, __OnErrRtnQuoteAction);
             }
         }
+
+        private void __OnErrRtnQuoteAction(IntPtr pTraderApi, ref CThostFtdcQuoteActionField pQuoteAction, ref CThostFtdcRspInfoField pRspInfo)
+        {
+            _OnErrRtnQuoteAction(this, pTraderApi, ref pQuoteAction, ref pRspInfo);
+        }
+    
 
         public fnOnErrRtnQuoteInsert OnErrRtnQuoteInsert
         {
             set
             {
                 _OnErrRtnQuoteInsert = value;
-                TraderApi.CTP_RegOnErrRtnQuoteInsert(_MsgQueue.Queue, _OnErrRtnQuoteInsert);
+                TraderApi.CTP_RegOnErrRtnQuoteInsert(_MsgQueue.Queue, __OnErrRtnQuoteInsert);
             }
         }
+
+        private void __OnErrRtnQuoteInsert(IntPtr pTraderApi, ref CThostFtdcInputQuoteField pInputQuote, ref CThostFtdcRspInfoField pRspInfo)
+        {
+            _OnErrRtnQuoteInsert(this, pTraderApi, ref pInputQuote, ref pRspInfo);
+        }
+    
 
         public fnOnRspOrderAction OnRspOrderAction
         {
             set
             {
                 _OnRspOrderAction = value;
-                TraderApi.CTP_RegOnRspOrderAction(_MsgQueue.Queue, _OnRspOrderAction);
+                TraderApi.CTP_RegOnRspOrderAction(_MsgQueue.Queue, __OnRspOrderAction);
             }
         }
+
+        private void __OnRspOrderAction(IntPtr pTraderApi, ref CThostFtdcInputOrderActionField pInputOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspOrderAction(this, pTraderApi, ref pInputOrderAction, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
         public fnOnRspOrderInsert OnRspOrderInsert
         {
             set
             {
                 _OnRspOrderInsert = value;
-                TraderApi.CTP_RegOnRspOrderInsert(_MsgQueue.Queue, _OnRspOrderInsert);
+                TraderApi.CTP_RegOnRspOrderInsert(_MsgQueue.Queue, __OnRspOrderInsert);
             }
         }
+
+        private void __OnRspOrderInsert(IntPtr pTraderApi, ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspOrderInsert(this, pTraderApi, ref pInputOrder, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
 
         public fnOnRspQuoteAction OnRspQuoteAction
         {
             set
             {
                 _OnRspQuoteAction = value;
-                TraderApi.CTP_RegOnRspQuoteAction(_MsgQueue.Queue, _OnRspQuoteAction);
+                TraderApi.CTP_RegOnRspQuoteAction(_MsgQueue.Queue, __OnRspQuoteAction);
             }
         }
+
+        private void __OnRspQuoteAction(IntPtr pTraderApi, ref CThostFtdcInputQuoteActionField pInputQuoteAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQuoteAction(this, pTraderApi, ref pInputQuoteAction, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
         public fnOnRspQuoteInsert OnRspQuoteInsert
         {
             set
             {
                 _OnRspQuoteInsert = value;
-                TraderApi.CTP_RegOnRspQuoteInsert(_MsgQueue.Queue, _OnRspQuoteInsert);
+                TraderApi.CTP_RegOnRspQuoteInsert(_MsgQueue.Queue, __OnRspQuoteInsert);
             }
+        }
+
+        private void __OnRspQuoteInsert(IntPtr pTraderApi, ref CThostFtdcInputQuoteField pInputQuote, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQuoteInsert(this, pTraderApi, ref pInputQuote, ref pRspInfo, nRequestID, bIsLast);
         }
 
         public fnOnRspQryDepthMarketData OnRspQryDepthMarketData
@@ -106,88 +150,153 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspQryDepthMarketData = value;
-                TraderApi.CTP_RegOnRspQryDepthMarketData(_MsgQueue.Queue, _OnRspQryDepthMarketData);
+                TraderApi.CTP_RegOnRspQryDepthMarketData(_MsgQueue.Queue, __OnRspQryDepthMarketData);
             }
         }
+
+        private void __OnRspQryDepthMarketData(IntPtr pTraderApi, ref CThostFtdcDepthMarketDataField pDepthMarketData, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryDepthMarketData(this, pTraderApi, ref pDepthMarketData, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
         public fnOnRspQryInstrument OnRspQryInstrument
         {
             set
             {
                 _OnRspQryInstrument = value;
-                TraderApi.CTP_RegOnRspQryInstrument(_MsgQueue.Queue, _OnRspQryInstrument);
+                TraderApi.CTP_RegOnRspQryInstrument(_MsgQueue.Queue, __OnRspQryInstrument);
             }
         }
+
+        private void __OnRspQryInstrument(IntPtr pTraderApi, ref CThostFtdcInstrumentField pInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryInstrument(this, pTraderApi, ref pInstrument, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
         public fnOnRspQryInstrumentCommissionRate OnRspQryInstrumentCommissionRate
         {
             set
             {
                 _OnRspQryInstrumentCommissionRate = value;
-                TraderApi.CTP_RegOnRspQryInstrumentCommissionRate(_MsgQueue.Queue, _OnRspQryInstrumentCommissionRate);
+                TraderApi.CTP_RegOnRspQryInstrumentCommissionRate(_MsgQueue.Queue, __OnRspQryInstrumentCommissionRate);
             }
         }
+
+        private void __OnRspQryInstrumentCommissionRate(IntPtr pTraderApi, ref CThostFtdcInstrumentCommissionRateField pInstrumentCommissionRate, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryInstrumentCommissionRate(this, pTraderApi, ref pInstrumentCommissionRate, ref pRspInfo, nRequestID, bIsLast);
+        }
+
         public fnOnRspQryInstrumentMarginRate OnRspQryInstrumentMarginRate
         {
             set
             {
                 _OnRspQryInstrumentMarginRate = value;
-                TraderApi.CTP_RegOnRspQryInstrumentMarginRate(_MsgQueue.Queue, _OnRspQryInstrumentMarginRate);
+                TraderApi.CTP_RegOnRspQryInstrumentMarginRate(_MsgQueue.Queue, __OnRspQryInstrumentMarginRate);
             }
         }
+
+        private void __OnRspQryInstrumentMarginRate(IntPtr pTraderApi, ref CThostFtdcInstrumentMarginRateField pInstrumentMarginRate, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryInstrumentMarginRate(this, pTraderApi, ref pInstrumentMarginRate, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
         public fnOnRspQryInvestorPosition OnRspQryInvestorPosition
         {
             set
             {
                 _OnRspQryInvestorPosition = value;
-                TraderApi.CTP_RegOnRspQryInvestorPosition(_MsgQueue.Queue, _OnRspQryInvestorPosition);
+                TraderApi.CTP_RegOnRspQryInvestorPosition(_MsgQueue.Queue, __OnRspQryInvestorPosition);
             }
         }
+
+        private void __OnRspQryInvestorPosition(IntPtr pTraderApi, ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryInvestorPosition(this, pTraderApi, ref pInvestorPosition, ref pRspInfo, nRequestID, bIsLast);
+        }
+
         public fnOnRspQryInvestorPositionDetail OnRspQryInvestorPositionDetail
         {
             set
             {
                 _OnRspQryInvestorPositionDetail = value;
-                TraderApi.CTP_RegOnRspQryInvestorPositionDetail(_MsgQueue.Queue, _OnRspQryInvestorPositionDetail);
+                TraderApi.CTP_RegOnRspQryInvestorPositionDetail(_MsgQueue.Queue, __OnRspQryInvestorPositionDetail);
             }
         }
+
+        private void __OnRspQryInvestorPositionDetail(IntPtr pTraderApi, ref CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryInvestorPositionDetail(this, pTraderApi, ref pInvestorPositionDetail, ref pRspInfo, nRequestID, bIsLast);
+        }
+
         public fnOnRspQryOrder OnRspQryOrder
         {
             set
             {
                 _OnRspQryOrder = value;
-                TraderApi.CTP_RegOnRspQryOrder(_MsgQueue.Queue, _OnRspQryOrder);
+                TraderApi.CTP_RegOnRspQryOrder(_MsgQueue.Queue, __OnRspQryOrder);
             }
         }
+
+        private void __OnRspQryOrder(IntPtr pTraderApi, ref CThostFtdcOrderField pOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryOrder(this, pTraderApi, ref pOrder, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
         public fnOnRspQryTrade OnRspQryTrade
         {
             set
             {
                 _OnRspQryTrade = value;
-                TraderApi.CTP_RegOnRspQryTrade(_MsgQueue.Queue, _OnRspQryTrade);
+                TraderApi.CTP_RegOnRspQryTrade(_MsgQueue.Queue, __OnRspQryTrade);
             }
         }
+
+        private void __OnRspQryTrade(IntPtr pTraderApi, ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryTrade(this, pTraderApi, ref pTrade, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
         public fnOnRspQryTradingAccount OnRspQryTradingAccount
         {
             set
             {
                 _OnRspQryTradingAccount = value;
-                TraderApi.CTP_RegOnRspQryTradingAccount(_MsgQueue.Queue, _OnRspQryTradingAccount);
+                TraderApi.CTP_RegOnRspQryTradingAccount(_MsgQueue.Queue, __OnRspQryTradingAccount);
             }
         }
+
+        private void __OnRspQryTradingAccount(IntPtr pTraderApi, ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspQryTradingAccount(this, pTraderApi, ref pTradingAccount, ref pRspInfo, nRequestID, bIsLast);
+        }
+    
         public fnOnRtnInstrumentStatus OnRtnInstrumentStatus
         {
             set
             {
                 _OnRtnInstrumentStatus = value;
-                TraderApi.CTP_RegOnRtnInstrumentStatus(_MsgQueue.Queue, _OnRtnInstrumentStatus);
+                TraderApi.CTP_RegOnRtnInstrumentStatus(_MsgQueue.Queue, __OnRtnInstrumentStatus);
             }
         }
+
+        private void __OnRtnInstrumentStatus(IntPtr pTraderApi, ref CThostFtdcInstrumentStatusField pInstrumentStatus)
+        {
+            _OnRtnInstrumentStatus(this, pTraderApi, ref pInstrumentStatus);
+        }
+    
         public fnOnRtnOrder OnRtnOrder
         {
             set
             {
                 _OnRtnOrder = value;
-                TraderApi.CTP_RegOnRtnOrder(_MsgQueue.Queue, _OnRtnOrder);
+                TraderApi.CTP_RegOnRtnOrder(_MsgQueue.Queue, __OnRtnOrder);
             }
+        }
+
+        private void __OnRtnOrder(IntPtr pTraderApi, ref CThostFtdcOrderField pOrder)
+        {
+            _OnRtnOrder(this, pTraderApi, ref pOrder);
         }
 
         public fnOnRtnQuote OnRtnQuote
@@ -195,8 +304,13 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnQuote = value;
-                TraderApi.CTP_RegOnRtnQuote(_MsgQueue.Queue, _OnRtnQuote);
+                TraderApi.CTP_RegOnRtnQuote(_MsgQueue.Queue, __OnRtnQuote);
             }
+        }
+
+        private void __OnRtnQuote(IntPtr pTraderApi, ref CThostFtdcQuoteField pQuote)
+        {
+            _OnRtnQuote(this, pTraderApi, ref pQuote);
         }
 
         public fnOnRtnTrade OnRtnTrade
@@ -204,8 +318,13 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnTrade = value;
-                TraderApi.CTP_RegOnRtnTrade(_MsgQueue.Queue, _OnRtnTrade);
+                TraderApi.CTP_RegOnRtnTrade(_MsgQueue.Queue, __OnRtnTrade);
             }
+        }
+
+        private void __OnRtnTrade(IntPtr pTraderApi, ref CThostFtdcTradeField pTrade)
+        {
+            _OnRtnTrade(this, pTraderApi, ref pTrade);
         }
 
         public TradeApi(MsgQueue msgQueue)

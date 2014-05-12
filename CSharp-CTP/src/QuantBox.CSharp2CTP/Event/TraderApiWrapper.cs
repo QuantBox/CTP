@@ -205,7 +205,7 @@ namespace QuantBox.CSharp2CTP.Event
             m_Api.ReqQryInstrumentMarginRate(szInstrument, HedgeFlag);
         }
         
-        private void OnConnect_callback(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
+        private void OnConnect_callback(object sender, IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
             _bTdConnected = (ConnectionStatus.E_confirmed == result);
             if (_bTdConnected)
@@ -219,7 +219,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnDisconnect_callback(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
+        private void OnDisconnect_callback(object sender, IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
         {
             if(isConnected)
             {
@@ -237,7 +237,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnErrRtnOrderAction_callback(IntPtr pTraderApi, ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
+        private void OnErrRtnOrderAction_callback(object sender, IntPtr pTraderApi, ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
         {
             if (null != OnErrRtnOrderAction)
             {
@@ -245,7 +245,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnErrRtnOrderInsert_callback(IntPtr pTraderApi, ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
+        private void OnErrRtnOrderInsert_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
         {
             if (null != OnErrRtnOrderInsert)
             {
@@ -253,7 +253,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspError_callback(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspError_callback(object sender, IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspError)
             {
@@ -261,7 +261,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspOrderAction_callback(IntPtr pTraderApi, ref CThostFtdcInputOrderActionField pInputOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspOrderAction_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInputOrderActionField pInputOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspOrderAction)
             {
@@ -269,7 +269,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspOrderInsert_callback(IntPtr pTraderApi, ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspOrderInsert_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspOrderInsert)
             {
@@ -277,7 +277,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryDepthMarketData_callback(IntPtr pTraderApi, ref CThostFtdcDepthMarketDataField pDepthMarketData, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryDepthMarketData_callback(object sender, IntPtr pTraderApi, ref CThostFtdcDepthMarketDataField pDepthMarketData, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryDepthMarketData)
             {
@@ -285,7 +285,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryInstrument_callback(IntPtr pTraderApi, ref CThostFtdcInstrumentField pInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryInstrument_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInstrumentField pInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryInstrument)
             {
@@ -293,7 +293,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryInstrumentCommissionRate_callback(IntPtr pTraderApi, ref CThostFtdcInstrumentCommissionRateField pInstrumentCommissionRate, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryInstrumentCommissionRate_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInstrumentCommissionRateField pInstrumentCommissionRate, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryInstrumentCommissionRate)
             {
@@ -301,7 +301,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryInstrumentMarginRate_callback(IntPtr pTraderApi, ref CThostFtdcInstrumentMarginRateField pInstrumentMarginRate, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryInstrumentMarginRate_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInstrumentMarginRateField pInstrumentMarginRate, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryInstrumentMarginRate)
             {
@@ -309,7 +309,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryInvestorPosition_callback(IntPtr pTraderApi, ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryInvestorPosition_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryInvestorPosition)
             {
@@ -317,7 +317,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryInvestorPositionDetail_callback(IntPtr pTraderApi, ref CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryInvestorPositionDetail_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryInvestorPositionDetail)
             {
@@ -325,7 +325,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryOrder_callback(IntPtr pTraderApi, ref CThostFtdcOrderField pOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryOrder_callback(object sender, IntPtr pTraderApi, ref CThostFtdcOrderField pOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryOrder)
             {
@@ -333,7 +333,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryTrade_callback(IntPtr pTraderApi, ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryTrade_callback(object sender, IntPtr pTraderApi, ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryTrade)
             {
@@ -341,7 +341,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspQryTradingAccount_callback(IntPtr pTraderApi, ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspQryTradingAccount_callback(object sender, IntPtr pTraderApi, ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspQryTradingAccount)
             {
@@ -349,7 +349,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRtnInstrumentStatus_callback(IntPtr pTraderApi, ref CThostFtdcInstrumentStatusField pInstrumentStatus)
+        private void OnRtnInstrumentStatus_callback(object sender, IntPtr pTraderApi, ref CThostFtdcInstrumentStatusField pInstrumentStatus)
         {
             if (null != OnRtnInstrumentStatus)
             {
@@ -357,7 +357,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRtnOrder_callback(IntPtr pTraderApi, ref CThostFtdcOrderField pOrder)
+        private void OnRtnOrder_callback(object sender, IntPtr pTraderApi, ref CThostFtdcOrderField pOrder)
         {
             if (null != OnRtnOrder)
             {
@@ -365,7 +365,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRtnTrade_callback(IntPtr pTraderApi, ref CThostFtdcTradeField pTrade)
+        private void OnRtnTrade_callback(object sender, IntPtr pTraderApi, ref CThostFtdcTradeField pTrade)
         {
             if (null != OnRtnTrade)
             {

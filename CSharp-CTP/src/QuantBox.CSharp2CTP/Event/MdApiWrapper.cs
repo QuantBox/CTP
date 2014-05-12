@@ -133,7 +133,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnConnect_callback(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
+        private void OnConnect_callback(object sender,IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
             _bMdConnected = (ConnectionStatus.E_logined == result);
 
@@ -143,7 +143,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnDisconnect_callback(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
+        private void OnDisconnect_callback(object sender, IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
         {
             if (null != OnDisconnect)
             {
@@ -151,7 +151,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRspError_callback(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspError_callback(object sender, IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (null != OnRspError)
             {
@@ -159,7 +159,7 @@ namespace QuantBox.CSharp2CTP.Event
             }
         }
 
-        private void OnRtnDepthMarketData_callback(IntPtr pMdUserApi, ref CThostFtdcDepthMarketDataField pDepthMarketData)
+        private void OnRtnDepthMarketData_callback(object sender, IntPtr pMdUserApi, ref CThostFtdcDepthMarketDataField pDepthMarketData)
         {
             if (null != OnRtnDepthMarketData)
             {

@@ -27,18 +27,30 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRtnDepthMarketData = value;
-                MdApi.CTP_RegOnRtnDepthMarketData(_MsgQueue.Queue, _OnRtnDepthMarketData);
+                MdApi.CTP_RegOnRtnDepthMarketData(_MsgQueue.Queue, __OnRtnDepthMarketData);
             }
         }
+
+        private void __OnRtnDepthMarketData(IntPtr pMdUserApi, ref CThostFtdcDepthMarketDataField pDepthMarketData)
+        {
+            _OnRtnDepthMarketData(this, pMdUserApi, ref pDepthMarketData);
+        }
+    
 
         public fnOnRtnForQuoteRsp OnRtnForQuoteRsp
         {
             set
             {
                 _OnRtnForQuoteRsp = value;
-                MdApi.CTP_RegOnRtnForQuoteRsp(_MsgQueue.Queue, _OnRtnForQuoteRsp);
+                MdApi.CTP_RegOnRtnForQuoteRsp(_MsgQueue.Queue, __OnRtnForQuoteRsp);
             }
         }
+
+        private void __OnRtnForQuoteRsp(IntPtr pMdUserApi, ref CThostFtdcForQuoteRspField pForQuoteRsp)
+        {
+            _OnRtnForQuoteRsp(this, pMdUserApi, ref pForQuoteRsp);
+        }
+    
 
         public MarketDataApi(MsgQueue msgQueue)
             : base(msgQueue)

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace QuantBox.CSharp2CTP.Callback
 {
-    public class BaseApi:KeyInfo
+    public class BaseApi : KeyInfo
     {
         public bool IsConnected;
 
@@ -64,8 +64,13 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnConnect = value;
-                CommApi.CTP_RegOnConnect(_MsgQueue.Queue, _OnConnect);
+                CommApi.CTP_RegOnConnect(_MsgQueue.Queue, __OnConnect);
             }
+        }
+
+        private void __OnConnect(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
+        {
+            _OnConnect(this, pApi, ref pRspUserLogin, result);
         }
 
         public fnOnDisconnect OnDisconnect
@@ -73,8 +78,12 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnDisconnect = value;
-                CommApi.CTP_RegOnDisconnect(_MsgQueue.Queue, _OnDisconnect);
+                CommApi.CTP_RegOnDisconnect(_MsgQueue.Queue, __OnDisconnect);
             }
+        }
+        private void __OnDisconnect(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
+        {
+            _OnDisconnect(this, pApi, ref pRspInfo, step);
         }
 
         public fnOnRspError OnRspError
@@ -82,8 +91,13 @@ namespace QuantBox.CSharp2CTP.Callback
             set
             {
                 _OnRspError = value;
-                CommApi.CTP_RegOnRspError(_MsgQueue.Queue, _OnRspError);
+                CommApi.CTP_RegOnRspError(_MsgQueue.Queue, __OnRspError);
             }
+        }
+
+        private void __OnRspError(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            _OnRspError(this, pApi, ref pRspInfo, nRequestID, bIsLast);
         }
 
         public FrontInfo Front
@@ -105,7 +119,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public virtual void Connect()
         {
-            lock(this)
+            lock (this)
             {
                 if (_Connection == null)
                     throw new ArgumentNullException("连接信息不能为空");

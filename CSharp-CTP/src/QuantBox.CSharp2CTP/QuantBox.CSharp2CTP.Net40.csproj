@@ -48,6 +48,7 @@
     <Compile Include="Callbacks.cs" />
     <Compile Include="Callback\AccountInfo.cs" />
     <Compile Include="Callback\BaseApi.cs" />
+    <Compile Include="Callback\Callbacks.cs" />
     <Compile Include="Callback\ConnectionInfo.cs" />
     <Compile Include="Callback\FrontInfo.cs" />
     <Compile Include="Callback\KeyInfo.cs" />
