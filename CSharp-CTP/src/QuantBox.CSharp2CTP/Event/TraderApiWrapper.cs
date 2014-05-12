@@ -27,67 +27,16 @@ namespace QuantBox.CSharp2CTP.Event
         public event OnRtnOrderHandler OnRtnOrder;
         public event OnRtnTradeHandler OnRtnTrade;
 
-        //private readonly fnOnConnect _fnOnConnect_Holder;
-        //private readonly fnOnDisconnect _fnOnDisconnect_Holder;
-        //private readonly fnOnErrRtnOrderAction _fnOnErrRtnOrderAction_Holder;
-        //private readonly fnOnErrRtnOrderInsert _fnOnErrRtnOrderInsert_Holder;
-        //private readonly fnOnRspError _fnOnRspError_Holder;
-        //private readonly fnOnRspOrderAction _fnOnRspOrderAction_Holder;
-        //private readonly fnOnRspOrderInsert _fnOnRspOrderInsert_Holder;
-        //private readonly fnOnRspQryDepthMarketData _fnOnRspQryDepthMarketData_Holder;
-        //private readonly fnOnRspQryInstrument _fnOnRspQryInstrument_Holder;
-        //private readonly fnOnRspQryInstrumentCommissionRate _fnOnRspQryInstrumentCommissionRate_Holder;
-        //private readonly fnOnRspQryInstrumentMarginRate _fnOnRspQryInstrumentMarginRate_Holder;
-        //private readonly fnOnRspQryInvestorPosition _fnOnRspQryInvestorPosition_Holder;
-        //private readonly fnOnRspQryInvestorPositionDetail _fnOnRspQryInvestorPositionDetail_Holder;
-        //private readonly fnOnRspQryOrder _fnOnRspQryOrder_Holder;
-        //private readonly fnOnRspQryTrade _fnOnRspQryTrade_Holder;
-        //private readonly fnOnRspQryTradingAccount _fnOnRspQryTradingAccount_Holder;
-        //private readonly fnOnRtnInstrumentStatus _fnOnRtnInstrumentStatus_Holder;
-        //private readonly fnOnRtnOrder _fnOnRtnOrder_Holder;
-        //private readonly fnOnRtnTrade _fnOnRtnTrade_Holder;
-
-        //private readonly object _lockTd = new object();
-        //private readonly object _lockMsgQueue = new object();
-
         private volatile bool _bTdConnected;
         public bool isConnected { get; private set; }
 
         private bool disposed;
-
-        private string szPath;
-        private string szAddresses;
-        private string szBrokerId;
-        private string szInvestorId;
-        private string szPassword;
-        private string szUserProductInfo;
-        private string szAuthCode;
-        private THOST_TE_RESUME_TYPE nResumeType;
 
         private MsgQueue m_pMsgQueue;
         private TradeApi m_Api;
 
         public TraderApiWrapper()
         {
-            //_fnOnConnect_Holder = OnConnect_callback;
-            //_fnOnDisconnect_Holder = OnDisconnect_callback;
-            //_fnOnErrRtnOrderAction_Holder = OnErrRtnOrderAction_callback;
-            //_fnOnErrRtnOrderInsert_Holder = OnErrRtnOrderInsert_callback;
-            //_fnOnRspError_Holder = OnRspError_callback;
-            //_fnOnRspOrderAction_Holder = OnRspOrderAction_callback;
-            //_fnOnRspOrderInsert_Holder = OnRspOrderInsert_callback;
-            //_fnOnRspQryDepthMarketData_Holder = OnRspQryDepthMarketData_callback;
-            //_fnOnRspQryInstrument_Holder = OnRspQryInstrument_callback;
-            //_fnOnRspQryInstrumentCommissionRate_Holder = OnRspQryInstrumentCommissionRate_callback;
-            //_fnOnRspQryInstrumentMarginRate_Holder = OnRspQryInstrumentMarginRate_callback;
-            //_fnOnRspQryInvestorPosition_Holder = OnRspQryInvestorPosition_callback;
-            //_fnOnRspQryInvestorPositionDetail_Holder = OnRspQryInvestorPositionDetail_callback;
-            //_fnOnRspQryOrder_Holder = OnRspQryOrder_callback;
-            //_fnOnRspQryTrade_Holder = OnRspQryTrade_callback;
-            //_fnOnRspQryTradingAccount_Holder = OnRspQryTradingAccount_callback;
-            //_fnOnRtnInstrumentStatus_Holder = OnRtnInstrumentStatus_callback;
-            //_fnOnRtnOrder_Holder = OnRtnOrder_callback;
-            //_fnOnRtnTrade_Holder = OnRtnTrade_callback;
             m_pMsgQueue = new MsgQueue();
             m_Api = new TradeApi(m_pMsgQueue);
         }

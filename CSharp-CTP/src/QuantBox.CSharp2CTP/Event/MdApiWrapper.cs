@@ -12,7 +12,6 @@ namespace QuantBox.CSharp2CTP.Event
         public event OnRspErrorHandler OnRspError;
         public event OnRtnDepthMarketDataHandler OnRtnDepthMarketData;
 
-        
         private volatile bool _bMdConnected;
 
         private bool disposed;
@@ -22,7 +21,17 @@ namespace QuantBox.CSharp2CTP.Event
 
         public MdApiWrapper()
         {
-            m_pMsgQueue = new MsgQueue();
+            Init(new MsgQueue());
+        }
+
+        public MdApiWrapper(MsgQueue msgQueue)
+        {
+            Init(msgQueue);
+        }
+
+        private void Init(MsgQueue msgQueue)
+        {
+            m_pMsgQueue = msgQueue;
             m_Api = new MarketDataApi(m_pMsgQueue);
         }
 
