@@ -16,9 +16,13 @@ namespace QuantBox.CSharp2CTP.Callback
         protected AccountInfo _Account;
         protected ConnectionInfo _Connection;
 
-        private fnOnConnect _OnConnect;
-        private fnOnDisconnect _OnDisconnect;
-        private fnOnRspError _OnRspError;
+        private fnOnConnect OnConnect_1;
+        private fnOnDisconnect OnDisconnect_1;
+        private fnOnRspError OnRspError_1;
+
+        private QuantBox.CSharp2CTP.fnOnConnect OnConnect_2;
+        private QuantBox.CSharp2CTP.fnOnDisconnect OnDisconnect_2;
+        private QuantBox.CSharp2CTP.fnOnRspError OnRspError_2;
 
         protected string _TempPath;
 
@@ -63,41 +67,44 @@ namespace QuantBox.CSharp2CTP.Callback
         {
             set
             {
-                _OnConnect = value;
-                CommApi.CTP_RegOnConnect(_MsgQueue.Queue, __OnConnect);
+                OnConnect_1 = value;
+                OnConnect_2 = OnConnect_3;
+                CommApi.CTP_RegOnConnect(_MsgQueue.Queue, OnConnect_2);
             }
         }
 
-        private void __OnConnect(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
+        private void OnConnect_3(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
-            _OnConnect(this, pApi, ref pRspUserLogin, result);
+            OnConnect_1(this, pApi, ref pRspUserLogin, result);
         }
 
         public fnOnDisconnect OnDisconnect
         {
             set
             {
-                _OnDisconnect = value;
-                CommApi.CTP_RegOnDisconnect(_MsgQueue.Queue, __OnDisconnect);
+                OnDisconnect_1 = value;
+                OnDisconnect_2 = OnDisconnect_3;
+                CommApi.CTP_RegOnDisconnect(_MsgQueue.Queue, OnDisconnect_2);
             }
         }
-        private void __OnDisconnect(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
+        private void OnDisconnect_3(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
         {
-            _OnDisconnect(this, pApi, ref pRspInfo, step);
+            OnDisconnect_1(this, pApi, ref pRspInfo, step);
         }
 
         public fnOnRspError OnRspError
         {
             set
             {
-                _OnRspError = value;
-                CommApi.CTP_RegOnRspError(_MsgQueue.Queue, __OnRspError);
+                OnRspError_1 = value;
+                OnRspError_2 = OnRspError_3;
+                CommApi.CTP_RegOnRspError(_MsgQueue.Queue, OnRspError_2);
             }
         }
 
-        private void __OnRspError(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void OnRspError_3(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
-            _OnRspError(this, pApi, ref pRspInfo, nRequestID, bIsLast);
+            OnRspError_1(this, pApi, ref pRspInfo, nRequestID, bIsLast);
         }
 
         public FrontInfo Front

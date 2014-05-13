@@ -19,21 +19,25 @@ namespace QuantBox.CSharp2CTP.Callback
             }
         }
 
-        private fnOnRtnDepthMarketData _OnRtnDepthMarketData;
-        private fnOnRtnForQuoteRsp _OnRtnForQuoteRsp;
+        private fnOnRtnDepthMarketData OnRtnDepthMarketData_1;
+        private fnOnRtnForQuoteRsp OnRtnForQuoteRsp_1;
+
+        private QuantBox.CSharp2CTP.fnOnRtnDepthMarketData OnRtnDepthMarketData_2;
+        private QuantBox.CSharp2CTP.fnOnRtnForQuoteRsp OnRtnForQuoteRsp_2;
 
         public fnOnRtnDepthMarketData OnRtnDepthMarketData
         {
             set
             {
-                _OnRtnDepthMarketData = value;
-                MdApi.CTP_RegOnRtnDepthMarketData(_MsgQueue.Queue, __OnRtnDepthMarketData);
+                OnRtnDepthMarketData_1 = value;
+                OnRtnDepthMarketData_2 = OnRtnDepthMarketData_3;
+                MdApi.CTP_RegOnRtnDepthMarketData(_MsgQueue.Queue, OnRtnDepthMarketData_2);
             }
         }
 
-        private void __OnRtnDepthMarketData(IntPtr pMdUserApi, ref CThostFtdcDepthMarketDataField pDepthMarketData)
+        private void OnRtnDepthMarketData_3(IntPtr pMdUserApi, ref CThostFtdcDepthMarketDataField pDepthMarketData)
         {
-            _OnRtnDepthMarketData(this, pMdUserApi, ref pDepthMarketData);
+            OnRtnDepthMarketData_1(this, pMdUserApi, ref pDepthMarketData);
         }
     
 
@@ -41,14 +45,15 @@ namespace QuantBox.CSharp2CTP.Callback
         {
             set
             {
-                _OnRtnForQuoteRsp = value;
-                MdApi.CTP_RegOnRtnForQuoteRsp(_MsgQueue.Queue, __OnRtnForQuoteRsp);
+                OnRtnForQuoteRsp_1 = value;
+                OnRtnForQuoteRsp_2 = OnRtnForQuoteRsp_3;
+                MdApi.CTP_RegOnRtnForQuoteRsp(_MsgQueue.Queue, OnRtnForQuoteRsp_2);
             }
         }
 
-        private void __OnRtnForQuoteRsp(IntPtr pMdUserApi, ref CThostFtdcForQuoteRspField pForQuoteRsp)
+        private void OnRtnForQuoteRsp_3(IntPtr pMdUserApi, ref CThostFtdcForQuoteRspField pForQuoteRsp)
         {
-            _OnRtnForQuoteRsp(this, pMdUserApi, ref pForQuoteRsp);
+            OnRtnForQuoteRsp_1(this, pMdUserApi, ref pForQuoteRsp);
         }
     
 
