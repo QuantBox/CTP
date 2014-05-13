@@ -8,7 +8,7 @@ namespace QuantBox.CSharp2CTP.Callback
 {
     public class BaseApi : KeyInfo
     {
-        public bool IsConnected;
+        public bool IsConnected { get; protected set; }
 
         protected MsgQueue _MsgQueue;
 
@@ -16,7 +16,7 @@ namespace QuantBox.CSharp2CTP.Callback
         protected AccountInfo _Account;
         protected ConnectionInfo _Connection;
 
-        private fnOnConnect OnConnect_1;
+        protected fnOnConnect OnConnect_1;
         private fnOnDisconnect OnDisconnect_1;
         private fnOnRspError OnRspError_1;
 
@@ -73,7 +73,7 @@ namespace QuantBox.CSharp2CTP.Callback
             }
         }
 
-        private void OnConnect_3(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
+        protected virtual void OnConnect_3(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
             OnConnect_1(this, pApi, ref pRspUserLogin, result);
         }
@@ -89,6 +89,7 @@ namespace QuantBox.CSharp2CTP.Callback
         }
         private void OnDisconnect_3(IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
         {
+            IsConnected = false;
             OnDisconnect_1(this, pApi, ref pRspInfo, step);
         }
 

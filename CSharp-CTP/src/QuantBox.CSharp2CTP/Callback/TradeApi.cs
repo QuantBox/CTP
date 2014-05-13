@@ -370,6 +370,16 @@ namespace QuantBox.CSharp2CTP.Callback
             OnRtnTrade_1(this, pTraderApi, ref pTrade);
         }
 
+        protected override void OnConnect_3(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
+        {
+            IsConnected = false;
+            if (result == ConnectionStatus.E_confirmed)
+            {
+                IsConnected = true;
+            }
+            OnConnect_1(this, pApi, ref pRspUserLogin, result);
+        }
+
         public TradeApi(MsgQueue msgQueue)
             : base(msgQueue)
         {

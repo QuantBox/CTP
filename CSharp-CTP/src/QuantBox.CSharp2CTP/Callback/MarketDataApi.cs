@@ -55,6 +55,16 @@ namespace QuantBox.CSharp2CTP.Callback
         {
             OnRtnForQuoteRsp_1(this, pMdUserApi, ref pForQuoteRsp);
         }
+
+        protected override void OnConnect_3(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
+        {
+            IsConnected = false;
+            if (result == ConnectionStatus.E_logined)
+            {
+                IsConnected = true;
+            }
+            OnConnect_1(this, pApi, ref pRspUserLogin, result);
+        }
     
 
         public MarketDataApi(MsgQueue msgQueue)
