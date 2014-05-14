@@ -1,4 +1,5 @@
 ﻿using QuantBox.CSharp2CTP.Callback;
+using QuantBox.Libray;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,6 @@ namespace QuantBox.CSharp2CTP.Event
         public event OnDisconnectHandler OnDisconnect;
         public event OnRspErrorHandler OnRspError;
         public event OnRtnDepthMarketDataHandler OnRtnDepthMarketData;
-
-        private volatile bool _bMdConnected;
 
         private bool disposed;
 
@@ -113,7 +112,6 @@ namespace QuantBox.CSharp2CTP.Event
             lock (this)
             {
                 m_Api.Disconnect();
-                _bMdConnected = false;
             }
         }
 
@@ -135,8 +133,6 @@ namespace QuantBox.CSharp2CTP.Event
 
         private void OnConnect_callback(object sender,IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
-            _bMdConnected = (ConnectionStatus.E_logined == result);
-
             if (null != OnConnect)
             {
                 OnConnect(this, new OnConnectArgs(pApi, ref pRspUserLogin, result));

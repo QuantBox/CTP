@@ -1,4 +1,5 @@
 ﻿using QuantBox.CSharp2CTP.Event;
+using QuantBox.Libray;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace QuantBox.CSharp2CTP
         static void MdApi_OnConnect(object sender, OnConnectArgs e)
         {
             Console.WriteLine(e.result);
-            if(e.result == ConnectionStatus.E_logined)
+            if(e.result == ConnectionStatus.Logined)
             {
                 MdApi.Subscribe("IF1406;IF1409", "");
             }

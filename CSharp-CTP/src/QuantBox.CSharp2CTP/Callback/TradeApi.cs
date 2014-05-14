@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuantBox.Libray;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -373,7 +374,7 @@ namespace QuantBox.CSharp2CTP.Callback
         protected override void OnConnect_3(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
             IsConnected = false;
-            if (result == ConnectionStatus.E_confirmed)
+            if (result == ConnectionStatus.Confirmed)
             {
                 IsConnected = true;
             }

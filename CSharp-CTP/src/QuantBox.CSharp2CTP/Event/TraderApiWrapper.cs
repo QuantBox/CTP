@@ -1,4 +1,5 @@
 ﻿using QuantBox.CSharp2CTP.Callback;
+using QuantBox.Libray;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +28,9 @@ namespace QuantBox.CSharp2CTP.Event
         public event OnRtnOrderHandler OnRtnOrder;
         public event OnRtnTradeHandler OnRtnTrade;
 
-        private volatile bool _bTdConnected;
-        public bool isConnected { get; private set; }
-
         private bool disposed;
+
+        public bool IsConnected { get; private set; }
 
         private MsgQueue m_pMsgQueue;
         private TradeApi m_Api;
@@ -104,7 +104,6 @@ namespace QuantBox.CSharp2CTP.Event
         public void Disconnect()
         {
             Disconnect_TD();
-            isConnected = false;
         }
 
         //建立行情
@@ -142,7 +141,6 @@ namespace QuantBox.CSharp2CTP.Event
             lock (this)
             {
                 m_Api.Disconnect();
-                _bTdConnected = false;
             }
         }
 
@@ -207,10 +205,9 @@ namespace QuantBox.CSharp2CTP.Event
         
         private void OnConnect_callback(object sender, IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
-            _bTdConnected = (ConnectionStatus.E_confirmed == result);
-            if (_bTdConnected)
+            if (m_Api.IsConnected)
             {
-                isConnected = true;
+                IsConnected = true;
             }
 
             if (null != OnConnect)
@@ -221,7 +218,7 @@ namespace QuantBox.CSharp2CTP.Event
 
         private void OnDisconnect_callback(object sender, IntPtr pApi, ref CThostFtdcRspInfoField pRspInfo, ConnectionStatus step)
         {
-            if(isConnected)
+            if (IsConnected)
             {
                 if (7 == pRspInfo.ErrorID//综合交易平台：还没有初始化
                     || 8 == pRspInfo.ErrorID)//综合交易平台：前置不活跃

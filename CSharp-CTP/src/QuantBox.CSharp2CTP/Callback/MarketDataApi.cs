@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuantBox.Libray;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,14 +8,26 @@ namespace QuantBox.CSharp2CTP.Callback
 {
     public class MarketDataApi : BaseApi
     {
-        private SortedSet<string> _Instruments = new SortedSet<string>();
-        public SortedSet<string> Instruments
+        private SortedSet<string> _SubscribedInstruments = new SortedSet<string>();
+        public SortedSet<string> SubscribedInstruments
         {
             get
             {
                 lock (this)
                 {
-                    return _Instruments;
+                    return _SubscribedInstruments;
+                }
+            }
+        }
+
+        private SortedSet<string> _SubscribedQuotes = new SortedSet<string>();
+        public SortedSet<string> SubscribedQuotes
+        {
+            get
+            {
+                lock (this)
+                {
+                    return _SubscribedQuotes;
                 }
             }
         }
@@ -59,7 +72,7 @@ namespace QuantBox.CSharp2CTP.Callback
         protected override void OnConnect_3(IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)
         {
             IsConnected = false;
-            if (result == ConnectionStatus.E_logined)
+            if (result == ConnectionStatus.Logined)
             {
                 IsConnected = true;
             }
@@ -111,7 +124,7 @@ namespace QuantBox.CSharp2CTP.Callback
                 inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>
                 {
                     if (!string.IsNullOrWhiteSpace(x))
-                        _Instruments.Add(x);
+                        _SubscribedInstruments.Add(x);
                 });
             }
         }
@@ -122,7 +135,31 @@ namespace QuantBox.CSharp2CTP.Callback
             {
                 MdApi.MD_Unsubscribe(IntPtrKey, inst, szExchange);
                 inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>
-                    _Instruments.Remove(x)
+                    _SubscribedInstruments.Remove(x)
+                );
+            }
+        }
+
+        public virtual void SubscribeQuote(string inst, string szExchange)
+        {
+            lock (this)
+            {
+                MdApi.MD_SubscribeQuote(IntPtrKey, inst, szExchange);
+                inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>
+                {
+                    if (!string.IsNullOrWhiteSpace(x))
+                        _SubscribedQuotes.Add(x);
+                });
+            }
+        }
+
+        public virtual void UnsubscribeQuote(string inst, string szExchange)
+        {
+            lock (this)
+            {
+                MdApi.MD_UnsubscribeQuote(IntPtrKey, inst, szExchange);
+                inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>
+                    _SubscribedQuotes.Remove(x)
                 );
             }
         }

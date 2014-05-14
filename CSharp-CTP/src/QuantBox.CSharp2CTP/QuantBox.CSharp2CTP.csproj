@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>QuantBox.CSharp2CTP</RootNamespace>
     <AssemblyName>QuantBox.CSharp2CTP</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -41,17 +41,16 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="QuantBox.Libray, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\SmartQuant Ltd\OpenQuant\Bin\QuantBox.Libray.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Callbacks.cs" />
-    <Compile Include="Callback\AccountInfo.cs" />
     <Compile Include="Callback\BaseApi.cs" />
     <Compile Include="Callback\Callbacks.cs" />
-    <Compile Include="Callback\ConnectionInfo.cs" />
-    <Compile Include="Callback\FrontInfo.cs" />
-    <Compile Include="Callback\KeyInfo.cs" />
     <Compile Include="Callback\MarketDataApi.cs" />
     <Compile Include="Callback\MsgQueue.cs" />
     <Compile Include="Callback\TradeApi.cs" />
