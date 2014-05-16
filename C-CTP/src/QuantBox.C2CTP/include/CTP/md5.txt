@@ -1,2 +1,10 @@
-traderapi  ae9fb83abe109c20ea4600e85750fef0
-mduserapi  99245954a6b85d2d0b5921ed1da4dab5
+
+MD5sums 1.2 freeware for Win9x/ME/NT/2000/XP+
+Copyright (C) 2001-2005 Jem Berkes - http://www.pc-tools.net/
+Type md5sums -h for help
+
+[Path] / filename                              MD5 sum
+-------------------------------------------------------------------------------
+[D:\workspace\vss\04ÆÚÈ¨SC\0514_traderapi\traderapi\]
+thostmduserapi.dll                             36f60cc813ba4075d7c622c37bae99e8
+thosttraderapi.dll                             74df8377decfdce050a00670201e7440

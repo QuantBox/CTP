@@ -7790,6 +7790,60 @@ namespace QuantBox.CSharp2CTP
     }
 
     /// <summary>
+    /// 当前期权合约执行偏移值的详细内容
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcStrikeOffsetField
+    {
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+        /// <summary>
+        /// 投资者范围
+        /// </summary>
+        public TThostFtdcInvestorRangeType InvestorRange;
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 执行偏移值
+        /// </summary>
+        public double Offset;
+    }
+
+    /// <summary>
+    /// 期权执行偏移值查询
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQryStrikeOffsetField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+        /// <summary>
+        /// 合约代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+        public string InstrumentID;
+    }
+
+    /// <summary>
     /// 市场行情
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]

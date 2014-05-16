@@ -3661,6 +3661,32 @@ struct CThostFtdcForQuoteRspField
 	TThostFtdcDateType	ActionDay;
 };
 
+///当前期权合约执行偏移值的详细内容
+struct CThostFtdcStrikeOffsetField
+{
+	///合约代码
+	TThostFtdcInstrumentIDType	InstrumentID;
+	///投资者范围
+	TThostFtdcInvestorRangeType	InvestorRange;
+	///经纪公司代码
+	TThostFtdcBrokerIDType	BrokerID;
+	///投资者代码
+	TThostFtdcInvestorIDType	InvestorID;
+	///执行偏移值
+	TThostFtdcMoneyType	Offset;
+};
+
+///期权执行偏移值查询
+struct CThostFtdcQryStrikeOffsetField
+{
+	///经纪公司代码
+	TThostFtdcBrokerIDType	BrokerID;
+	///投资者代码
+	TThostFtdcInvestorIDType	InvestorID;
+	///合约代码
+	TThostFtdcInstrumentIDType	InstrumentID;
+};
+
 ///市场行情
 struct CThostFtdcMarketDataField
 {
