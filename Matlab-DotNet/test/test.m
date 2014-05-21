@@ -1,7 +1,10 @@
 %% 导入C#库，请按自己目录进行调整
-cd 'D:\wukan\Documents\GitHub\CTP\Matlab-DotNet\test\'
+cd 'D:\Kan\Documents\GitHub\CTP\Matlab-DotNet\test\'
 NET.addAssembly(fullfile(cd,'QuantBox.CSharp2CTP.dll'));
+NET.addAssembly(fullfile(cd,'QuantBox.Libray.dll'));
 import QuantBox.CSharp2CTP.*;
+import QuantBox.CSharp2CTP.Event.*;
+import QuantBox.Libray.*;
 
 %% 行情
 global md;

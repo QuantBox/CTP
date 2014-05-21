@@ -1,11 +1,13 @@
 function OnTdConnect(sender,arg)
 % 交易连接回报
 
-% 交易状态到E_confirmed就表示登录并确认成功
-if arg.result == QuantBox.CSharp2CTP.ConnectionStatus.E_confirmed
+% 交易状态到Confirmed就表示登录并确认成功
+if arg.result == QuantBox.Libray.ConnectionStatus.Confirmed
     global td;
     % 下单
-    td.SendOrder('IF1401',... %合约
+    ret = td.SendOrder(...
+        -1,... %强行指定报单引用,-1表示由底层生成
+        'IF1406',... %合约
         QuantBox.CSharp2CTP.TThostFtdcDirectionType.Buy,... %买卖
         '0',... %开平标记
         '1',... %投机套保标记
@@ -16,6 +18,10 @@ if arg.result == QuantBox.CSharp2CTP.ConnectionStatus.E_confirmed
         QuantBox.CSharp2CTP.TThostFtdcContingentConditionType.Immediately,... %条件类型
         0,... % 止损价
         QuantBox.CSharp2CTP.TThostFtdcVolumeConditionType.AV); %成交量类型
+    
+    disp(ret);
 end
+
+disp(arg.result);
 
 end
