@@ -647,8 +647,8 @@ int CTraderApi::ReqQuoteInsert(
 	//合约
 	strncpy(body.InstrumentID, szInstrumentId.c_str(), sizeof(TThostFtdcInstrumentIDType));
 	//开平
-	body.AskHedgeFlag = AskOffsetFlag;
-	body.BidHedgeFlag = BidHedgeFlag;
+	body.AskOffsetFlag = AskOffsetFlag;
+	body.BidOffsetFlag = BidOffsetFlag;
 	//投保
 	body.AskHedgeFlag = AskHedgeFlag;
 	body.BidHedgeFlag = BidHedgeFlag;

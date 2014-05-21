@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0266F737-2271-4791-8FB0-5EA9A8AC0F7A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>QuantBox.CSharp2CTP</RootNamespace>
     <AssemblyName>QuantBox.CSharp2CTP</AssemblyName>
