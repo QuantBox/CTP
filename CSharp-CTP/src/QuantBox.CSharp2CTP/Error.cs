@@ -663,6 +663,16 @@ namespace QuantBox.CSharp2CTP
         NOT_SUPPORT_SECAGENT_BY_BANK = 1037,
 
         /// <summary>
+        /// CTP:银期转账：PIN密钥正在同步
+        /// </summary>
+        PINKEY_SYNCING = 1038,
+
+        /// <summary>
+        /// CTP:银期转账：建行发起的二级代理商开户前查询
+        /// </summary>
+        SECAGENT_OPEN_ACCOUNT_BY_CCB = 1039,
+
+        /// <summary>
         /// CTP:该报盘未连接到银行
         /// </summary>
         NO_VALID_BANKOFFER_AVAILABLE = 2000,

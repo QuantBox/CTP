@@ -230,7 +230,7 @@ public:
 	virtual void OnErrRtnExecOrderAction(CThostFtdcExecOrderActionField *pExecOrderAction, CThostFtdcRspInfoField *pRspInfo) {};
 
 	///询价录入错误回报
-	virtual void OnErrRtnForQuoteInsert(CThostFtdcInputExecOrderField *pInputExecOrder, CThostFtdcRspInfoField *pRspInfo) {};
+	virtual void OnErrRtnForQuoteInsert(CThostFtdcInputForQuoteField *pInputForQuote, CThostFtdcRspInfoField *pRspInfo) {};
 
 	///报价通知
 	virtual void OnRtnQuote(CThostFtdcQuoteField *pQuote) {};
