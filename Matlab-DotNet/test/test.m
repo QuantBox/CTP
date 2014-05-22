@@ -19,6 +19,8 @@ md.Connect('D:\',... %行情流文件路径
     '888888'); %密码
 
 %% 交易
+global orders;
+
 global td;
 td = TraderApiWrapper();
 addlistener(td,'OnConnect',@OnTdConnect);
@@ -33,6 +35,15 @@ td.Connect('D:\',... %交易流文件路径
     THOST_TE_RESUME_TYPE.THOST_TERT_QUICK,... %流重传方式
     '',... %用户端产品信息
     ''); %认证码
+
+%% 下单
+BuyLimit('IF1406',1,2500)
+disp(orders{1}.OrderStatus)
+disp(orders{1}.StatusMsg)
+
+%% 撤单
+Cancel(orders{1})
+disp(orders{1}.OrderStatus)
 
 %% 退出
 % md.Disconnect() %行情退出
