@@ -1,5 +1,5 @@
 function Cancel(pOrder)
     global td;
-    % ÏÂµ¥
+    % ³·µ¥
     td.CancelOrder(pOrder);
 end

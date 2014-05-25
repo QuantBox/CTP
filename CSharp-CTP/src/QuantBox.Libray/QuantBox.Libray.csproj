@@ -43,6 +43,7 @@
     <Compile Include="AccountInfo.cs" />
     <Compile Include="ConnectionInfo.cs" />
     <Compile Include="ConnectionStatus.cs" />
+    <Compile Include="EnumOpenClose.cs" />
     <Compile Include="FrontInfo.cs" />
     <Compile Include="KeyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

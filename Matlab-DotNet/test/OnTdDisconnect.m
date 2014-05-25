@@ -1,5 +1,5 @@
 function OnTdDisconnet(sender,arg)
-% 行情断线回报
+% 交易断线回报
 
 disp(arg.pRspInfo.ErrorMsg)
 
