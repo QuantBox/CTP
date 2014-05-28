@@ -5,11 +5,10 @@ using System.Text;
 
 namespace QuantBox.Libray
 {
-    public enum EnumOpenClose
+    public enum EnumHedgeFlag
     {
-        None,
-        Open,
-        Close,
-        CloseToday,
+        Speculation,
+        Arbitrage,
+        Hedge,
     }
 }

@@ -5,11 +5,9 @@ using System.Text;
 
 namespace QuantBox.Libray
 {
-    public enum EnumOpenClose
+    public class OrderIndexType
     {
-        None,
-        Open,
-        Close,
-        CloseToday,
+        public const int OpenClose = 0;
+        public const int HedgeFlag = 1;
     }
 }
