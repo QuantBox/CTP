@@ -34,6 +34,7 @@ class CTraderApi :
 		E_QryInstrumentCommissionRateField,
 		E_QryInstrumentMarginRateField,
 		E_QryDepthMarketDataField,
+		E_QrySettlementInfoField,
 	};
 
 	//请求数据包结构体
@@ -55,6 +56,7 @@ class CTraderApi :
 			CThostFtdcInputOrderActionField				InputOrderActionField;
 			CThostFtdcInputQuoteField					InputQuoteField;
 			CThostFtdcInputQuoteActionField				InputQuoteActionField;
+			CThostFtdcQrySettlementInfoField			QrySettlementInfoField;
 		};
 	};
 
@@ -110,6 +112,7 @@ public:
 	void ReqQryInstrumentCommissionRate(const string& szInstrumentId);
 	void ReqQryInstrumentMarginRate(const string& szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag = THOST_FTDC_HF_Speculation);
 	void ReqQryDepthMarketData(const string& szInstrumentId);
+	void ReqQrySettlementInfo(const string& szTradingDay);
 
 private:
 	//数据包发送线程
@@ -187,6 +190,9 @@ private:
 	
 	//查询行情响应
 	virtual void OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	//请求查询投资者结算结果响应
+	virtual void OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	//其它
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);

@@ -20,6 +20,7 @@ namespace QuantBox.CSharp2CTP.Callback
     public delegate void fnOnRspQryInvestorPositionDetail(object sender, IntPtr pTraderApi, ref CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
     public delegate void fnOnRspQryOrder(object sender, IntPtr pTraderApi, ref CThostFtdcOrderField pOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
     public delegate void fnOnRspQryTrade(object sender, IntPtr pTraderApi, ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+    public delegate void fnOnRspQrySettlementInfo(object sender, IntPtr pTraderApi, ref CThostFtdcSettlementInfoField pSettlementInfo, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
     public delegate void fnOnRspQryTradingAccount(object sender, IntPtr pTraderApi, ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
     public delegate void fnOnRspQuoteAction(object sender, IntPtr pTraderApi, ref CThostFtdcInputQuoteActionField pInputQuoteAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
     public delegate void fnOnRspQuoteInsert(object sender, IntPtr pTraderApi, ref CThostFtdcInputQuoteField pInputQuote, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);

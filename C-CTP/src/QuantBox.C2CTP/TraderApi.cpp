@@ -270,6 +270,9 @@ void CTraderApi::RunInThread()
 		case E_QryDepthMarketDataField:
 			iRet = m_pApi->ReqQryDepthMarketData(&pRequest->QryDepthMarketDataField,lRequest);
 			break;
+		case E_QrySettlementInfoField:
+			iRet = m_pApi->ReqQrySettlementInfo(&pRequest->QrySettlementInfoField, lRequest);
+			break;
 		default:
 			_ASSERT(FALSE);
 			break;
@@ -940,6 +943,15 @@ void CTraderApi::OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField *pDepthM
 		ReleaseRequestMapBuf(nRequestID);
 }
 
+void CTraderApi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (m_msgQueue)
+		m_msgQueue->Input_OnRspQrySettlementInfo(this, pSettlementInfo, pRspInfo, nRequestID, bIsLast);
+
+	if (bIsLast)
+		ReleaseRequestMapBuf(nRequestID);
+}
+
 void CTraderApi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	if(m_msgQueue)
@@ -972,4 +984,22 @@ void CTraderApi::OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField *pInstrum
 {
 	if(m_msgQueue)
 		m_msgQueue->Input_OnRtnInstrumentStatus(this,pInstrumentStatus);
+}
+
+void CTraderApi::ReqQrySettlementInfo(const string& szTradingDay)
+{
+	if (NULL == m_pApi)
+		return;
+
+	SRequest* pRequest = MakeRequestBuf(E_QrySettlementInfoField);
+	if (NULL == pRequest)
+		return;
+
+	CThostFtdcQrySettlementInfoField& body = pRequest->QrySettlementInfoField;
+
+	strncpy(body.BrokerID, m_RspUserLogin.BrokerID, sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_RspUserLogin.UserID, sizeof(TThostFtdcInvestorIDType));
+	strncpy(body.TradingDay, szTradingDay.c_str(), sizeof(TThostFtdcDateType));
+
+	AddToSendQueue(pRequest);
 }

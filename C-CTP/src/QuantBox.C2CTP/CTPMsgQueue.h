@@ -25,6 +25,7 @@ class CCTPMsgQueue
 		E_fnOnRspQryInvestorPositionDetail,
 		E_fnOnRspQryOrder,
 		E_fnOnRspQryTrade,
+		E_fnOnRspQrySettlementInfo,
 		E_fnOnRspQryTradingAccount,
 		E_fnOnRspQuoteAction,
 		E_fnOnRspQuoteInsert,
@@ -64,6 +65,7 @@ class CCTPMsgQueue
 			CThostFtdcOrderActionField				OrderAction;
 			CThostFtdcRspUserLoginField				RspUserLogin;
 			CThostFtdcTradeField					Trade;
+			CThostFtdcSettlementInfoField			SettlementInfo;
 			CThostFtdcTradingAccountField			TradingAccount;
 			CThostFtdcQuoteField					Quote;
 		};
@@ -93,6 +95,7 @@ public:
 		m_fnOnRspQryInvestorPositionDetail = NULL;
 		m_fnOnRspQryOrder = NULL;
 		m_fnOnRspQryTrade = NULL;
+		m_fnOnRspQrySettlementInfo = NULL;
 		m_fnOnRspQryTradingAccount = NULL;
 		m_fnOnRspQuoteAction = NULL;
 		m_fnOnRspQuoteInsert = NULL;
@@ -142,6 +145,7 @@ public:
 	void RegisterCallback(fnOnRspQryInvestorPositionDetail pCallback){ m_fnOnRspQryInvestorPositionDetail = pCallback; }
 	void RegisterCallback(fnOnRspQryOrder pCallback){ m_fnOnRspQryOrder = pCallback; }
 	void RegisterCallback(fnOnRspQryTrade pCallback){ m_fnOnRspQryTrade = pCallback; }
+	void RegisterCallback(fnOnRspQrySettlementInfo pCallback){ m_fnOnRspQrySettlementInfo = pCallback; }
 	void RegisterCallback(fnOnRspQryTradingAccount pCallback){ m_fnOnRspQryTradingAccount = pCallback; }
 	void RegisterCallback(fnOnRspQuoteAction pCallback){ m_fnOnRspQuoteAction = pCallback; }
 	void RegisterCallback(fnOnRspQuoteInsert pCallback){ m_fnOnRspQuoteInsert = pCallback; }
@@ -170,6 +174,7 @@ public:
 	void Input_OnRspQryInstrumentMarginRate(void* pTraderApi,CThostFtdcInstrumentMarginRateField *pInstrumentMarginRate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQryOrder(void* pTraderApi,CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQryTrade(void* pTraderApi,CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	void Input_OnRspQrySettlementInfo(void* pTraderApi, CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQryTradingAccount(void* pTraderApi,CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQuoteAction(void* pTraderApi, CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	void Input_OnRspQuoteInsert(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -179,6 +184,7 @@ public:
 	void Input_OnRtnOrder(void* pTraderApi,CThostFtdcOrderField *pOrder);
 	void Input_OnRtnQuote(void* pTraderApi, CThostFtdcQuoteField *pQuote);
 	void Input_OnRtnTrade(void* pTraderApi,CThostFtdcTradeField *pTrade);
+	
 private:
 	friend DWORD WINAPI ProcessThread(LPVOID lpParam);
 	void RunInThread();
@@ -321,6 +327,11 @@ private:
 		if(m_fnOnRtnTrade)
 			(*m_fnOnRtnTrade)(pItem->pApi,&pItem->Trade);
 	}
+	void Output_OnRspQrySettlementInfo(SMsgItem* pItem)
+	{
+		if (m_fnOnRspQrySettlementInfo)
+			(*m_fnOnRspQrySettlementInfo)(pItem->pApi, &pItem->SettlementInfo, &pItem->RspInfo, pItem->nRequestID, pItem->bIsLast);
+	}
 
 private:
 	volatile bool				m_bRunning;
@@ -348,6 +359,7 @@ private:
 	fnOnRspQryInvestorPositionDetail	m_fnOnRspQryInvestorPositionDetail;
 	fnOnRspQryOrder						m_fnOnRspQryOrder;
 	fnOnRspQryTrade						m_fnOnRspQryTrade;
+	fnOnRspQrySettlementInfo			m_fnOnRspQrySettlementInfo;
 	fnOnRspQryTradingAccount			m_fnOnRspQryTradingAccount;
 	fnOnRspQuoteAction					m_fnOnRspQuoteAction;
 	fnOnRspQuoteInsert					m_fnOnRspQuoteInsert;

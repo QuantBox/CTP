@@ -19,7 +19,7 @@ extern "C" {
 
 #include "include\CTP\ThostFtdcUserApiStruct.h"
 
-//用于分隔输入的合列表，与前置机地址列表，所以不能出现“:”一类的
+	//用于分隔输入的合列表，与前置机地址列表，所以不能出现“:”一类的
 #define _QUANTBOXC2CTP_SEPS_ ",;"
 
 //连接状态枚举
@@ -57,6 +57,7 @@ typedef void(__stdcall *fnOnRspQryInvestorPosition)(void* pTraderApi, CThostFtdc
 typedef void(__stdcall *fnOnRspQryInvestorPositionDetail)(void* pTraderApi, CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void(__stdcall *fnOnRspQryOrder)(void* pTraderApi, CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void(__stdcall *fnOnRspQryTrade)(void* pTraderApi, CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void(__stdcall *fnOnRspQrySettlementInfo)(void* pTraderApi, CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void(__stdcall *fnOnRspQryTradingAccount)(void* pTraderApi, CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void(__stdcall *fnOnRspQuoteAction)(void* pTraderApi, CThostFtdcInputQuoteActionField *pInputQuoteAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 typedef void(__stdcall *fnOnRspQuoteInsert)(void* pTraderApi, CThostFtdcInputQuoteField *pInputQuote, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
@@ -72,32 +73,33 @@ typedef void(__stdcall *fnOnRtnTrade)(void* pTraderApi, CThostFtdcTradeField *pT
 QUANTBOXC2CTP_API void* __stdcall CTP_CreateMsgQueue();
 
 //向消息队列注册回调函数
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnConnect(void* pMsgQueue,fnOnConnect pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnDisconnect(void* pMsgQueue,fnOnDisconnect pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnOrderAction(void* pMsgQueue,fnOnErrRtnOrderAction pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnOrderInsert(void* pMsgQueue,fnOnErrRtnOrderInsert pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnConnect(void* pMsgQueue, fnOnConnect pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnDisconnect(void* pMsgQueue, fnOnDisconnect pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnOrderAction(void* pMsgQueue, fnOnErrRtnOrderAction pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnOrderInsert(void* pMsgQueue, fnOnErrRtnOrderInsert pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnQuoteAction(void* pMsgQueue, fnOnErrRtnQuoteAction pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnErrRtnQuoteInsert(void* pMsgQueue, fnOnErrRtnQuoteInsert pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspError(void* pMsgQueue,fnOnRspError pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderAction(void* pMsgQueue,fnOnRspOrderAction pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderInsert(void* pMsgQueue,fnOnRspOrderInsert pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspError(void* pMsgQueue, fnOnRspError pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderAction(void* pMsgQueue, fnOnRspOrderAction pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspOrderInsert(void* pMsgQueue, fnOnRspOrderInsert pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQuoteAction(void* pMsgQueue, fnOnRspQuoteAction pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQuoteInsert(void* pMsgQueue, fnOnRspQuoteInsert pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryDepthMarketData(void* pMsgQueue,fnOnRspQryDepthMarketData pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrument(void* pMsgQueue,fnOnRspQryInstrument pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentCommissionRate(void* pMsgQueue,fnOnRspQryInstrumentCommissionRate pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentMarginRate(void* pMsgQueue,fnOnRspQryInstrumentMarginRate pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPosition(void* pMsgQueue,fnOnRspQryInvestorPosition pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPositionDetail(void* pMsgQueue,fnOnRspQryInvestorPositionDetail pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryOrder(void* pMsgQueue,fnOnRspQryOrder pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTrade(void* pMsgQueue,fnOnRspQryTrade pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTradingAccount(void* pMsgQueue,fnOnRspQryTradingAccount pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnDepthMarketData(void* pMsgQueue,fnOnRtnDepthMarketData pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryDepthMarketData(void* pMsgQueue, fnOnRspQryDepthMarketData pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrument(void* pMsgQueue, fnOnRspQryInstrument pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentCommissionRate(void* pMsgQueue, fnOnRspQryInstrumentCommissionRate pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInstrumentMarginRate(void* pMsgQueue, fnOnRspQryInstrumentMarginRate pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPosition(void* pMsgQueue, fnOnRspQryInvestorPosition pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryInvestorPositionDetail(void* pMsgQueue, fnOnRspQryInvestorPositionDetail pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryOrder(void* pMsgQueue, fnOnRspQryOrder pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTrade(void* pMsgQueue, fnOnRspQryTrade pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQrySettlementInfo(void* pMsgQueue, fnOnRspQrySettlementInfo pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRspQryTradingAccount(void* pMsgQueue, fnOnRspQryTradingAccount pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnDepthMarketData(void* pMsgQueue, fnOnRtnDepthMarketData pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnForQuoteRsp(void* pMsgQueue, fnOnRtnForQuoteRsp pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnInstrumentStatus(void* pMsgQueue,fnOnRtnInstrumentStatus pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnOrder(void* pMsgQueue,fnOnRtnOrder pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnInstrumentStatus(void* pMsgQueue, fnOnRtnInstrumentStatus pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnOrder(void* pMsgQueue, fnOnRtnOrder pCallback);
 QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnQuote(void* pMsgQueue, fnOnRtnQuote pCallback);
-QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnTrade(void* pMsgQueue,fnOnRtnTrade pCallback);
+QUANTBOXC2CTP_API void __stdcall CTP_RegOnRtnTrade(void* pMsgQueue, fnOnRtnTrade pCallback);
 
 //释放消息队列
 QUANTBOXC2CTP_API void __stdcall CTP_ReleaseMsgQueue(void* pMsgQueue);
@@ -117,7 +119,7 @@ QUANTBOXC2CTP_API void __stdcall CTP_StopMsgQueue(void* pMsgQueue);
 //创建行情接口
 QUANTBOXC2CTP_API void* __stdcall MD_CreateMdApi();
 //将消息队列注册到行情接口上
-QUANTBOXC2CTP_API void __stdcall MD_RegMsgQueue2MdApi(void* pMdUserApi,void* pMsgQueue);
+QUANTBOXC2CTP_API void __stdcall MD_RegMsgQueue2MdApi(void* pMdUserApi, void* pMsgQueue);
 //连接
 QUANTBOXC2CTP_API void __stdcall MD_Connect(
 	void* pMdUserApi,
@@ -128,9 +130,9 @@ QUANTBOXC2CTP_API void __stdcall MD_Connect(
 	const char* szPassword);
 
 //订阅合约，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
-QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID);
+QUANTBOXC2CTP_API void __stdcall MD_Subscribe(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
 //取消订阅，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
-QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi,const char* szInstrumentIDs,const char* szExchageID);
+QUANTBOXC2CTP_API void __stdcall MD_Unsubscribe(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
 //订阅合约，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
 QUANTBOXC2CTP_API void __stdcall MD_SubscribeQuote(void* pMdUserApi, const char* szInstrumentIDs, const char* szExchageID);
 //取消订阅，多个合约以“,”分隔，与证券统一调用接口，交易所参数目前无效
@@ -143,7 +145,7 @@ QUANTBOXC2CTP_API void __stdcall MD_ReleaseMdApi(void* pMdUserApi);
 //交易接口=======================================
 QUANTBOXC2CTP_API void* __stdcall TD_CreateTdApi();
 //将消息队列注册到交易接口上
-QUANTBOXC2CTP_API void __stdcall TD_RegMsgQueue2TdApi(void* pTraderApi,void* pMsgQueue);
+QUANTBOXC2CTP_API void __stdcall TD_RegMsgQueue2TdApi(void* pTraderApi, void* pMsgQueue);
 //连接
 QUANTBOXC2CTP_API void __stdcall TD_Connect(
 	void* pTraderApi,
@@ -173,7 +175,7 @@ QUANTBOXC2CTP_API int __stdcall TD_SendOrder(
 	TThostFtdcVolumeConditionType VolumeCondition);
 
 //撤单
-QUANTBOXC2CTP_API void __stdcall TD_CancelOrder(void* pTraderApi,CThostFtdcOrderField *pOrder);
+QUANTBOXC2CTP_API void __stdcall TD_CancelOrder(void* pTraderApi, CThostFtdcOrderField *pOrder);
 
 //报单
 QUANTBOXC2CTP_API int __stdcall TD_SendQuote(
@@ -197,19 +199,21 @@ QUANTBOXC2CTP_API void __stdcall TD_Disconnect(void* pTraderApi);
 //释放行情接口
 QUANTBOXC2CTP_API void __stdcall TD_ReleaseTdApi(void* pTraderApi);
 //查综合持仓
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryInvestorPosition(void* pTraderApi,const char* szInstrumentId);
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInvestorPosition(void* pTraderApi, const char* szInstrumentId);
 //查持仓明细
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryInvestorPositionDetail(void* pTraderApi,const char* szInstrumentId);
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInvestorPositionDetail(void* pTraderApi, const char* szInstrumentId);
 //查资金账号
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryTradingAccount(void* pTraderApi);
 //查合约
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrument(void* pTraderApi,const char* szInstrumentId);
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrument(void* pTraderApi, const char* szInstrumentId);
 //查手续费
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentCommissionRate(void* pTraderApi,const char* szInstrumentId);
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentCommissionRate(void* pTraderApi, const char* szInstrumentId);
 //查保证金
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,const char* szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag);
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi, const char* szInstrumentId, TThostFtdcHedgeFlagType HedgeFlag);
 //查深度行情
-QUANTBOXC2CTP_API void __stdcall TD_ReqQryDepthMarketData(void* pTraderApi,const char* szInstrumentId);
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryDepthMarketData(void* pTraderApi, const char* szInstrumentId);
+//请求查询投资者结算结果
+QUANTBOXC2CTP_API void __stdcall TD_ReqQrySettlementInfo(void* pTraderApi, const char* szTradingDay);
 
 #ifdef __cplusplus
 }

@@ -166,6 +166,9 @@ void CCTPMsgQueue::_Output_TD(SMsgItem* pMsgItem)
 	case E_fnOnRspQryTrade:
 		Output_OnRspQryTrade(pMsgItem);
 		break;
+	case E_fnOnRspQrySettlementInfo:
+		Output_OnRspQrySettlementInfo(pMsgItem);
+		break;
 	case E_fnOnRspQryTradingAccount:
 		Output_OnRspQryTradingAccount(pMsgItem);
 		break;
@@ -730,6 +733,29 @@ void CCTPMsgQueue::Input_OnRspQryDepthMarketData(void* pTraderApi,CThostFtdcDept
 		if(pDepthMarketData)
 			pItem->DepthMarketData = *pDepthMarketData;
 		if(pRspInfo)
+			pItem->RspInfo = *pRspInfo;
+
+		_Input_TD(pItem);
+	}
+}
+
+void CCTPMsgQueue::Input_OnRspQrySettlementInfo(void* pTraderApi, CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (NULL == pSettlementInfo
+		&&NULL == pRspInfo)
+		return;
+
+	SMsgItem* pItem = new SMsgItem;
+	if (pItem)
+	{
+		memset(pItem, 0, sizeof(SMsgItem));
+		pItem->type = E_fnOnRspQrySettlementInfo;
+		pItem->pApi = pTraderApi;
+		pItem->nRequestID = nRequestID;
+		pItem->bIsLast = bIsLast;
+		if (pSettlementInfo)
+			pItem->SettlementInfo = *pSettlementInfo;
+		if (pRspInfo)
 			pItem->RspInfo = *pRspInfo;
 
 		_Input_TD(pItem);

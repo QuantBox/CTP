@@ -53,6 +53,9 @@ namespace QuantBox.CSharp2CTP
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryTrade")]
         public static extern void CTP_RegOnRspQryTrade(IntPtr pMsgQueue, fnOnRspQryTrade pCallback);
 
+        [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQrySettlementInfo")]
+        public static extern void CTP_RegOnRspQrySettlementInfo(IntPtr pMsgQueue, fnOnRspQrySettlementInfo pCallback);
+
         [DllImport(CommApi.DllFileName, EntryPoint = "CTP_RegOnRspQryTradingAccount")]
         public static extern void CTP_RegOnRspQryTradingAccount(IntPtr pMsgQueue, fnOnRspQryTradingAccount pCallback);
 
@@ -140,5 +143,8 @@ namespace QuantBox.CSharp2CTP
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryDepthMarketData")]
         public static extern void TD_ReqQryDepthMarketData(IntPtr pTraderApi, string szInstrument);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQrySettlementInfo")]
+        public static extern void TD_ReqQrySettlementInfo(IntPtr pTraderApi, string szTradingDay);
     }
 }

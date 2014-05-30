@@ -24,6 +24,7 @@ namespace QuantBox.CSharp2CTP.Callback
         private fnOnRspQryInvestorPositionDetail OnRspQryInvestorPositionDetail_1;
         private fnOnRspQryOrder OnRspQryOrder_1;
         private fnOnRspQryTrade OnRspQryTrade_1;
+        private fnOnRspQrySettlementInfo OnRspQrySettlementInfo_1;
         private fnOnRspQryTradingAccount OnRspQryTradingAccount_1;
         private fnOnRtnInstrumentStatus OnRtnInstrumentStatus_1;
         private fnOnRtnOrder OnRtnOrder_1;
@@ -46,6 +47,7 @@ namespace QuantBox.CSharp2CTP.Callback
         private QuantBox.CSharp2CTP.fnOnRspQryInvestorPositionDetail OnRspQryInvestorPositionDetail_2;
         private QuantBox.CSharp2CTP.fnOnRspQryOrder OnRspQryOrder_2;
         private QuantBox.CSharp2CTP.fnOnRspQryTrade OnRspQryTrade_2;
+        private QuantBox.CSharp2CTP.fnOnRspQrySettlementInfo OnRspQrySettlementInfo_2;
         private QuantBox.CSharp2CTP.fnOnRspQryTradingAccount OnRspQryTradingAccount_2;
         private QuantBox.CSharp2CTP.fnOnRtnInstrumentStatus OnRtnInstrumentStatus_2;
         private QuantBox.CSharp2CTP.fnOnRtnOrder OnRtnOrder_2;
@@ -295,6 +297,21 @@ namespace QuantBox.CSharp2CTP.Callback
         {
             OnRspQryTrade_1(this, pTraderApi, ref pTrade, ref pRspInfo, nRequestID, bIsLast);
         }
+
+        public fnOnRspQrySettlementInfo OnRspQrySettlementInfo
+        {
+            set
+            {
+                OnRspQrySettlementInfo_1 = value;
+                OnRspQrySettlementInfo_2 = OnRspQrySettlementInfo_3;
+                TraderApi.CTP_RegOnRspQrySettlementInfo(_MsgQueue.Queue, OnRspQrySettlementInfo_2);
+            }
+        }
+
+        private void OnRspQrySettlementInfo_3(IntPtr pTraderApi, ref CThostFtdcSettlementInfoField pSettlementInfo, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            OnRspQrySettlementInfo_1(this, pTraderApi, ref pSettlementInfo, ref pRspInfo, nRequestID, bIsLast);
+        }
     
         public fnOnRspQryTradingAccount OnRspQryTradingAccount
         {
@@ -511,6 +528,15 @@ namespace QuantBox.CSharp2CTP.Callback
                 return;
             }
             TraderApi.TD_ReqQryTradingAccount(IntPtrKey);
+        }
+
+        public void ReqQrySettlementInfo(string szTradingDay)
+        {
+            if (null == IntPtrKey || IntPtr.Zero == IntPtrKey)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQrySettlementInfo(IntPtrKey, szTradingDay);
         }
 
         public void ReqQryInstrument(string szInstrument)
