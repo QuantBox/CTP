@@ -178,6 +178,11 @@ namespace QuantBox.CSharp2CTP.Event
             m_Api.CancelOrder(ref pOrder);
         }
 
+        public void ReqQryInstrument(string szInstrument)
+        {
+            m_Api.ReqQryInstrument(szInstrument);
+        }
+
         public void ReqQryTradingAccount()
         {
             m_Api.ReqQryTradingAccount();
