@@ -1,5 +1,5 @@
 ﻿using QuantBox.CSharp2CTP.Callback;
-using QuantBox.Libray;
+using QuantBox.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,39 +109,33 @@ namespace QuantBox.CSharp2CTP.Event
         //建立行情
         private void Connect_TD()
         {
-            lock (this)
-            {
-                m_Api.OnConnect = OnConnect_callback;
-                m_Api.OnDisconnect = OnDisconnect_callback;
-                m_Api.OnRspError = OnRspError_callback;
+            m_Api.OnConnect = OnConnect_callback;
+            m_Api.OnDisconnect = OnDisconnect_callback;
+            m_Api.OnRspError = OnRspError_callback;
 
-                m_Api.OnErrRtnOrderAction = OnErrRtnOrderAction_callback;
-                m_Api.OnErrRtnOrderInsert = OnErrRtnOrderInsert_callback;
-                m_Api.OnRspOrderAction = OnRspOrderAction_callback;
-                m_Api.OnRspOrderInsert = OnRspOrderInsert_callback;
-                m_Api.OnRspQryDepthMarketData = OnRspQryDepthMarketData_callback;
-                m_Api.OnRspQryInstrument = OnRspQryInstrument_callback;
-                m_Api.OnRspQryInstrumentCommissionRate = OnRspQryInstrumentCommissionRate_callback;
-                m_Api.OnRspQryInstrumentMarginRate = OnRspQryInstrumentMarginRate_callback;
-                m_Api.OnRspQryInvestorPosition = OnRspQryInvestorPosition_callback;
-                m_Api.OnRspQryInvestorPositionDetail = OnRspQryInvestorPositionDetail_callback;
-                m_Api.OnRspQryOrder = OnRspQryOrder_callback;
-                m_Api.OnRspQryTrade = OnRspQryTrade_callback;
-                m_Api.OnRspQryTradingAccount = OnRspQryTradingAccount_callback;
-                m_Api.OnRtnInstrumentStatus = OnRtnInstrumentStatus_callback;
-                m_Api.OnRtnOrder = OnRtnOrder_callback;
-                m_Api.OnRtnTrade = OnRtnTrade_callback;
+            m_Api.OnErrRtnOrderAction = OnErrRtnOrderAction_callback;
+            m_Api.OnErrRtnOrderInsert = OnErrRtnOrderInsert_callback;
+            m_Api.OnRspOrderAction = OnRspOrderAction_callback;
+            m_Api.OnRspOrderInsert = OnRspOrderInsert_callback;
+            m_Api.OnRspQryDepthMarketData = OnRspQryDepthMarketData_callback;
+            m_Api.OnRspQryInstrument = OnRspQryInstrument_callback;
+            m_Api.OnRspQryInstrumentCommissionRate = OnRspQryInstrumentCommissionRate_callback;
+            m_Api.OnRspQryInstrumentMarginRate = OnRspQryInstrumentMarginRate_callback;
+            m_Api.OnRspQryInvestorPosition = OnRspQryInvestorPosition_callback;
+            m_Api.OnRspQryInvestorPositionDetail = OnRspQryInvestorPositionDetail_callback;
+            m_Api.OnRspQryOrder = OnRspQryOrder_callback;
+            m_Api.OnRspQryTrade = OnRspQryTrade_callback;
+            m_Api.OnRspQryTradingAccount = OnRspQryTradingAccount_callback;
+            m_Api.OnRtnInstrumentStatus = OnRtnInstrumentStatus_callback;
+            m_Api.OnRtnOrder = OnRtnOrder_callback;
+            m_Api.OnRtnTrade = OnRtnTrade_callback;
 
-                m_Api.Connect();
-            }
+            m_Api.Connect();
         }
 
         private void Disconnect_TD()
         {
-            lock (this)
-            {
-                m_Api.Disconnect();
-            }
+            m_Api.Disconnect();
         }
 
         public int SendOrder(

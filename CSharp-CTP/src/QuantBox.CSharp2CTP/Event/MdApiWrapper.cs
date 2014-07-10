@@ -1,5 +1,5 @@
 ﻿using QuantBox.CSharp2CTP.Callback;
-using QuantBox.Libray;
+using QuantBox.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,40 +95,28 @@ namespace QuantBox.CSharp2CTP.Event
         //建立行情
         private void Connect_MD()
         {
-            lock(this)
-            {
-                m_Api.OnConnect = OnConnect_callback;
-                m_Api.OnDisconnect = OnDisconnect_callback;
-                m_Api.OnRspError = OnRspError_callback;
+            m_Api.OnConnect = OnConnect_callback;
+            m_Api.OnDisconnect = OnDisconnect_callback;
+            m_Api.OnRspError = OnRspError_callback;
 
-                m_Api.OnRtnDepthMarketData = OnRtnDepthMarketData_callback;
+            m_Api.OnRtnDepthMarketData = OnRtnDepthMarketData_callback;
 
-                m_Api.Connect();
-            }
+            m_Api.Connect();
         }
 
         private void Disconnect_MD()
         {
-            lock (this)
-            {
-                m_Api.Disconnect();
-            }
+            m_Api.Disconnect();
         }
 
         public void Subscribe(string inst, string szExchange)
         {
-            lock(this)
-            {
-                m_Api.Subscribe(inst, szExchange);
-            }
+            m_Api.Subscribe(inst, szExchange);
         }
 
         public void Unsubscribe(string inst, string szExchange)
         {
-            lock(this)
-            {
-                m_Api.Unsubscribe(inst, szExchange);
-            }
+            m_Api.Unsubscribe(inst, szExchange);
         }
 
         private void OnConnect_callback(object sender,IntPtr pApi, ref CThostFtdcRspUserLoginField pRspUserLogin, ConnectionStatus result)

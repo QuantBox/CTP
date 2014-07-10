@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QuantBox.Libray
+namespace QuantBox.Library
 {
     public enum EnumHedgeFlag
     {

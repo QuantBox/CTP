@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace QuantBox.Libray
+namespace QuantBox.Library
 {
     public class ConnectionInfo : KeyInfo
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{6A06AB48-E3EA-47A1-930D-660462AA941E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QuantBox.Libray</RootNamespace>
-    <AssemblyName>QuantBox.Libray</AssemblyName>
+    <RootNamespace>QuantBox.Library</RootNamespace>
+    <AssemblyName>QuantBox.Library</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

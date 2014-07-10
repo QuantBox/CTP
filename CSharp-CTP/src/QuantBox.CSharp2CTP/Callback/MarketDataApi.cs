@@ -1,4 +1,4 @@
-﻿using QuantBox.Libray;
+﻿using QuantBox.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +8,14 @@ namespace QuantBox.CSharp2CTP.Callback
 {
     public class MarketDataApi : BaseApi
     {
+        private object locker = new object();
+
         private SortedSet<string> _SubscribedInstruments = new SortedSet<string>();
         public SortedSet<string> SubscribedInstruments
         {
             get
             {
-                lock (this)
+                lock (locker)
                 {
                     return _SubscribedInstruments;
                 }
@@ -25,7 +27,7 @@ namespace QuantBox.CSharp2CTP.Callback
         {
             get
             {
-                lock (this)
+                lock (locker)
                 {
                     return _SubscribedQuotes;
                 }
@@ -88,7 +90,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public override void Connect()
         {
-            lock(this)
+            lock (locker)
             {
                 base.Connect();
 
@@ -103,7 +105,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public override void Disconnect()
         {
-            lock(this)
+            lock (locker)
             {
                 if (null != IntPtrKey && IntPtr.Zero != IntPtrKey)
                 {
@@ -118,7 +120,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public virtual void Subscribe(string inst, string szExchange)
         {
-            lock (this)
+            lock (locker)
             {
                 MdApi.MD_Subscribe(IntPtrKey, inst, szExchange);
                 inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>
@@ -131,7 +133,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public virtual void Unsubscribe(string inst, string szExchange)
         {
-            lock (this)
+            lock (locker)
             {
                 MdApi.MD_Unsubscribe(IntPtrKey, inst, szExchange);
                 inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>
@@ -142,7 +144,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public virtual void SubscribeQuote(string inst, string szExchange)
         {
-            lock (this)
+            lock (locker)
             {
                 MdApi.MD_SubscribeQuote(IntPtrKey, inst, szExchange);
                 inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>
@@ -155,7 +157,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public virtual void UnsubscribeQuote(string inst, string szExchange)
         {
-            lock (this)
+            lock (locker)
             {
                 MdApi.MD_UnsubscribeQuote(IntPtrKey, inst, szExchange);
                 inst.Split(new char[2] { ';', ',' }).ToList().ForEach(x =>

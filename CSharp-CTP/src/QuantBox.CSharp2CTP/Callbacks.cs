@@ -1,4 +1,4 @@
-﻿using QuantBox.Libray;
+﻿using QuantBox.Library;
 using System;
 
 namespace QuantBox.CSharp2CTP

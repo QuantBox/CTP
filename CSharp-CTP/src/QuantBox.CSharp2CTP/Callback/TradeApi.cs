@@ -1,4 +1,4 @@
-﻿using QuantBox.Libray;
+﻿using QuantBox.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,8 @@ namespace QuantBox.CSharp2CTP.Callback
 {
     public class TradeApi:BaseApi
     {
+        private object locker = new object();
+
         private fnOnErrRtnOrderAction OnErrRtnOrderAction_1;
         private fnOnErrRtnOrderInsert OnErrRtnOrderInsert_1;
         private fnOnErrRtnQuoteAction OnErrRtnQuoteAction_1;
@@ -405,7 +407,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public override void Connect()
         {
-            lock(this)
+            lock (locker)
             {
                 base.Connect();
 
@@ -422,7 +424,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public override void Disconnect()
         {
-            lock(this)
+            lock (locker)
             {
                 if (null != IntPtrKey && IntPtr.Zero != IntPtrKey)
                 {

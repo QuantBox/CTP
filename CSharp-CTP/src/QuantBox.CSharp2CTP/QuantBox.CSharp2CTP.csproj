@@ -65,9 +65,9 @@
     <Compile Include="Event\TraderApiWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QuantBox.Libray\QuantBox.Libray.csproj">
+    <ProjectReference Include="..\QuantBox.Library\QuantBox.Library.csproj">
       <Project>{6a06ab48-e3ea-47a1-930d-660462aa941e}</Project>
-      <Name>QuantBox.Libray</Name>
+      <Name>QuantBox.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

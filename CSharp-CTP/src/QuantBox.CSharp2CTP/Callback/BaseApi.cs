@@ -1,4 +1,4 @@
-﻿using QuantBox.Libray;
+﻿using QuantBox.Library;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +9,8 @@ namespace QuantBox.CSharp2CTP.Callback
 {
     public class BaseApi : KeyInfo
     {
+        private object locker = new object();
+
         public bool IsConnected { get; protected set; }
 
         protected MsgQueue _MsgQueue;
@@ -128,7 +130,7 @@ namespace QuantBox.CSharp2CTP.Callback
 
         public virtual void Connect()
         {
-            lock (this)
+            lock (locker)
             {
                 if (_Connection == null)
                     throw new ArgumentNullException("连接信息不能为空");

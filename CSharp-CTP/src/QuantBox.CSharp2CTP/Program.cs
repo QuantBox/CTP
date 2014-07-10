@@ -1,5 +1,5 @@
 ﻿using QuantBox.CSharp2CTP.Event;
-using QuantBox.Libray;
+using QuantBox.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantBox.Libray
+namespace QuantBox.Library
 {
     /// <summary>
     /// 连接状态

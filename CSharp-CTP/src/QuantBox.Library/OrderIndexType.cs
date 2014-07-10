@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QuantBox.Libray
+namespace QuantBox.Library
 {
     /// <summary>
     /// 默认使用FIX 5.0中的协议字段来填充

@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantBox.CSharp2CTP", "QuantBox.CSharp2CTP\QuantBox.CSharp2CTP.csproj", "{0266F737-2271-4791-8FB0-5EA9A8AC0F7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantBox.Libray", "QuantBox.Libray\QuantBox.Libray.csproj", "{6A06AB48-E3EA-47A1-930D-660462AA941E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantBox.Library", "QuantBox.Library\QuantBox.Library.csproj", "{6A06AB48-E3EA-47A1-930D-660462AA941E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
