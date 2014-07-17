@@ -45,9 +45,10 @@
     <Compile Include="ConnectionStatus.cs" />
     <Compile Include="EnumHedgeFlag.cs" />
     <Compile Include="EnumOpenClose.cs" />
-    <Compile Include="OrderIndexType.cs" />
+    <Compile Include="OrderTagType.cs" />
     <Compile Include="FrontInfo.cs" />
     <Compile Include="KeyInfo.cs" />
+    <Compile Include="OrderMsgType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
