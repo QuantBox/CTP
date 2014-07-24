@@ -141,6 +141,7 @@ namespace QuantBox.CSharp2CTP.Event
         public int SendOrder(
             int OrderRef,
             string szInstrument,
+            string szExchange,
             TThostFtdcDirectionType Direction,
             string szCombOffsetFlag,
             string szCombHedgeFlag,
@@ -155,6 +156,7 @@ namespace QuantBox.CSharp2CTP.Event
             return m_Api.SendOrder(
                 OrderRef,
                 szInstrument,
+                szExchange,
                 Direction,
                 szCombOffsetFlag,
                 szCombHedgeFlag,

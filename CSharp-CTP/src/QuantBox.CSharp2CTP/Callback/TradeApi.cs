@@ -440,6 +440,7 @@ namespace QuantBox.CSharp2CTP.Callback
         public int SendOrder(
             int OrderRef,
             string szInstrument,
+            string szExchange,
             TThostFtdcDirectionType Direction,
             string szCombOffsetFlag,
             string szCombHedgeFlag,
@@ -460,6 +461,7 @@ namespace QuantBox.CSharp2CTP.Callback
                IntPtrKey,
                OrderRef,
                szInstrument,
+               szExchange,
                Direction,
                szCombOffsetFlag,
                szCombHedgeFlag,
@@ -485,6 +487,7 @@ namespace QuantBox.CSharp2CTP.Callback
         public int SendQuote(
             int QuoteRef,
             string szInstrument,
+            string szExchange,
             double AskPrice,
             double BidPrice,
             int AskVolume,
@@ -503,6 +506,7 @@ namespace QuantBox.CSharp2CTP.Callback
                 IntPtrKey,
                 QuoteRef,
                 szInstrument,
+                szExchange,
                 AskPrice,
                 BidPrice,
                 AskVolume,
