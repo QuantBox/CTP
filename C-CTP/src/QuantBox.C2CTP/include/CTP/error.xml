@@ -93,6 +93,8 @@
 	<error id="COMBOPTIONS_SUPPORT_IOC_ONLY" value="88" prompt="CTP:该组合期权合约只支持IOC"/>
 	<error id="OPEN_FILE_FAILED" value="89" prompt="CTP:打开文件失败"/>
 	<error id="NEED_RETRY" value="90" prompt="CTP：查询未就绪，请稍后重试"/>
+	<error id="EXCHANGE_RTNERROR" value="91" prompt="CTP：交易所返回的错误"/>
+	<error id="QUOTE_DERIVEDORDER_ACTIONERROR" value="92" prompt="CTP:报价衍生单要等待交易所返回才能撤单"/>
 	<!--灾备系统错误代码 -->		
 	<error id="NO_TRADING_RIGHT_IN_SEPC_DR" value="101" prompt="CTP:用户在本系统没有报单权限"/>
 	<error id="NO_DR_NO" value="102" prompt="CTP:系统缺少灾备标示号"/>

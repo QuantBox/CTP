@@ -673,12 +673,15 @@ int CTraderApi::ReqQuoteInsert(
 		{
 			nRet = m_nMaxOrderRef;
 			sprintf(body.QuoteRef, "%d", nRet);
-			++m_nMaxOrderRef;
+			sprintf(body.AskOrderRef, "%d", ++m_nMaxOrderRef);
+			sprintf(body.BidOrderRef, "%d", ++m_nMaxOrderRef);
 		}
 		else
 		{
 			nRet = QuoteRef;
 			sprintf(body.QuoteRef, "%d", QuoteRef);
+			sprintf(body.AskOrderRef, "%d", ++QuoteRef);
+			sprintf(body.BidOrderRef, "%d", ++QuoteRef);
 		}
 
 		//不保存到队列，而是直接发送
