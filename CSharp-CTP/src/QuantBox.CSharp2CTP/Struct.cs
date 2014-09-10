@@ -1355,14 +1355,6 @@ namespace QuantBox.CSharp2CTP
         /// 特殊产品交易所保证金
         /// </summary>
         public double SpecProductExchangeMargin;
-        /// <summary>
-        /// 期权平仓盈亏
-        /// </summary>
-        public double OptionCloseProfit;
-        /// <summary>
-        /// 期权市值
-        /// </summary>
-        public double OptionValue;
     }
 
     /// <summary>
@@ -1547,10 +1539,6 @@ namespace QuantBox.CSharp2CTP
         /// 放弃执行冻结
         /// </summary>
         public int AbandonFrozen;
-        /// <summary>
-        /// 期权市值
-        /// </summary>
-        public double OptionValue;
     }
 
     /// <summary>
@@ -2086,16 +2074,11 @@ namespace QuantBox.CSharp2CTP
         /// 序号
         /// </summary>
         public int SequenceNo;
-        ///// <summary>
-        ///// 消息正文,由于不同地区，编码不同，出于正确提取结算单的需要，将string改成byte
-        ///// </summary>
-        //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 501)]
-        //public string Content;
         /// <summary>
-        /// 消息正文，注意：Encoding转换时字符串后有0，需要移除
+        /// 消息正文
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 501)]
-        public byte[] Content;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 501)]
+        public string Content;
     }
 
     /// <summary>
@@ -4262,14 +4245,6 @@ namespace QuantBox.CSharp2CTP
         /// 特殊产品交易所保证金
         /// </summary>
         public double SpecProductExchangeMargin;
-        /// <summary>
-        /// 期权平仓盈亏
-        /// </summary>
-        public double OptionCloseProfit;
-        /// <summary>
-        /// 期权市值
-        /// </summary>
-        public double OptionValue;
     }
 
     /// <summary>
@@ -4454,10 +4429,6 @@ namespace QuantBox.CSharp2CTP
         /// 放弃执行冻结
         /// </summary>
         public int AbandonFrozen;
-        /// <summary>
-        /// 期权市值
-        /// </summary>
-        public double OptionValue;
     }
 
     /// <summary>
@@ -7009,6 +6980,16 @@ namespace QuantBox.CSharp2CTP
         /// 买投机套保标志
         /// </summary>
         public TThostFtdcHedgeFlagType BidHedgeFlag;
+        /// <summary>
+        /// 衍生卖报单引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string AskOrderRef;
+        /// <summary>
+        /// 衍生买报单引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string BidOrderRef;
     }
 
     /// <summary>
@@ -7267,6 +7248,16 @@ namespace QuantBox.CSharp2CTP
         /// 经纪公司报价编号
         /// </summary>
         public int BrokerQuoteSeq;
+        /// <summary>
+        /// 衍生卖报单引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string AskOrderRef;
+        /// <summary>
+        /// 衍生买报单引用
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string BidOrderRef;
     }
 
     /// <summary>
@@ -7792,6 +7783,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
         public string ActionDay;
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+        public string ExchangeID;
     }
 
     /// <summary>
@@ -11180,6 +11176,56 @@ namespace QuantBox.CSharp2CTP
         /// 投机套保标志
         /// </summary>
         public TThostFtdcHedgeFlagType HedgeFlag;
+    }
+
+    /// <summary>
+    /// 查询监控中心用户令牌
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcQueryCFMMCTradingAccountTokenField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 投资者代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string InvestorID;
+    }
+
+    /// <summary>
+    /// 监控中心用户令牌
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct CThostFtdcCFMMCTradingAccountTokenField
+    {
+        /// <summary>
+        /// 经纪公司代码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string BrokerID;
+        /// <summary>
+        /// 经纪公司统一编码
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+        public string ParticipantID;
+        /// <summary>
+        /// 投资者帐号
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string AccountID;
+        /// <summary>
+        /// 密钥编号
+        /// </summary>
+        public int KeyID;
+        /// <summary>
+        /// 动态令牌
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+        public string Token;
     }
 
     /// <summary>

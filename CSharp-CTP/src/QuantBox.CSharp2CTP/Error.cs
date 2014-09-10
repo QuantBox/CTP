@@ -463,6 +463,16 @@ namespace QuantBox.CSharp2CTP
         NEED_RETRY = 90,
 
         /// <summary>
+        /// CTP：交易所返回的错误
+        /// </summary>
+        EXCHANGE_RTNERROR = 91,
+
+        /// <summary>
+        /// CTP:报价衍生单要等待交易所返回才能撤单
+        /// </summary>
+        QUOTE_DERIVEDORDER_ACTIONERROR = 92,
+
+        /// <summary>
         /// CTP:用户在本系统没有报单权限
         /// </summary>
         NO_TRADING_RIGHT_IN_SEPC_DR = 101,
