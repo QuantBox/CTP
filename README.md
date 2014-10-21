@@ -1,3 +1,6 @@
+# 已经不再维护，请移步到QuantBox\_XAPI项目
+https://github.com/QuantBox/QuantBox_XAPI
+
 # CTP版
 
 此目录下提供CTP接口相关的文档和接口
